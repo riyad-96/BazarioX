@@ -1,1 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --font: 'Outfit', sans-serif;
+
+  /* Colors */
+  --primary: hsl(0, 0%, 96%);
+  --text-clr: #000;
+  --second-lvl-bg: hsl(from var(--primary) h s calc(l - 5));
+  --nav-link-bg: hsl(from var(--primary) h s calc(l - 8));
+  --slick-border: hsl(from var(--primary) h s calc(l - 8));
+  --each-list-item-divider-clr: hsl(from var(--primary) h s calc(l - 12));
+  --input-focus-border: hsl(from var(--primary) h s calc(l - 60));
+  --radio-checked-bg: hsl(from var(--primary) h s calc(l - 10));
+  --radio-checked-border: hsl(from var(--primary) h s calc(l - 20));
+}
+
+body {
+  font-family: var(--font);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --primary: hsl(0, 0%, 8%);
+  --text-clr: #fff;
+  --nav-link-bg: hsl(from var(--primary) h s calc(l + 10));
+}
+
+/* Resets */
+@media (pointer: fine) {
+  button {
+    cursor: pointer;
+  }
+}
+
+/* Utils */
+.h-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.home-page-body {
+  scrollbar-width: none;
+}
+
+.home-page-body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
