@@ -35,6 +35,13 @@ function Calculator() {
     };
     setTotalSessions((prev) => [...prev, newSession]);
     setItems([]);
+    setSession({
+      id: '',
+      sessionTitle: '',
+      sessionAt: '',
+      sessionTotal: 0,
+      bazarList: [],
+    });
   }
 
   return (
