@@ -5,15 +5,7 @@ import EachItem from './EachItem';
 import { useUniContexts } from '../../contexts/UniContexts';
 
 function Calculator() {
-  const { isCalcExpanded, setIsCalcExpanded, items, setItems, setTotalSessions } = useUniContexts();
-
-  const [session, setSession] = useState({
-    id: '',
-    sessionTitle: '',
-    sessionAt: '',
-    sessionTotal: 0,
-    bazarList: [],
-  });
+  const { isCalcExpanded, setIsCalcExpanded, items, setItems, setTotalSessions, session, setSession } = useUniContexts();
 
   const [item, setItem] = useState({
     id: '',
