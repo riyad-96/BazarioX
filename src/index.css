@@ -47,15 +47,11 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type='number'] {
   -moz-appearance: textfield;
 }
 
 .home-page-body {
-  scrollbar-width: none;
-}
-
-.home-page-body::-webkit-scrollbar {
-  display: none;
-  width: 0;
+  scrollbar-width: thin;
 }
