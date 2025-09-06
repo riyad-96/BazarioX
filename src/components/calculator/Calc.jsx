@@ -48,15 +48,15 @@ function Calc({ props }) {
       addedAt: new Date(),
     };
     setItems((prev) => [...prev, newItem]);
-    setItem({
-      id: '',
-      itemName: '',
-      price: '',
-      unit: 'kg',
-      quantity: '',
-      total: '',
-      addedAt: '',
-    });
+    // setItem({
+    //   id: '',
+    //   itemName: '',
+    //   price: '',
+    //   unit: 'kg',
+    //   quantity: '',
+    //   total: '',
+    //   addedAt: '',
+    // });
   }
 
   return (

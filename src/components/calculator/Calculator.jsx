@@ -47,7 +47,7 @@ function Calculator() {
         <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2">
           <div className="space-y-2">
             <p>
-              Total items: <span className="font-medium underline underline-offset-3">{items.length}</span>, Total price: <span className="font-medium underline underline-offset-3">{items.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
+              Total items: <span className="font-medium">{items.length}</span>, Total price: <span className="font-medium">{items.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
             </p>
 
             <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) pt-2">
