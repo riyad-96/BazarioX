@@ -18,7 +18,7 @@ function UniModal({ className, onMouseDown, jsx }) {
       <motion.div
         initial={{
           opacity: 0,
-          y: '120%',
+          y: '20%',
         }}
         animate={{
           opacity: 1,

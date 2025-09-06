@@ -46,7 +46,7 @@ function Today() {
         {totalSessions.length > 0 && (
           <div className="space-y-2">
             <p className="text-lg">
-              Today's total expenses: <span className="font-medium underline underline-offset-2">{totalSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0)}</span> ৳
+              Today's total expenses: <span className="font-medium">{totalSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0)}</span> ৳
             </p>
             <div className="grid gap-2">
               {totalSessions.map((eachSession) => {
@@ -84,7 +84,7 @@ function Today() {
                           onClick={() => {
                             setSessionDetails(eachSession);
                           }}
-                          className="underline underline-offset-2 opacity-80"
+                          className="underline underline-offset-2 opacity-80 transition-[text-underline-offset] duration-250 hover:underline-offset-5"
                         >
                           See details
                         </button>
