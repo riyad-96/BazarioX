@@ -53,7 +53,7 @@ function Today() {
                 const { id, sessionTitle, sessionAt, bazarList } = eachSession;
 
                 return (
-                  <div key={id} className="rounded-md bg-(--primary) p-3">
+                  <div key={id} className="relative rounded-md bg-(--primary) p-3">
                     <div className="grid">
                       <div className="flex justify-between">
                         <span>{sessionTitle || 'Untitled'}</span>
@@ -84,9 +84,10 @@ function Today() {
                           onClick={() => {
                             setSessionDetails(eachSession);
                           }}
-                          className="underline underline-offset-2 opacity-80 transition-[text-underline-offset] duration-250 hover:underline-offset-5"
+                          className="opacity-70"
                         >
-                          See details
+                          <span>Click to see details</span>
+                          <span className="absolute inset-0"></span>
                         </button>
                       </div>
                     </div>
@@ -132,19 +133,19 @@ function Today() {
                     const { id, itemName, price, quantity, unit, total, addedAt } = eachItem;
                     console.log(eachItem);
                     return (
-                      <div key={id} className="flex justify-between rounded-md px-2 py-1 nth-[odd]:bg-zinc-100">
-                        <span className="flex flex-3 items-end gap-1">
+                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
+                        <span className="grid flex-3">
                           <span>
                             {i + 1}. {itemName} {`(${price} ৳)`}
                           </span>
                           <span className="text-xs opacity-80">{format(addedAt, 'h:mm a')}</span>
                         </span>
-                        <span className="flex-2 text-center">
+                        <span className="grid flex-2 place-items-center text-sm">
                           <span>
                             {quantity} {unit}
                           </span>
                         </span>
-                        <span className="flex-2 text-center">
+                        <span className="grid flex-2 place-items-center text-sm">
                           <span>{total} ৳</span>
                         </span>
                       </div>

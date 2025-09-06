@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import Calc from './Calc';
 import EachItem from './EachItem';
 import { useUniContexts } from '../../contexts/UniContexts';
+import { format } from 'date-fns';
 
 function Calculator() {
   const { isCalcExpanded, setIsCalcExpanded, items, setItems, setTotalSessions, session, setSession } = useUniContexts();
@@ -18,21 +19,27 @@ function Calculator() {
   });
 
   function addBazarSession() {
+    const newDate = new Date();
+
     const newSession = {
       ...session,
       id: Date.now(),
       bazarList: items,
       sessionTotal: items.reduce((acc, eachItem) => acc + eachItem.total, 0),
-      sessionAt: new Date(),
+      sessionAt: newDate,
+      month: format(newDate, 'M'),
+      year: format(newDate, 'y'),
     };
     setTotalSessions((prev) => [...prev, newSession]);
-    setItems([]);
+    // setItems([]);
     setSession({
       id: '',
       sessionTitle: '',
       sessionAt: '',
       sessionTotal: 0,
       bazarList: [],
+      month: '',
+      year: '',
     });
   }
 
