@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useEffect, createContext, useContext } from 'react';
 import { useUniContexts } from './UniContexts';
-import { format, isToday } from 'date-fns';
+import { isToday } from 'date-fns';
 
 const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
@@ -13,7 +13,14 @@ function FunctionContexts({ children }) {
     // get data from localStorage.
     // check if any session is _cloudSavePending: true
     // if true then save the data to belonging user's database.
-    // run each time application first load.
+    // run each time application first loads.
+    const sessionAPI = JSON.parse(localStorage.getItem('sessionAPI'));
+    if (sessionAPI) {
+      // const pendingSessions = sessionAPI.sessions.filter((eachSession) => eachSession._cloudSavePending);
+      // const resolvedSessions = sessionAPI.sessions.map((eachSession) => ({ ...eachSession, _cloudSavePending: false }));
+      // console.log(pendingSessions);
+      // console.log(resolvedSessions);
+    }
   }
 
   // Local sync function
@@ -26,6 +33,8 @@ function FunctionContexts({ children }) {
     } else {
       localStorage.sessionAPI = JSON.stringify({ sessionHistoryDate: `${month}-${year}`, sessions: [newSession] });
     }
+
+    cloudSync();
   }
 
   // Retrieve data...
@@ -34,6 +43,7 @@ function FunctionContexts({ children }) {
     if (sessionAPI) {
       const todaysSessions = sessionAPI.sessions.filter((eachSession) => isToday(eachSession.sessionAt));
       setTotalSessions(todaysSessions);
+      cloudSync();
     }
   }, []);
 
