@@ -1,9 +1,12 @@
 import UniContexts from "./UniContexts";
+import FunctionContexts from './FunctionContexts';
 
 function ContextProvider({ children }) {
   return (
     <UniContexts>
-      {children}
+      <FunctionContexts>
+        {children}
+      </FunctionContexts>
     </UniContexts>
   )
 };

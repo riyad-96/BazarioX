@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Calc from './Calc';
 import EachItem from './EachItem';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
+import { useFunctionContext } from '../../contexts/FunctionContexts';
 
 function Calculator() {
-  const { isCalcExpanded, setIsCalcExpanded, items, setItems, setTotalSessions, session, setSession } = useUniContexts();
+  const { isCalcExpanded, setIsCalcExpanded, bazarList, setBazarList, setTotalSessions } = useUniContexts();
+  const { handleDataStoring } = useFunctionContext();
 
   const [item, setItem] = useState({
     id: '',
@@ -18,48 +20,43 @@ function Calculator() {
     addedAt: '',
   });
 
+  const bazarTitle = useRef(null);
+
   function addBazarSession() {
     const newDate = new Date();
 
     const newSession = {
-      ...session,
+      _cloudSavePending: true,
       id: Date.now(),
-      bazarList: items,
-      sessionTotal: items.reduce((acc, eachItem) => acc + eachItem.total, 0),
+      sessionTitle: bazarTitle.current.value.trim(),
+      bazarList: bazarList,
+      sessionTotal: bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
       sessionAt: newDate,
       month: format(newDate, 'M'),
       year: format(newDate, 'y'),
     };
-    setTotalSessions((prev) => [...prev, newSession]);
+    handleDataStoring(newSession);
+    setTotalSessions((prev) => [newSession, ...prev]);
     // setItems([]);
-    setSession({
-      id: '',
-      sessionTitle: '',
-      sessionAt: '',
-      sessionTotal: 0,
-      bazarList: [],
-      month: '',
-      year: '',
-    });
   }
 
   return (
     <div className="min-h-full py-2">
       <div className="mb-3 space-y-2">
         <h1 className="text-2xl">Bazar List</h1>
-        <input onChange={(e) => setSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={session.sessionTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
+        <input ref={bazarTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
       </div>
 
       <div className={`space-y-2 transition-[padding] duration-450 ${isCalcExpanded ? 'pb-80' : 'pb-20'}`}>
         <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2">
           <div className="space-y-2">
             <p>
-              Total items: <span className="font-medium">{items.length}</span>, Total price: <span className="font-medium">{items.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
+              Total items: <span className="font-medium">{bazarList.length}</span>, Total price: <span className="font-medium">{bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
             </p>
 
             <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) pt-2">
               <AnimatePresence>
-                {items.length < 1 && (
+                {bazarList.length < 1 && (
                   <motion.p
                     initial={{
                       height: 0,
@@ -81,7 +78,7 @@ function Calculator() {
               </AnimatePresence>
 
               <AnimatePresence>
-                {items.length > 0 && (
+                {bazarList.length > 0 && (
                   <motion.div className="overflow-hidden">
                     <div className="flex border-b-1 border-(--each-list-item-divider-clr) pb-2 pl-6">
                       <span className="flex-3 text-center text-sm font-medium">Item</span>
@@ -93,8 +90,8 @@ function Calculator() {
 
                     <div className="">
                       <AnimatePresence>
-                        {items.map((eachItem, i) => (
-                          <EachItem key={eachItem.id} props={{ eachItem, i, setItems }} />
+                        {bazarList.map((eachItem, i) => (
+                          <EachItem key={eachItem.id} props={{ eachItem, i, bazarList }} />
                         ))}
                       </AnimatePresence>
                     </div>
@@ -103,15 +100,15 @@ function Calculator() {
               </AnimatePresence>
             </div>
 
-            {items.length > 0 && (
+            {bazarList.length > 0 && (
               <div className="flex justify-end gap-2 overflow-hidden">
                 <button
-                  onClick={() => {
-                    setItems([]);
+                  onDoubleClick={() => {
+                    setBazarList([]);
                   }}
                   className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm"
                 >
-                  Delete all
+                  Delete
                 </button>
                 <button onClick={addBazarSession} className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm">
                   Save

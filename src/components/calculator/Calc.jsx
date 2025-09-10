@@ -4,7 +4,7 @@ import { useUniContexts } from '../../contexts/UniContexts';
 
 function Calc({ props }) {
   const { isCalcExpanded, setIsCalcExpanded, item, setItem } = props;
-  const { setItems } = useUniContexts();
+  const { setBazarList } = useUniContexts();
 
   function setItemState(itemName, value) {
     if (itemName === 'price' || itemName === 'quantity') {
@@ -47,7 +47,7 @@ function Calc({ props }) {
       id: Date.now(),
       addedAt: new Date(),
     };
-    setItems((prev) => [...prev, newItem]);
+    setBazarList((prev) => [...prev, newItem]);
     // setItem({
     //   id: '',
     //   itemName: '',
