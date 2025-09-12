@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { CloseSvg } from '../../assets/Svg';
 
 function EachItem({ props }) {
-  const { i, setItems } = props;
+  const { i, setBazarList } = props;
   const { id, itemName, price, unit, quantity, total } = props.eachItem;
   return (
     <motion.div
@@ -38,7 +38,7 @@ function EachItem({ props }) {
       <span className="grid flex-2 place-items-center py-2 text-sm font-medium">{`${total} ৳`}</span>
       <button
         onClick={() => {
-          setItems((prev) => prev.filter((item) => item.id !== id));
+          setBazarList((prev) => prev.filter((item) => item.id !== id));
         }}
         className="grid flex-1 place-items-center bg-(--slick-border) py-2 text-sm font-medium"
       >

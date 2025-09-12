@@ -91,7 +91,7 @@ function Calculator() {
                     <div className="">
                       <AnimatePresence>
                         {bazarList.map((eachItem, i) => (
-                          <EachItem key={eachItem.id} props={{ eachItem, i, bazarList }} />
+                          <EachItem key={eachItem.id} props={{ eachItem, i, setBazarList }} />
                         ))}
                       </AnimatePresence>
                     </div>

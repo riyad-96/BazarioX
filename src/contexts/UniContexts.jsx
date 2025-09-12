@@ -9,6 +9,7 @@ function UniContexts({ children }) {
   // user
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
   // calculator page
   const [bazarList, setBazarList] = useState([]);
@@ -23,12 +24,16 @@ function UniContexts({ children }) {
       } else {
         setUser(null);
       }
+      // setTimeout(() => {
+      //   setIsUserDataLoading(false);
+      // }, 3000);
+      setIsUserDataLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, bazarList, setBazarList, totalSessions, setTotalSessions, isCalcExpanded, setIsCalcExpanded }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, isUserDataLoading, setIsUserDataLoading, bazarList, setBazarList, totalSessions, setTotalSessions, isCalcExpanded, setIsCalcExpanded }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

@@ -36,6 +36,11 @@ body {
   }
 }
 
+button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Utils */
 .h-dvh {
   height: 100vh;
@@ -54,4 +59,19 @@ input[type='number'] {
 
 .home-page-body {
   scrollbar-width: thin;
+}
+
+@keyframes outline-effect {
+  0% {
+    outline-color: transparent;
+    outline-offset: -1px;
+  }
+  30% {
+    outline-offset: 2px;
+    outline-color: hsl(0, 0%, 40%);
+  }
+  100% {
+    outline-offset: 5px;
+    outline-color: transparent;
+  }
 }

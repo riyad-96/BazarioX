@@ -13,7 +13,7 @@ export function ArrowUpSvg({ className = '', size = '16' }) {
   );
 }
 
-export function ProfilePlaceholder({ className = '', size = '16' }) {
+export function ProfilePlaceholderSvg({ className = '', size = '16' }) {
   return (
     <svg className={className} width={size} height={size} fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 45.53 45.53" xmlSpace="preserve" stroke="#1111111">
       <g strokeWidth="0"></g>

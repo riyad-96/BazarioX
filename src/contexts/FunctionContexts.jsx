@@ -10,6 +10,7 @@ function FunctionContexts({ children }) {
 
   // Cloud sync function
   async function cloudSync() {
+    if (!user) return;
     // get data from localStorage.
     // check if any session is _cloudSavePending: true
     // if true then save the data to belonging user's database.
@@ -25,13 +26,12 @@ function FunctionContexts({ children }) {
 
   // Local sync function
   function handleDataStoring(newSession) {
-    const { month, year } = newSession;
-    const sessionAPI = JSON.parse(localStorage.getItem('sessionAPI'));
+    const localSessions = JSON.parse(localStorage.getItem('localSessions')) || [];
 
-    if (sessionAPI) {
-      localStorage.sessionAPI = JSON.stringify({ ...sessionAPI, sessions: [newSession, ...sessionAPI.sessions] });
+    if (localSessions) {
+      localStorage.localSessions = JSON.stringify([newSession, ...localSessions]);
     } else {
-      localStorage.sessionAPI = JSON.stringify({ sessionHistoryDate: `${month}-${year}`, sessions: [newSession] });
+      localStorage.localSessions = JSON.stringify([newSession]);
     }
 
     cloudSync();
@@ -39,9 +39,9 @@ function FunctionContexts({ children }) {
 
   // Retrieve data...
   useEffect(() => {
-    const sessionAPI = JSON.parse(localStorage.getItem('sessionAPI'));
-    if (sessionAPI) {
-      const todaysSessions = sessionAPI.sessions.filter((eachSession) => isToday(eachSession.sessionAt));
+    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
+    if (localSessions) {
+      const todaysSessions = localSessions.filter((s) => isToday(s.sessionAt));
       setTotalSessions(todaysSessions);
       cloudSync();
     }
