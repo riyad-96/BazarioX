@@ -6,7 +6,7 @@ const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
 
 function FunctionContexts({ children }) {
-  const { totalSessions, setTotalSessions } = useUniContexts();
+  const { user, totalSessions, setTotalSessions } = useUniContexts();
 
   // Cloud sync function
   async function cloudSync() {
@@ -46,6 +46,12 @@ function FunctionContexts({ children }) {
       cloudSync();
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+    }
+  }, [user]);
 
   return <functionContext.Provider value={{ handleDataStoring }}>{children}</functionContext.Provider>;
 }

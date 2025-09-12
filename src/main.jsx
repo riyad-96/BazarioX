@@ -7,11 +7,13 @@ import ContextProvider from './contexts/ContextProvider.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/Home.jsx';
-import Auth from './pages/Auth.jsx';
+import Auth from './pages/auth/Auth.jsx';
 import Profile from './pages/Profile.jsx';
 import Calculator from './components/calculator/Calculator.jsx';
 import Today from './components/today/Today.jsx';
 import Month from './components/month/Month.jsx';
+import Login from './pages/auth/Login.jsx';
+import Signup from './pages/auth/Signup.jsx';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,16 @@ const router = createBrowserRouter([
       {
         path: 'auth',
         element: <Auth />,
+        children: [
+          {
+            path: 'log-in',
+            element: <Login />
+          },
+          {
+            path: 'create-account',
+            element: <Signup />
+          }
+        ]
       },
       {
         path: 'profile',
