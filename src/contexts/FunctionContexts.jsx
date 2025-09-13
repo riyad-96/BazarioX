@@ -1,32 +1,42 @@
-import { useEffect, createContext, useContext } from 'react';
+import { useEffect, createContext, useContext, useRef } from 'react';
 import { useUniContexts } from './UniContexts';
 import { isToday } from 'date-fns';
+import { addDoc, collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '../configs/firebase';
 
 const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
 
 function FunctionContexts({ children }) {
-  const { user, totalSessions, setTotalSessions } = useUniContexts();
+  const { user, setTodaysSessions, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading } = useUniContexts();
 
   // Cloud sync function
   async function cloudSync() {
     if (!user) return;
-    // get data from localStorage.
-    // check if any session is _cloudSavePending: true
-    // if true then save the data to belonging user's database.
-    // run each time application first loads.
-    const sessionAPI = JSON.parse(localStorage.getItem('sessionAPI'));
-    if (sessionAPI) {
-      // const pendingSessions = sessionAPI.sessions.filter((eachSession) => eachSession._cloudSavePending);
-      // const resolvedSessions = sessionAPI.sessions.map((eachSession) => ({ ...eachSession, _cloudSavePending: false }));
-      // console.log(pendingSessions);
-      // console.log(resolvedSessions);
+
+    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
+    if (!localSessions) return;
+    const pendingSessions = localSessions.filter((s) => s._cloudSavePending);
+    if (pendingSessions.length === 0) return;
+
+    try {
+      const cloudSavePromises = pendingSessions.map((s) => {
+        const collectionRef = collection(db, 'users', user.uid, 'bazarSessions');
+        return addDoc(collectionRef, { ...s, _cloudSavePending: false });
+      });
+      await Promise.all(cloudSavePromises);
+      console.log('cloud save done');
+
+      const updatedSessions = localSessions.map((s) => ({ ...s, _cloudSavePending: false }));
+      localStorage.localSessions = JSON.stringify(updatedSessions);
+    } catch (err) {
+      console.error(err);
     }
   }
 
   // Local sync function
   function handleDataStoring(newSession) {
-    const localSessions = JSON.parse(localStorage.getItem('localSessions')) || [];
+    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
 
     if (localSessions) {
       localStorage.localSessions = JSON.stringify([newSession, ...localSessions]);
@@ -37,19 +47,38 @@ function FunctionContexts({ children }) {
     cloudSync();
   }
 
-  // Retrieve data...
-  useEffect(() => {
-    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
-    if (localSessions) {
-      const todaysSessions = localSessions.filter((s) => isToday(s.sessionAt));
-      setTotalSessions(todaysSessions);
-      cloudSync();
-    }
-  }, []);
+  // Retrieve all data
+  const effectFirstRun = useRef(true);
 
   useEffect(() => {
+    if (effectFirstRun.current) {
+      effectFirstRun.current = false;
+      console.log('first load');
+      return;
+    }
+    console.log('second load');
     if (user) {
-      console.log(user);
+      cloudSync();
+
+      (async () => {
+        try {
+          const array = [];
+          const queries = query(collection(db, 'users', user.uid, 'bazarSessions'), orderBy('sessionAt', 'desc'));
+          const snapshots = await getDocs(queries);
+          snapshots.forEach((snap) => {
+            array.push(snap.data());
+          });
+          setAllMonthData(array);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setAllMonthDataLoading(false);
+        }
+      })();
+    } else {
+      const localSessions = JSON.parse(localStorage.getItem('localSessions'));
+      if (localSessions) setAllMonthData(localSessions);
+      setAllMonthDataLoading(false);
     }
   }, [user]);
 

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import 'tailwindcss';
+@plugin 'daisyui';
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -57,7 +58,7 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.home-page-body {
+.scrollbar-thin {
   scrollbar-width: thin;
 }
 

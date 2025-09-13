@@ -14,26 +14,34 @@ function UniContexts({ children }) {
   // calculator page
   const [bazarList, setBazarList] = useState([]);
   const [isCalcExpanded, setIsCalcExpanded] = useState(true);
-  const [totalSessions, setTotalSessions] = useState([]);
 
   // user watcher function
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
+        setTimeout(() => {
+          setUser(user);
+        }, 3000);
+        // setUser(user);
       } else {
         setUser(null);
       }
-      // setTimeout(() => {
-      //   setIsUserDataLoading(false);
-      // }, 3000);
+
       setIsUserDataLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, isUserDataLoading, setIsUserDataLoading, bazarList, setBazarList, totalSessions, setTotalSessions, isCalcExpanded, setIsCalcExpanded }}>{children}</uniContexts.Provider>;
+  // monthly history
+  const [allMonthData, setAllMonthData] = useState([]);
+  const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
+
+  useEffect(() => {
+    console.log(allMonthData);
+  }, [allMonthData]);
+
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, isUserDataLoading, setIsUserDataLoading, bazarList, setBazarList, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

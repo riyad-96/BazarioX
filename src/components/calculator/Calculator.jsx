@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { useFunctionContext } from '../../contexts/FunctionContexts';
 
 function Calculator() {
-  const { isCalcExpanded, setIsCalcExpanded, bazarList, setBazarList, setTotalSessions } = useUniContexts();
+  const { isCalcExpanded, setIsCalcExpanded, bazarList, setBazarList, setTodaysSessions } = useUniContexts();
   const { handleDataStoring } = useFunctionContext();
 
   const [item, setItem] = useState({
@@ -32,12 +32,14 @@ function Calculator() {
       bazarList: bazarList,
       sessionTotal: bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
       sessionAt: newDate,
-      month: format(newDate, 'M'),
-      year: format(newDate, 'y'),
+      // month: format(newDate, 'M'),
+      // year: format(newDate, 'y'),
+      month: '7',
+      year: '2025',
     };
     handleDataStoring(newSession);
-    setTotalSessions((prev) => [newSession, ...prev]);
-    // setItems([]);
+    setBazarList([]);
+    bazarTitle.current.value = '';
   }
 
   return (

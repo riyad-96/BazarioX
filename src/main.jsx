@@ -44,13 +44,13 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'log-in',
-            element: <Login />
+            element: <Login />,
           },
           {
             path: 'create-account',
-            element: <Signup />
-          }
-        ]
+            element: <Signup />,
+          },
+        ],
       },
       {
         path: 'profile',
@@ -61,9 +61,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ContextProvider>
-      <RouterProvider router={router} />
-    </ContextProvider>
-  </StrictMode>,
+  <ContextProvider>
+    <RouterProvider router={router} />
+  </ContextProvider>,
 );

@@ -32,7 +32,7 @@ function Header({ className }) {
   return (
     <div className={`flex items-center border-b-1 border-(--slick-border) bg-[#F4F4F4] ${className}`}>
       <div className="flex w-full items-center justify-between px-2">
-        <span onClick={() => window.location.reload()} className="text-2xl font-medium select-none">
+        <span onClick={() => window.location.reload()} className="text-xl font-medium select-none">
           KitzoBazar
         </span>
         <div className="relative flex items-center gap-4">
@@ -52,7 +52,7 @@ function Header({ className }) {
           <div
             data-dropdown-trigger
             onClick={() => {
-              if (!user) return;
+              if (isUserDataLoading) return;
               if (isDropdownOpen) {
                 setIsDropdownOpen(false);
                 return;
