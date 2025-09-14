@@ -11,6 +11,12 @@ function UniContexts({ children }) {
   const [user, setUser] = useState(null);
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
+  //app
+  const [clickDisabled, setClickDisabled] = useState(false);
+
+  // Home page
+  const [unsavedSessionModal, setUnsavedSessionModal] = useState(false);
+
   // calculator page
   const [bazarList, setBazarList] = useState([]);
   const [isCalcExpanded, setIsCalcExpanded] = useState(true);
@@ -19,10 +25,7 @@ function UniContexts({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setTimeout(() => {
-          setUser(user);
-        }, 3000);
-        // setUser(user);
+        setUser(user);
       } else {
         setUser(null);
       }
@@ -38,10 +41,10 @@ function UniContexts({ children }) {
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
   useEffect(() => {
-    console.log(allMonthData);
+    console.log('all data', allMonthData);
   }, [allMonthData]);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, isUserDataLoading, setIsUserDataLoading, bazarList, setBazarList, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, bazarList, setBazarList, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

@@ -7,7 +7,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../configs/firebase';
 
 function Header({ className }) {
-  const { user, isUserDataLoading } = useUniContexts();
+  const { user, isUserDataLoading, setAllMonthData } = useUniContexts();
 
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -110,7 +110,18 @@ function Header({ className }) {
                       </button>
                     )}
                     {user && (
-                      <button onClick={() => signOut(auth)} className="flex px-3 py-2">
+                      <button
+                        onClick={async () => {
+                          try {
+                            await signOut(auth);
+                            localStorage.clear();
+                            setAllMonthData([]);
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                        className="flex px-3 py-2"
+                      >
                         Logout
                       </button>
                     )}

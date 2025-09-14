@@ -76,3 +76,19 @@ input[type='number'] {
     outline-color: transparent;
   }
 }
+
+.warning-effect {
+  animation: warning-effect 400ms;
+}
+
+@keyframes warning-effect {
+  0% {
+    background-color: transparent;
+  }
+  20% {
+    background-color: hsla(41, 100%, 50%, 0.15);
+  }
+  100% {
+    background-color: transparent;
+  }
+}

@@ -8,7 +8,9 @@ function Today() {
   const { allMonthData, allMonthDataLoading } = useUniContexts();
   const [todaysSessions, setTodaysSessions] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setTodaysSessions(() => allMonthData.filter((eachSession) => isToday(eachSession.sessionAt)));
+  }, [allMonthData]);
 
   const [tick, setTick] = useState(0);
 

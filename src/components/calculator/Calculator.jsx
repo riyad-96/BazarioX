@@ -8,7 +8,7 @@ import { useFunctionContext } from '../../contexts/FunctionContexts';
 
 function Calculator() {
   const { isCalcExpanded, setIsCalcExpanded, bazarList, setBazarList, setTodaysSessions } = useUniContexts();
-  const { handleDataStoring } = useFunctionContext();
+  const { handleStoringNewSession } = useFunctionContext();
 
   const [item, setItem] = useState({
     id: '',
@@ -26,18 +26,18 @@ function Calculator() {
     const newDate = new Date();
 
     const newSession = {
-      _cloudSavePending: true,
+      _synced: false,
       id: Date.now(),
       sessionTitle: bazarTitle.current.value.trim(),
       bazarList: bazarList,
       sessionTotal: bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
       sessionAt: newDate,
-      // month: format(newDate, 'M'),
-      // year: format(newDate, 'y'),
-      month: '7',
-      year: '2025',
+      month: format(newDate, 'M'),
+      year: format(newDate, 'y'),
+      // month: '7',
+      // year: '2025',
     };
-    handleDataStoring(newSession);
+    handleStoringNewSession(newSession);
     setBazarList([]);
     bazarTitle.current.value = '';
   }
