@@ -13,8 +13,12 @@ function Month() {
 
   const [monthSelectionModalOpen, setMonthSelectionModalOpen] = useState(false);
 
+  // Initial current month data
   useEffect(() => {
-    if (allMonthData.length < 1) return;
+    if (allMonthData.length < 1) {
+      setSelectedMonthData([]);
+      return;
+    }
 
     const allMonths = Array.from(new Set([format(new Date(), 'M-y'), ...allMonthData.map((s) => `${s.month}-${s.year}`)]));
     if (allMonths) {
@@ -27,6 +31,7 @@ function Month() {
     }
   }, [allMonthData]);
 
+  // refresh times
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -34,16 +39,24 @@ function Month() {
     return () => clearInterval(timeout);
   }, []);
 
+  // filter selected month data
+  function filterMonthBasedData(month, year) {
+    const filteredMonthData = allMonthData.filter((eachSession) => eachSession.month == month && eachSession.year == year);
+    setSelectedMonthData(filteredMonthData);
+  }
+
   const [sessionDetails, setSessionDetails] = useState(null);
 
   return (
     <div className="min-h-full py-2">
       <h1 className="text-2xl">Monthly history</h1>
 
-      <div className="my-[0.5rem_1rem] space-y-2">
-        <button onClick={() => setMonthSelectionModalOpen(true)} className="flex rounded-md border border-(--slick-border) bg-zinc-100 px-3 py-1 text-sm">
-          Select date ({selectedMonth})
-        </button>
+      <div className="my-2 space-y-2">
+        {months.length > 1 && (
+          <button onClick={() => setMonthSelectionModalOpen(true)} className="flex rounded-md border border-(--slick-border) bg-zinc-100 px-3 py-1 text-sm">
+            Select date ({selectedMonth})
+          </button>
+        )}
         <p>
           Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0)} ৳</span>
         </p>
@@ -72,6 +85,7 @@ function Month() {
                   return (
                     <button
                       onClick={() => {
+                        filterMonthBasedData(month, year);
                         setSelectedMonth(btnText);
                         setMonthSelectionModalOpen(false);
                       }}
@@ -89,51 +103,74 @@ function Month() {
       </AnimatePresence>
 
       <div className="grid gap-2">
-        {selectedMonthData.map((eachSession) => {
-          const { id, sessionTitle, sessionAt, bazarList } = eachSession;
+        <AnimatePresence>
+          {selectedMonthData.map((eachSession, i) => {
+            const { id, sessionTitle, sessionAt, bazarList } = eachSession;
 
-          return (
-            <div key={id} className="relative rounded-md bg-(--primary) p-3">
-              <div className="grid">
-                <div className="flex justify-between">
-                  <span>{sessionTitle || 'Untitled'}</span>
-                  <span>
-                    Total: <span className="font-medium">{bazarList.reduce((acc, eachBazar) => acc + eachBazar.total, 0)}</span> ৳
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <div className="flex gap-2 text-sm opacity-80">
-                    <span key={tick}>{formatDistanceToNow(sessionAt, new Date())}</span>
+            return (
+              <motion.div
+                initial={{
+                  opacity: 0.2,
+                  scale: 0.99,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.3,
+                    delay: 0.05 * i,
+                  },
+                  scale: {
+                    duration: 0.2,
+                    delay: 0.05 * i,
+                  },
+                }}
+                key={id}
+                className="relative rounded-md bg-(--primary) p-3"
+              >
+                <div className="grid">
+                  <div className="flex justify-between">
+                    <span>{sessionTitle || 'Untitled'}</span>
                     <span>
-                      {(() => {
-                        if (isToday(sessionAt)) {
-                          return format(sessionAt, 'h:mm a');
-                        }
-                        if (isThisWeek(sessionAt)) {
-                          return format(sessionAt, 'EEE');
-                        }
-                        if (isThisYear(sessionAt)) {
-                          return format(sessionAt, 'MMM d');
-                        }
-                        return format(sessionAt, 'MMM d, yyyy');
-                      })()}
+                      Total: <span className="font-medium">{bazarList.reduce((acc, eachBazar) => acc + eachBazar.total, 0)}</span> ৳
                     </span>
                   </div>
-                  <button
-                    onClick={() => {
-                      setSessionDetails(eachSession);
-                    }}
-                    className="opacity-70"
-                  >
-                    <span>Click to see details</span>
-                    <span className="absolute inset-0"></span>
-                  </button>
+
+                  <div className="flex justify-between text-sm">
+                    <div className="flex gap-2 text-sm opacity-80">
+                      <span key={tick}>{formatDistanceToNow(sessionAt, new Date())}</span>
+                      <span>
+                        {(() => {
+                          if (isToday(sessionAt)) {
+                            return format(sessionAt, 'h:mm a');
+                          }
+                          if (isThisWeek(sessionAt)) {
+                            return format(sessionAt, 'EEE');
+                          }
+                          if (isThisYear(sessionAt)) {
+                            return format(sessionAt, 'MMM d');
+                          }
+                          return format(sessionAt, 'MMM d, yyyy');
+                        })()}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setSessionDetails(eachSession);
+                      }}
+                      className="opacity-70"
+                    >
+                      <span>Click to see details</span>
+                      <span className="absolute inset-0"></span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
 
       <AnimatePresence>

@@ -32,59 +32,80 @@ function Today() {
         </p>
       )}
 
-      {allMonthDataLoading && <span className="loading loading-infinity loading-lg"></span>}
-
       {todaysSessions.length > 0 && (
         <div className="space-y-2">
-          <p className="text-lg">
+          <p>
             Today's total expenses: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0)}</span> ৳
           </p>
           <div className="grid gap-2">
-            {todaysSessions.map((eachSession) => {
-              const { id, sessionTitle, sessionAt, bazarList } = eachSession;
+            <AnimatePresence>
+              {todaysSessions.map((eachSession, i) => {
+                const { id, sessionTitle, sessionAt, bazarList } = eachSession;
 
-              return (
-                <div key={id} className="relative rounded-md bg-(--primary) p-3">
-                  <div className="grid">
-                    <div className="flex justify-between">
-                      <span>{sessionTitle || 'Untitled'}</span>
-                      <span>
-                        Total: <span className="font-medium">{bazarList.reduce((acc, eachBazar) => acc + eachBazar.total, 0)}</span> ৳
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between text-sm">
-                      <div className="flex gap-2 text-sm opacity-80">
-                        <span key={tick}>{formatDistanceToNow(sessionAt, new Date())}</span>
+                return (
+                  <motion.div
+                    initial={{
+                      opacity: 0.2,
+                      scale: 0.99,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                    }}
+                    transition={{
+                      opacity: {
+                        duration: 0.3,
+                        delay: 0.05 * i,
+                      },
+                      scale: {
+                        duration: 0.2,
+                        delay: 0.05 * i,
+                      },
+                    }}
+                    key={id}
+                    className="relative rounded-md bg-(--primary) p-3"
+                  >
+                    <div className="grid">
+                      <div className="flex justify-between">
+                        <span>{sessionTitle || 'Untitled'}</span>
                         <span>
-                          {(() => {
-                            if (isToday(sessionAt)) {
-                              return format(sessionAt, 'h:mm a');
-                            }
-                            if (isThisWeek(sessionAt)) {
-                              return format(sessionAt, 'EEE');
-                            }
-                            if (isThisYear(sessionAt)) {
-                              return format(sessionAt, 'MMM d');
-                            }
-                            return format(sessionAt, 'MMM d, yyyy');
-                          })()}
+                          Total: <span className="font-medium">{bazarList.reduce((acc, eachBazar) => acc + eachBazar.total, 0)}</span> ৳
                         </span>
                       </div>
-                      <button
-                        onClick={() => {
-                          setSessionDetails(eachSession);
-                        }}
-                        className="opacity-70"
-                      >
-                        <span>Click to see details</span>
-                        <span className="absolute inset-0"></span>
-                      </button>
+
+                      <div className="flex justify-between text-sm">
+                        <div className="flex gap-2 text-sm opacity-80">
+                          <span key={tick}>{formatDistanceToNow(sessionAt, new Date())}</span>
+                          <span>
+                            {(() => {
+                              if (isToday(sessionAt)) {
+                                return format(sessionAt, 'h:mm a');
+                              }
+                              if (isThisWeek(sessionAt)) {
+                                return format(sessionAt, 'EEE');
+                              }
+                              if (isThisYear(sessionAt)) {
+                                return format(sessionAt, 'MMM d');
+                              }
+                              return format(sessionAt, 'MMM d, yyyy');
+                            })()}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setSessionDetails(eachSession);
+                          }}
+                          className="opacity-70"
+                        >
+                          <span>Click to see details</span>
+                          <span className="absolute inset-0"></span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
         </div>
       )}
@@ -121,7 +142,6 @@ function Today() {
                 <div className="mt-2 rounded-md bg-(--second-lvl-bg) p-2">
                   {sessionDetails.bazarList.map((eachItem, i) => {
                     const { id, itemName, price, quantity, unit, total, addedAt } = eachItem;
-                    console.log(eachItem);
                     return (
                       <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
                         <span className="grid flex-3">

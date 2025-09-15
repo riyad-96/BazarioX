@@ -80,7 +80,6 @@ function Login() {
         setLoginError('Too many attempts, try again later');
       } else {
         setLoginError('Something went wrong. please try again');
-        console.log(err);
       }
       setIsTrying(false);
     }
@@ -168,7 +167,7 @@ function Login() {
             if (isTrying) return;
             handleLogin();
           }}
-          className={`relative my-2 h-[45px] w-full rounded-lg border bg-zinc-800 text-white ${isTrying && 'opacity-80'}`}
+          className={`relative my-2 grid h-[45px] w-full place-items-center rounded-lg border bg-zinc-800 text-white ${isTrying && 'opacity-80'}`}
           type="button"
         >
           {isTrying && (

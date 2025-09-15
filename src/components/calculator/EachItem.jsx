@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { CloseSvg } from '../../assets/Svg';
 
 function EachItem({ props }) {
-  const { i, setBazarList } = props;
+  const { i, setCurrentSession } = props;
   const { id, itemName, price, unit, quantity, total } = props.eachItem;
   return (
     <motion.div
@@ -30,17 +30,17 @@ function EachItem({ props }) {
       className="relative flex h-auto cursor-default"
     >
       <span className="absolute top-1/2 left-2 -translate-y-1/2 border-none text-sm">{i + 1}.</span>
-      <span className="grid flex-3 place-items-center py-2 pl-6 text-sm font-medium break-all">
+      <span className="grid flex-3 place-items-center py-2 pl-6 text-sm break-all">
         <span className="line-clamp-3">{itemName || '...'}</span>
       </span>
-      <span className="grid flex-2 place-items-center py-2 text-sm font-medium">{`${price} ৳`}</span>
-      <span className="grid flex-2 place-items-center py-2 text-sm font-medium">{`${quantity} ${unit}`}</span>
-      <span className="grid flex-2 place-items-center py-2 text-sm font-medium">{`${total} ৳`}</span>
+      <span className="grid flex-2 place-items-center py-2 text-sm">{`${price} ৳`}</span>
+      <span className="grid flex-2 place-items-center py-2 text-sm">{`${quantity} ${unit}`}</span>
+      <span className="grid flex-2 place-items-center py-2 text-sm">{`${total} ৳`}</span>
       <button
         onClick={() => {
-          setBazarList((prev) => prev.filter((item) => item.id !== id));
+          setCurrentSession((prev) => ({ ...prev, bazarList: prev.bazarList.filter((item) => item.id !== id) }));
         }}
-        className="grid flex-1 place-items-center bg-(--slick-border) py-2 text-sm font-medium"
+        className="grid flex-1 place-items-center bg-(--slick-border) py-2 text-sm"
       >
         <span className="grid place-items-center">
           <CloseSvg size="18" />

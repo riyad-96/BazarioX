@@ -18,7 +18,19 @@ function UniContexts({ children }) {
   const [unsavedSessionModal, setUnsavedSessionModal] = useState(false);
 
   // calculator page
-  const [bazarList, setBazarList] = useState([]);
+  const [currentSession, setCurrentSession] = useState(() => {
+    const savedCurrentSession = JSON.parse(localStorage.getItem('currentSession'));
+    if (savedCurrentSession) {
+      return savedCurrentSession;
+    } else {
+      return { sessionTitle: '', bazarList: [] };
+    }
+  });
+
+  useEffect(() => {
+    localStorage.currentSession = JSON.stringify(currentSession);
+  }, [currentSession]);
+
   const [isCalcExpanded, setIsCalcExpanded] = useState(true);
 
   // user watcher function
@@ -40,11 +52,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  useEffect(() => {
-    console.log('all data', allMonthData);
-  }, [allMonthData]);
-
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, bazarList, setBazarList, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

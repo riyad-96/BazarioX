@@ -7,7 +7,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../configs/firebase';
 
 function Header({ className }) {
-  const { user, isUserDataLoading, setAllMonthData } = useUniContexts();
+  const { user, isUserDataLoading, setAllMonthData, setCurrentSession } = useUniContexts();
 
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -93,6 +93,7 @@ function Header({ className }) {
                   onClick={(e) => e.stopPropagation()}
                   className="absolute top-[calc(100%_+_10px)] right-0 z-15 w-[200px] rounded-lg border border-(--slick-border) bg-(--primary) p-2 shadow-md"
                 >
+                  {user && <p className="mb-2 text-center text-sm font-light">{user.email}</p>}
                   <div className="grid divide-y divide-(--slick-border) rounded-md bg-(--second-lvl-bg)">
                     {user && (
                       <button onClick={() => {}} className="flex px-3 py-2">
@@ -116,6 +117,7 @@ function Header({ className }) {
                             await signOut(auth);
                             localStorage.clear();
                             setAllMonthData([]);
+                            setCurrentSession({ sessionTitle: '', bazarList: [] });
                           } catch (err) {
                             console.error(err);
                           }

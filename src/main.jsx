@@ -17,7 +17,7 @@ import Signup from './pages/auth/Signup.jsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '',
     element: <App />,
     children: [
       {

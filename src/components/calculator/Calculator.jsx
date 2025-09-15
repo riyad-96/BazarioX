@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { useFunctionContext } from '../../contexts/FunctionContexts';
 
 function Calculator() {
-  const { isCalcExpanded, setIsCalcExpanded, bazarList, setBazarList, setTodaysSessions } = useUniContexts();
+  const { isCalcExpanded, setIsCalcExpanded, currentSession, setCurrentSession } = useUniContexts();
   const { handleStoringNewSession } = useFunctionContext();
 
   const [item, setItem] = useState({
@@ -26,63 +26,48 @@ function Calculator() {
     const newDate = new Date();
 
     const newSession = {
+      ...currentSession,
       _synced: false,
       id: Date.now(),
-      sessionTitle: bazarTitle.current.value.trim(),
-      bazarList: bazarList,
-      sessionTotal: bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
+      bazarList: currentSession.bazarList,
+      sessionTotal: currentSession.bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
       sessionAt: newDate,
       month: format(newDate, 'M'),
       year: format(newDate, 'y'),
-      // month: '7',
-      // year: '2025',
     };
     handleStoringNewSession(newSession);
-    setBazarList([]);
-    bazarTitle.current.value = '';
+
+    setCurrentSession({
+      sessionTitle: '',
+      bazarList: [],
+    });
   }
 
   return (
     <div className="min-h-full py-2">
       <div className="mb-3 space-y-2">
         <h1 className="text-2xl">Bazar List</h1>
-        <input ref={bazarTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
+        <input onChange={(e) => setCurrentSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={currentSession.sessionTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
       </div>
 
       <div className={`space-y-2 transition-[padding] duration-450 ${isCalcExpanded ? 'pb-80' : 'pb-20'}`}>
         <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2">
           <div className="space-y-2">
             <p>
-              Total items: <span className="font-medium">{bazarList.length}</span>, Total price: <span className="font-medium">{bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
+              Total items: <span className="font-medium">{currentSession.bazarList.length}</span>, Total price: <span className="font-medium">{currentSession.bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
             </p>
 
-            <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) pt-2">
-              <AnimatePresence>
-                {bazarList.length < 1 && (
-                  <motion.p
-                    initial={{
-                      height: 0,
-                    }}
-                    animate={{
-                      height: '33px',
-                    }}
-                    exit={{
-                      height: 0,
-                    }}
-                    transition={{
-                      height: { duration: 0.35 },
-                    }}
-                    className="overflow-hidden text-center"
-                  >
-                    <span>Your items will appear here</span>
-                  </motion.p>
-                )}
-              </AnimatePresence>
+            <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg)">
+              {currentSession.bazarList.length < 1 && (
+                <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--second-lvl-bg) text-center">
+                  <span>Your items will appear here</span>
+                </p>
+              )}
 
               <AnimatePresence>
-                {bazarList.length > 0 && (
+                {currentSession.bazarList.length > 0 && (
                   <motion.div className="overflow-hidden">
-                    <div className="flex border-b-1 border-(--each-list-item-divider-clr) pb-2 pl-6">
+                    <div className="flex border-b-1 border-(--each-list-item-divider-clr) py-2 pl-6">
                       <span className="flex-3 text-center text-sm font-medium">Item</span>
                       <span className="flex-2 text-center text-sm font-medium">Price</span>
                       <span className="flex-2 text-center text-sm font-medium">Qty+Unit</span>
@@ -92,8 +77,8 @@ function Calculator() {
 
                     <div className="">
                       <AnimatePresence>
-                        {bazarList.map((eachItem, i) => (
-                          <EachItem key={eachItem.id} props={{ eachItem, i, setBazarList }} />
+                        {currentSession.bazarList.map((eachItem, i) => (
+                          <EachItem key={eachItem.id} props={{ eachItem, i, setCurrentSession }} />
                         ))}
                       </AnimatePresence>
                     </div>
@@ -102,11 +87,12 @@ function Calculator() {
               </AnimatePresence>
             </div>
 
-            {bazarList.length > 0 && (
-              <div className="flex justify-end gap-2 overflow-hidden">
+            {currentSession.bazarList.length > 0 && (
+              <div className="group flex items-center justify-end gap-2 overflow-hidden">
+                <span className="text-xs opacity-80 transition-opacity pointer-fine:opacity-0 pointer-fine:group-hover:opacity-70">Double click to -</span>
                 <button
                   onDoubleClick={() => {
-                    setBazarList([]);
+                    setCurrentSession((prev) => ({ ...prev, bazarList: [] }));
                   }}
                   className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm"
                 >

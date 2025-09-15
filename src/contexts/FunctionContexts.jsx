@@ -1,6 +1,6 @@
 import { useEffect, createContext, useContext, useRef } from 'react';
 import { useUniContexts } from './UniContexts';
-import { addDoc, collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../configs/firebase';
 
 const functionContext = createContext();
@@ -21,11 +21,6 @@ function FunctionContexts({ children }) {
     }
   }
 
-  // save to database function
-  async function saveToDatabase() {
-    checkForUnsyncedSessionsAndSyncWithCloud();
-  }
-
   //! Handle new session storing functionality
   function handleStoringNewSession(newSession) {
     saveToLocalStorage(newSession);
@@ -33,7 +28,7 @@ function FunctionContexts({ children }) {
     setAllMonthData(localSessions);
 
     if (user && navigator.onLine) {
-      saveToDatabase();
+      checkForUnsyncedSessionsAndSyncWithCloud();
     }
   }
 
@@ -54,9 +49,9 @@ function FunctionContexts({ children }) {
     } catch (err) {
       console.error(err);
     } finally {
-      setAllMonthDataLoading(false);
       setClickDisabled(false);
       setUnsavedSessionModal(false);
+      setAllMonthDataLoading(false);
     }
   }
 
@@ -84,35 +79,12 @@ function FunctionContexts({ children }) {
     } finally {
       setClickDisabled(false);
       setUnsavedSessionModal(false);
+      setAllMonthDataLoading(false);
     }
   }
 
   function askForSavingLocalDataInDatabase() {
     setUnsavedSessionModal(true);
-  }
-
-  async function checkForUnsyncedSessionsAndSyncWithCloud() {
-    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
-    try {
-      const unsyncedSessions = localSessions.filter((s) => !s._synced);
-      if (unsyncedSessions && unsyncedSessions.length > 0) {
-        const bazarSessionCollection = collection(db, 'users', user.uid, 'bazarSessions');
-        const cloudPromises = unsyncedSessions.map((s) => {
-          return addDoc(bazarSessionCollection, { ...s, _synced: true });
-        });
-        await Promise.all(cloudPromises);
-
-        const allSavedSession = await getDocs(query(bazarSessionCollection, orderBy('sessionAt', 'desc')));
-        const array = [];
-        allSavedSession.forEach((doc) => {
-          array.push(doc.data());
-        });
-        setAllMonthData(array);
-        localStorage.localSessions = JSON.stringify(array);
-      }
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   // Fetch all the data from cloud
@@ -134,15 +106,41 @@ function FunctionContexts({ children }) {
     }
   }
 
-  // Initializing app
-  const firstLoad = useRef(true);
+  async function checkForUnsyncedSessionsAndSyncWithCloud() {
+    const localSessions = JSON.parse(localStorage.getItem('localSessions'));
+    try {
+      const unsyncedSessions = localSessions.filter((s) => !s._synced);
+      if (unsyncedSessions && unsyncedSessions.length > 0) {
+        const bazarSessionCollection = collection(db, 'users', user.uid, 'bazarSessions');
+        const cloudPromises = unsyncedSessions.map((s) => {
+          return addDoc(bazarSessionCollection, { ...s, _synced: true });
+        });
+        await Promise.all(cloudPromises);
 
+        const allSavedSession = await getDocs(query(bazarSessionCollection, orderBy('sessionAt', 'desc')));
+        const array = [];
+        allSavedSession.forEach((doc) => {
+          array.push(doc.data());
+        });
+        localStorage.localSessions = JSON.stringify(array);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAllMonthDataLoading(false);
+    }
+  }
+
+  // Initializing app
   useEffect(() => {
-    // console.log(user);
-    // if (firstLoad.current) {
-    //   firstLoad.current = false;
-    //   return;
-    // }
+    if (!user) {
+      const localSessions = JSON.parse(localStorage.getItem('localSessions'));
+      if (localSessions) {
+        setAllMonthData(localSessions);
+      }
+
+      setAllMonthDataLoading(false);
+    }
 
     if (user) {
       const localSessions = JSON.parse(localStorage.getItem('localSessions'));
@@ -151,19 +149,31 @@ function FunctionContexts({ children }) {
         fetchAllMonthDataFromCloud();
         return;
       }
-      if (localSessions && !isSynced) {
+      if (localSessions && localSessions.length > 0 && !isSynced) {
         askForSavingLocalDataInDatabase();
         return;
       }
       if (localSessions && isSynced) {
-        setAllMonthData(localSessions);
         checkForUnsyncedSessionsAndSyncWithCloud();
       }
-    } else {
-      const localSessions = JSON.parse(localStorage.getItem('localSessions'));
-      if (localSessions) {
-        setAllMonthData(localSessions);
-      }
+    }
+  }, [user]);
+
+  // auto update data according to database
+  useEffect(() => {
+    if (!user) return;
+    if (localStorage.getItem('synced')) {
+      const q = query(collection(db, 'users', user.uid, 'bazarSessions'), orderBy('sessionAt', 'desc'));
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const array = [];
+        snapshot.forEach((doc) => array.push(doc.data()));
+        setAllMonthData(array);
+
+        localStorage.localSessions = JSON.stringify(array);
+      });
+
+      return () => unsubscribe();
     }
   }, [user]);
 

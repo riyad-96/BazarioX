@@ -4,7 +4,7 @@ import { useUniContexts } from '../../contexts/UniContexts';
 
 function Calc({ props }) {
   const { isCalcExpanded, setIsCalcExpanded, item, setItem } = props;
-  const { setBazarList } = useUniContexts();
+  const { setCurrentSession } = useUniContexts();
 
   function setItemState(itemName, value) {
     if (itemName === 'price' || itemName === 'quantity') {
@@ -39,7 +39,6 @@ function Calc({ props }) {
   // add to bazar items
   function addToBazarItems() {
     if (!item.price || !item.quantity) {
-      console.log('both price and quantity section should be filled with integar number');
       return;
     }
     const newItem = {
@@ -47,7 +46,7 @@ function Calc({ props }) {
       id: Date.now(),
       addedAt: new Date(),
     };
-    setBazarList((prev) => [...prev, newItem]);
+    setCurrentSession((prev) => ({ ...prev, bazarList: [...prev.bazarList, newItem] }));
     setItem({
       id: '',
       itemName: '',
@@ -77,7 +76,7 @@ function Calc({ props }) {
               type="text"
               id="item"
               name="item"
-              placeholder="item name"
+              placeholder="Item name"
               className="w-full min-w-0 rounded-md border-1 border-(--slick-border) px-2 py-1 transition-colors duration-150 outline-none focus:border-(--input-focus-border)"
             />
           </div>
@@ -94,7 +93,7 @@ function Calc({ props }) {
                 type="number"
                 id="price"
                 name="price"
-                placeholder="per Kg/Piece"
+                placeholder="Per Kg/Piece"
                 className="w-full min-w-0 rounded-md border-1 border-(--slick-border) px-2 py-1 transition-colors duration-150 outline-none focus:border-(--input-focus-border)"
               />
             </div>
@@ -109,7 +108,7 @@ function Calc({ props }) {
                 type="number"
                 id="quantity"
                 name="quantity"
-                placeholder={`${item.unit === 'gram' ? 'e.g. 250' : 'e.g. 2'}`}
+                placeholder={`${item.unit === 'gram' ? 'E.g. 250' : 'E.g. 2'}`}
                 className="w-full min-w-0 rounded-md border-1 border-(--slick-border) px-2 py-1 transition-colors duration-150 outline-none focus:border-(--input-focus-border)"
               />
             </div>
@@ -119,31 +118,22 @@ function Calc({ props }) {
         <div className="space-y-1">
           <span className="block">Unit</span>
           <div className="flex gap-2 text-sm">
-            <div className="grid">
-              <input onChange={(e) => setItemState('unit', e.target.value)} checked={item.unit === 'kg'} value="kg" type="radio" name="unit" id="kg" className="peer hidden" />
-              <label htmlFor="kg" className="rounded-md border border-(--slick-border) px-2 py-1 peer-checked:border-(--radio-checked-border) peer-checked:bg-(--radio-checked-bg) pointer-fine:cursor-pointer">
-                Kg
-              </label>
-            </div>
-            <div className="grid">
-              <input onChange={(e) => setItemState('unit', e.target.value)} checked={item.unit === 'gram'} value="gram" type="radio" name="unit" id="gram" className="peer hidden" />
-              <label htmlFor="gram" className="rounded-md border border-(--slick-border) px-2 py-1 peer-checked:border-(--radio-checked-border) peer-checked:bg-(--radio-checked-bg) pointer-fine:cursor-pointer">
-                Gram
-              </label>
-            </div>
-            <div className="grid">
-              <input onChange={(e) => setItemState('unit', e.target.value)} checked={item.unit === 'piece'} value="piece" type="radio" name="unit" id="piece" className="peer hidden" />
-              <label htmlFor="piece" className="rounded-md border border-(--slick-border) px-2 py-1 peer-checked:border-(--radio-checked-border) peer-checked:bg-(--radio-checked-bg) pointer-fine:cursor-pointer">
-                Piece
-              </label>
-            </div>
+            <button onClick={() => setItemState('unit', 'kg')} className={`rounded-md border border-(--slick-border) px-2 py-1 pointer-fine:cursor-pointer ${item.unit === 'kg' && 'border-(--unit-checked-border) bg-(--unit-checked-bg)'}`}>
+              Kg
+            </button>
+            <button onClick={() => setItemState('unit', 'gram')} className={`rounded-md border border-(--slick-border) px-2 py-1 pointer-fine:cursor-pointer ${item.unit === 'gram' && 'border-(--unit-checked-border) bg-(--unit-checked-bg)'}`}>
+              Gram
+            </button>
+            <button onClick={() => setItemState('unit', 'piece')} className={`rounded-md border border-(--slick-border) px-2 py-1 pointer-fine:cursor-pointer ${item.unit === 'piece' && 'border-(--unit-checked-border) bg-(--unit-checked-bg)'}`}>
+              Piece
+            </button>
           </div>
         </div>
 
         <div className="flex justify-between gap-2">
           <div className="flex flex-1 items-center gap-2">
             <span className="block">Total</span>
-            <span className="block flex-1 rounded-md border-1 border-(--slick-border) px-2 py-1">
+            <span className="block flex-1 rounded-md border-1 border-(--slick-border) px-2 py-0.5">
               <span className={`${item.total ? 'opacity-100' : 'opacity-50'} transition-opacity duration-100`}>{item.total ? item.total : 0} ৳</span>
             </span>
           </div>
@@ -161,11 +151,11 @@ function Calc({ props }) {
                   addedAt: '',
                 });
               }}
-              className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm"
+              className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm"
             >
               Clear fields
             </button>
-            <button onClick={addToBazarItems} type="submit" className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm">
+            <button onClick={addToBazarItems} type="submit" className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm">
               Add
             </button>
           </div>

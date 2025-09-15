@@ -72,13 +72,13 @@ function Signup() {
     try {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPass);
       setIsTrying(false);
+      navigate('/', { replace: true });
     } catch (err) {
       console.error(err.code);
       if (err.code === 'auth/email-already-in-use') {
         setSignupError('Email already in use.');
       } else {
         setSignupError('Something went wrong. please try again');
-        console.log(err);
       }
       setIsTrying(false);
     }
