@@ -17,7 +17,7 @@ function Home() {
     <div className="relative grid h-full grid-rows-[50px_1fr_60px] overflow-hidden border-(--slick-border) [@media(width>=700px)]:border-r [@media(width>=700px)]:border-l">
       <AnimatePresence>
         {unsavedSessionModal && (
-          <motion.div inital={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-20 grid place-items-center bg-black/30 p-4">
+          <motion.div inital={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-20 grid place-items-center bg-black/30 dark:bg-black/70 p-4">
             <div className="w-full max-w-[400px] space-y-2 rounded-xl bg-white py-4 dark:bg-zinc-800">
               <div className="border-b border-(--slick-border) dark:border-zinc-700 px-5 pb-2">
                 <h3 className="w-fit text-lg font-medium">

@@ -143,7 +143,7 @@ function Today() {
                   {sessionDetails.bazarList.map((eachItem, i) => {
                     const { id, itemName, price, quantity, unit, total, addedAt } = eachItem;
                     return (
-                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
+                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100 dark:nth-[odd]:bg-zinc-900">
                         <span className="grid flex-3">
                           <span>
                             {i + 1}. {itemName || '...'} {`(${price} ৳)`}

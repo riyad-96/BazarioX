@@ -4,16 +4,16 @@ function UniModal({ onMouseDown, jsx }) {
   return (
     <motion.div
       initial={{
-        backgroundColor: 'hsl(0, 0%, 100%, 0)',
+        opacity: 0,
       }}
       animate={{
-        backgroundColor: 'hsl(0, 0%, 100%, 0.8)',
+        opacity: 1,
       }}
       exit={{
-        backgroundColor: 'hsl(0, 0%, 100%, 0)',
+        opacity: 0,
       }}
       onMouseDown={onMouseDown}
-      className="fixed inset-0 z-20 grid place-items-center overflow-y-auto px-4 py-10"
+      className="fixed inset-0 z-20 grid place-items-center bg-black/30 dark:bg-black/70 overflow-y-auto px-4 py-10"
     >
       <motion.div
         initial={{
@@ -28,7 +28,7 @@ function UniModal({ onMouseDown, jsx }) {
           opacity: 0,
           y: 20,
         }}
-        className="w-full max-w-[500px] rounded-md border border-(--slick-border) bg-(--primary)"
+        className="w-full max-w-[500px] rounded-xl border border-(--slick-border) bg-(--primary)"
       >
         {jsx}
       </motion.div>
