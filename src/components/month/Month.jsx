@@ -57,9 +57,16 @@ function Month() {
             Select date ({selectedMonth})
           </button>
         )}
-        <p>
-          Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
-        </p>
+        {selectedMonthData.length > 0 && (
+          <p>
+            Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
+          </p>
+        )}
+        {selectedMonthData.length < 1 && (
+          <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--primary) text-center">
+            <span>You didn't add anything this month!</span>
+          </p>
+        )}
       </div>
 
       <AnimatePresence>
