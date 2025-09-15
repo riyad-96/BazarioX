@@ -29,7 +29,7 @@ function Home() {
                 <div className="space-y-4">
                   <p>We noticed you have some local sessions that aren’t saved yet. Would you like to back them up to the cloud?</p>
 
-                  <p className="relative overflow-hidden rounded-md bg-red-950 py-1 pl-2.5 text-sm before:absolute before:top-0 before:left-0 before:h-full before:w-[4px] before:bg-red-400 dark:before:bg-red-600">Warning: This action cannot be undone.</p>
+                  <p className="relative overflow-hidden rounded-md bg-red-100 dark:bg-red-900 py-1 pl-2.5 text-sm before:absolute before:top-0 before:left-0 before:h-full before:w-[4px] before:bg-red-400 dark:before:bg-red-600">Warning: This action cannot be undone.</p>
                 </div>
 
                 <div className="relative my-6 flex w-fit items-center gap-2">
