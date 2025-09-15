@@ -1,12 +1,15 @@
 import { Outlet } from 'react-router-dom';
 import { useUniContexts } from './contexts/UniContexts';
 import { motion, AnimatePresence } from 'motion/react';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const { clickDisabled, isUserDataLoading } = useUniContexts();
 
   return (
     <div className="mx-auto h-dvh max-w-[700px]">
+      <Toaster position="top-center" />
+
       {clickDisabled && <div className="fixed inset-0 z-[100000] cursor-not-allowed"></div>}
       <AnimatePresence>
         {isUserDataLoading && (

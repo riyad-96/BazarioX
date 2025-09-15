@@ -5,6 +5,7 @@ import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../configs/firebase';
+import toast from 'react-hot-toast';
 
 function Header({ className }) {
   const { user, isUserDataLoading, setAllMonthData, setCurrentSession } = useUniContexts();
@@ -115,6 +116,7 @@ function Header({ className }) {
                         onClick={async () => {
                           try {
                             await signOut(auth);
+                            toast.success('Logged out successfully!', { duration: 3500 });
                             localStorage.clear();
                             setAllMonthData([]);
                             setCurrentSession({ sessionTitle: '', bazarList: [] });

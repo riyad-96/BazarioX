@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../configs/firebase';
+import toast from 'react-hot-toast';
 
 function Signup() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ function Signup() {
     try {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPass);
       setIsTrying(false);
+      toast.success('Account created! Let’s get started', { duration: 5500 });
       navigate('/', { replace: true });
     } catch (err) {
       console.error(err.code);

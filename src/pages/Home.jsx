@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useUniContexts } from '../contexts/UniContexts';
 import { useEffect, useRef, useState } from 'react';
 import { useFunctionContext } from '../contexts/FunctionContexts';
+import toast from 'react-hot-toast';
 
 function Home() {
   const { unsavedSessionModal, setClickDisabled } = useUniContexts();
@@ -50,7 +51,12 @@ function Home() {
                         }, 400);
                       } else {
                         setClickDisabled(true);
-                        discardLocalAndLoadCloudData();
+                        const promise = discardLocalAndLoadCloudData();
+                        toast.promise(promise, {
+                          loading: 'Loading cloud data...',
+                          success: 'Cloud data loaded successfully!',
+                          error: 'Failed to load cloud data.',
+                        });
                       }
                     }}
                     className="rounded-md border border-red-300 bg-red-200 px-2 py-0.5 text-sm"
@@ -66,7 +72,12 @@ function Home() {
                         }, 400);
                       } else {
                         setClickDisabled(true);
-                        saveToCloudAndLoadCloudData();
+                        const promise = saveToCloudAndLoadCloudData();
+                        toast.promise(promise, {
+                          loading: 'Saving changes and fetching cloud data...',
+                          success: 'Changes saved and cloud data updated!',
+                          error: 'Failed to save changes to cloud.',
+                        });
                       }
                     }}
                     className="rounded-md border border-green-400 bg-green-200 px-2 py-0.5 text-sm"

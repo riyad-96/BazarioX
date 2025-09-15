@@ -2,6 +2,7 @@ import { useEffect, createContext, useContext, useRef } from 'react';
 import { useUniContexts } from './UniContexts';
 import { addDoc, collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../configs/firebase';
+import toast from 'react-hot-toast';
 
 const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
@@ -22,13 +23,25 @@ function FunctionContexts({ children }) {
   }
 
   //! Handle new session storing functionality
-  function handleStoringNewSession(newSession) {
+  async function handleStoringNewSession(newSession) {
     saveToLocalStorage(newSession);
     const localSessions = JSON.parse(localStorage.getItem('localSessions'));
     setAllMonthData(localSessions);
+    toast.success('Session saved locally', {
+      duration: 3500,
+    });
 
     if (user && navigator.onLine) {
-      checkForUnsyncedSessionsAndSyncWithCloud();
+      const savingPromise = checkForUnsyncedSessionsAndSyncWithCloud();
+      toast.promise(
+        savingPromise,
+        {
+          loading: 'Syncing with cloud...',
+          success: 'Session synced to cloud',
+          error: 'Cloud sync failed',
+        },
+        { duration: 3500 },
+      );
     }
   }
 

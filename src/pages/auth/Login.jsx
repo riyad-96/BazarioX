@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
 import { auth } from '../../configs/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 function Login() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPass);
       setIsTrying(false);
+      toast.success('Welcome back!', {duration: 3500});
       navigate('/', { replace: true });
     } catch (err) {
       if (err.code === 'auth/invalid-credential') {

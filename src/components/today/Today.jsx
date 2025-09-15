@@ -35,7 +35,7 @@ function Today() {
       {todaysSessions.length > 0 && (
         <div className="space-y-2">
           <p>
-            Today's total expenses: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0)}</span> ৳
+            Today's total expenses: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
           </p>
           <div className="grid gap-2">
             <AnimatePresence>
@@ -146,7 +146,7 @@ function Today() {
                       <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
                         <span className="grid flex-3">
                           <span>
-                            {i + 1}. {itemName} {`(${price} ৳)`}
+                            {i + 1}. {itemName || '...'} {`(${price} ৳)`}
                           </span>
                           <span className="text-xs opacity-80">{format(addedAt, 'h:mm a')}</span>
                         </span>

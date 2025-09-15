@@ -5,6 +5,7 @@ import EachItem from './EachItem';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
 import { useFunctionContext } from '../../contexts/FunctionContexts';
+import toast from 'react-hot-toast';
 
 function Calculator() {
   const { isCalcExpanded, setIsCalcExpanded, currentSession, setCurrentSession } = useUniContexts();
@@ -20,8 +21,6 @@ function Calculator() {
     addedAt: '',
   });
 
-  const bazarTitle = useRef(null);
-
   function addBazarSession() {
     const newDate = new Date();
 
@@ -36,7 +35,6 @@ function Calculator() {
       year: format(newDate, 'y'),
     };
     handleStoringNewSession(newSession);
-
     setCurrentSession({
       sessionTitle: '',
       bazarList: [],
@@ -88,17 +86,17 @@ function Calculator() {
             </div>
 
             {currentSession.bazarList.length > 0 && (
-              <div className="group flex items-center justify-end gap-2 overflow-hidden">
+              <div className="group mt-4 flex items-center justify-end gap-2 overflow-hidden">
                 <span className="text-xs opacity-80 transition-opacity pointer-fine:opacity-0 pointer-fine:group-hover:opacity-70">Double click to -</span>
                 <button
                   onDoubleClick={() => {
                     setCurrentSession((prev) => ({ ...prev, bazarList: [] }));
                   }}
-                  className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm"
+                  className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm"
                 >
                   Delete
                 </button>
-                <button onClick={addBazarSession} className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-4 py-1 text-sm">
+                <button onClick={addBazarSession} className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm">
                   Save
                 </button>
               </div>

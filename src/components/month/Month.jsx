@@ -58,7 +58,7 @@ function Month() {
           </button>
         )}
         <p>
-          Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0)} ৳</span>
+          Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
         </p>
       </div>
 
@@ -208,7 +208,7 @@ function Month() {
                       <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
                         <span className="grid flex-3">
                           <span>
-                            {i + 1}. {itemName} {`(${price} ৳)`}
+                            {i + 1}. {itemName || '...'} {`(${price} ৳)`}
                           </span>
                           <span className="text-xs opacity-80">{format(addedAt, 'h:mm a')}</span>
                         </span>

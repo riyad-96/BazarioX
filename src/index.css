@@ -13,7 +13,7 @@
   --nav-link-bg: hsl(from var(--primary) h s calc(l - 8));
   --slick-border: hsl(from var(--primary) h s calc(l - 8));
   --each-list-item-divider-clr: hsl(from var(--primary) h s calc(l - 12));
-  --input-focus-border: hsl(from var(--primary) h s calc(l - 60));
+  --input-focus-border: hsl(from var(--primary) h s calc(l - 30));
   --unit-checked-bg: hsl(from var(--primary) h s calc(l - 10));
   --unit-checked-border: hsl(from var(--primary) h s calc(l - 20));
 }
