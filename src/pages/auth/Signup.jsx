@@ -76,7 +76,6 @@ function Signup() {
       toast.success('Account created! Let’s get started', { duration: 5500 });
       navigate('/', { replace: true });
     } catch (err) {
-      console.error(err.code);
       if (err.code === 'auth/email-already-in-use') {
         setSignupError('Email already in use.');
       } else {

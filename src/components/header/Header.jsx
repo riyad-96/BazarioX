@@ -121,6 +121,7 @@ function Header({ className }) {
                             setAllMonthData([]);
                             setCurrentSession({ sessionTitle: '', bazarList: [] });
                           } catch (err) {
+                            toast.error('Logout failed, please try again.', { duration: 3500 });
                             console.error(err);
                           }
                         }}
