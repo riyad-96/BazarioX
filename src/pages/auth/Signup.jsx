@@ -102,7 +102,7 @@ function Signup() {
               }}
               value={signupEmail}
               ref={emailInput}
-              className="w-full min-w-0 rounded-lg border border-zinc-200 px-3 py-2 transition-[border-color] outline-none focus:border-zinc-600"
+              className="w-full min-w-0 rounded-lg border border-zinc-200 px-3 py-2 transition-[border-color] outline-none focus:border-zinc-600 dark:border-zinc-700 dark:focus:border-zinc-400"
               id="login-mail"
               type="mail"
               placeholder="Email address"
@@ -129,7 +129,7 @@ function Signup() {
                 }}
                 value={signupPass}
                 ref={passInput}
-                className="w-full min-w-0 rounded-lg border border-zinc-200 px-3 py-2 transition-[border-color] outline-none focus:border-zinc-600"
+                className="w-full min-w-0 rounded-lg border border-zinc-200 px-3 py-2 transition-[border-color] outline-none focus:border-zinc-600 dark:border-zinc-700 dark:focus:border-zinc-400"
                 id="login-password"
                 type={isPassVisible ? 'text' : 'password'}
                 placeholder="Password"
@@ -149,8 +149,8 @@ function Signup() {
                     }}
                     className="absolute top-1/2 right-1.5 z-5 grid size-[35px] -translate-y-1/2 place-items-center"
                   >
-                    {isPassVisible && <EyeOpenSvg size="20" className="fill-zinc-700" />}
-                    {!isPassVisible && <EyeClosedSvg size="20" className="fill-zinc-700" />}
+                    {isPassVisible && <EyeOpenSvg size="20" className="fill-zinc-700 dark:fill-zinc-300" />}
+                    {!isPassVisible && <EyeClosedSvg size="20" className="fill-zinc-700 dark:fill-zinc-300" />}
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -167,15 +167,15 @@ function Signup() {
             if (isTrying) return;
             handleSignup();
           }}
-          className={`relative my-2 grid h-[45px] w-full place-items-center rounded-lg border bg-zinc-800 text-white ${isTrying && 'opacity-80'}`}
+          className={`relative my-2 grid h-[45px] w-full place-items-center rounded-lg border bg-zinc-800 text-white dark:bg-zinc-200 dark:text-black ${isTrying && 'opacity-80'}`}
           type="button"
         >
           {isTrying && (
             <span className="absolute top-1/2 left-1/2 flex -translate-1/2 gap-1">
-              <span className="size-[5px] animate-[ping_900ms_infinite] rounded-full bg-white"></span>
-              <span className="size-[5px] animate-[ping_900ms_100ms_infinite] rounded-full bg-white"></span>
-              <span className="size-[5px] animate-[ping_900ms_150ms_infinite] rounded-full bg-white"></span>
-              <span className="size-[5px] animate-[ping_900ms_200ms_infinite] rounded-full bg-white"></span>
+              <span className="size-[5px] animate-[ping_900ms_infinite] rounded-full bg-white dark:bg-black"></span>
+              <span className="size-[5px] animate-[ping_900ms_100ms_infinite] rounded-full bg-white dark:bg-black"></span>
+              <span className="size-[5px] animate-[ping_900ms_150ms_infinite] rounded-full bg-white dark:bg-black"></span>
+              <span className="size-[5px] animate-[ping_900ms_200ms_infinite] rounded-full bg-white dark:bg-black"></span>
             </span>
           )}
           {!isTrying && <span className="absolute top-1/2 left-1/2 -translate-1/2">Continue</span>}

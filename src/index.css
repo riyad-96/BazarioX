@@ -7,6 +7,7 @@
   --font: 'Outfit', sans-serif;
 
   /* Colors */
+  --main-bg: hsl(0, 0%, 100%);
   --primary: hsl(0, 0%, 96%);
   --text-clr: #000;
   --second-lvl-bg: hsl(from var(--primary) h s calc(l - 5));
@@ -20,14 +21,22 @@
 
 body {
   font-family: var(--font);
+  background-color: var(--main-bg);
 }
 
 .dark {
   color-scheme: dark;
 
+  --main-bg: hsl(0, 0%, 10%);
   --primary: hsl(0, 0%, 8%);
   --text-clr: #fff;
+  --second-lvl-bg: hsl(from var(--primary) h s calc(l + 5));
   --nav-link-bg: hsl(from var(--primary) h s calc(l + 10));
+  --slick-border: hsl(from var(--primary) h s calc(l + 8));
+  --each-list-item-divider-clr: hsl(from var(--primary) h s calc(l + 12));
+  --input-focus-border: hsl(from var(--primary) h s calc(l + 30));
+  --unit-checked-bg: hsl(from var(--primary) h s calc(l + 10));
+  --unit-checked-border: hsl(from var(--primary) h s calc(l + 20));
 }
 
 /* Resets */

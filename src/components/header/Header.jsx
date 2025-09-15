@@ -31,7 +31,7 @@ function Header({ className }) {
   }, []);
 
   return (
-    <div className={`flex items-center border-b-1 border-(--slick-border) bg-[#F4F4F4] ${className}`}>
+    <div className={`flex items-center border-b-1 border-(--slick-border) bg-(--primary) ${className}`}>
       <div className="flex w-full items-center justify-between px-2">
         <span onClick={() => window.location.reload()} className="text-xl font-medium select-none">
           KitzoBazar
@@ -46,7 +46,7 @@ function Header({ className }) {
                 animate={{
                   scale: 1,
                 }}
-                className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full ${user ? 'bg-green-500' : 'bg-yellow-500'}`}
+                className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) dark:outline-zinc-800 ${user ? 'bg-green-500' : 'bg-yellow-500'}`}
               ></motion.span>
             )}
           </AnimatePresence>
@@ -62,8 +62,8 @@ function Header({ className }) {
             }}
             className={`${isUserDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
           >
-            <div className="size-full overflow-hidden rounded-full bg-zinc-100">
-              <ProfilePlaceholderSvg className="size-full fill-zinc-800" />
+            <div className="size-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <ProfilePlaceholderSvg className="size-full fill-zinc-800 dark:fill-zinc-300" />
             </div>
 
             <AnimatePresence>

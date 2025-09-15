@@ -18,8 +18,8 @@ function Home() {
       <AnimatePresence>
         {unsavedSessionModal && (
           <motion.div inital={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-20 grid place-items-center bg-black/30 p-4">
-            <div className="w-full max-w-[400px] space-y-2 rounded-xl bg-white py-4">
-              <div className="border-b border-(--slick-border) px-5 pb-2">
+            <div className="w-full max-w-[400px] space-y-2 rounded-xl bg-white py-4 dark:bg-zinc-800">
+              <div className="border-b border-(--slick-border) dark:border-zinc-700 px-5 pb-2">
                 <h3 className="w-fit text-lg font-medium">
                   Unsaved sessions found <span className="text-yellow-500">!</span>
                 </h3>
@@ -29,7 +29,7 @@ function Home() {
                 <div className="space-y-4">
                   <p>We noticed you have some local sessions that aren’t saved yet. Would you like to back them up to the cloud?</p>
 
-                  <p className="relative overflow-hidden rounded-md bg-red-50 py-1 pl-2.5 text-sm before:absolute before:top-0 before:left-0 before:h-full before:w-[4px] before:bg-red-400">Warning: This action cannot be undone.</p>
+                  <p className="relative overflow-hidden rounded-md bg-red-950 py-1 pl-2.5 text-sm before:absolute before:top-0 before:left-0 before:h-full before:w-[4px] before:bg-red-400 dark:before:bg-red-600">Warning: This action cannot be undone.</p>
                 </div>
 
                 <div className="relative my-6 flex w-fit items-center gap-2">
@@ -59,7 +59,7 @@ function Home() {
                         });
                       }
                     }}
-                    className="rounded-md border border-red-300 bg-red-200 px-2 py-0.5 text-sm"
+                    className="rounded-md border border-red-300 bg-red-200 px-2 py-0.5 text-sm dark:border-red-700 dark:bg-red-800"
                   >
                     Discard local
                   </button>
@@ -80,7 +80,7 @@ function Home() {
                         });
                       }
                     }}
-                    className="rounded-md border border-green-400 bg-green-200 px-2 py-0.5 text-sm"
+                    className="rounded-md border border-green-400 dark:border-green-600 bg-green-200 dark:bg-green-700 px-2 py-0.5 text-sm"
                   >
                     Save to cloud
                   </button>

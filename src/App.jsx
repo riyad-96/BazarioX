@@ -7,7 +7,7 @@ function App() {
   const { clickDisabled, isUserDataLoading } = useUniContexts();
 
   return (
-    <div className="mx-auto h-dvh max-w-[700px]">
+    <div className="mx-auto h-dvh max-w-[700px] bg-(--main-bg)">
       <Toaster position="top-center" />
 
       {clickDisabled && <div className="fixed inset-0 z-[100000] cursor-not-allowed"></div>}
