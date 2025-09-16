@@ -97,7 +97,12 @@ function Header({ className }) {
                   {user && <p className="mb-2 text-center text-sm font-light">{user.email}</p>}
                   <div className="grid divide-y divide-(--slick-border) rounded-md bg-(--second-lvl-bg)">
                     {user && (
-                      <button onClick={() => {}} className="flex px-3 py-2">
+                      <button
+                        onClick={() => {
+                          navigate('/profile');
+                        }}
+                        className="flex px-3 py-2"
+                      >
                         Profile
                       </button>
                     )}
