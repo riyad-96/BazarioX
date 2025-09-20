@@ -5,8 +5,8 @@ function Auth() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-(--main-bg) relative grid h-dvh max-w-[700px] overflow-y-auto py-8 place-items-center px-2">
-      <button onClick={() => navigate('/')} className="absolute top-4 left-4 flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 py-1 pr-2.5 pl-1 text-sm">
+    <div className="relative grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) px-2 py-8">
+      <button onClick={() => navigate(-1)} className="absolute top-4 left-4 flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 py-1 pr-2.5 pl-1 text-sm dark:border-zinc-700 dark:bg-zinc-800">
         <ArrowLeftSvg size="20" />
         <span>Go back</span>
       </button>

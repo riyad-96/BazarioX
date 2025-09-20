@@ -24,11 +24,11 @@ function FeedbackAndFeature() {
   return (
     <div className="grid h-dvh max-w-[700px] grid-rows-[1fr_auto] bg-(--main-bg) p-3">
       <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
-        <div onClick={() => navigate(-1)} className="mx-auto flex w-full max-w-[700px] items-center gap-4 select-none">
-          <button className="grid">
-            <ArrowLeftSvg size="36" />
+        <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
+          <button onClick={() => navigate(-1)} className="grid">
+            <ArrowLeftSvg size="30" />
           </button>
-          <span className="text-2xl">Feedback & feature request</span>
+          <span className="text-xl">Feedback & feature request</span>
         </div>
       </div>
 

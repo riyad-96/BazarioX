@@ -7,15 +7,15 @@ function Account() {
   return (
     <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
       <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
-        <div onClick={() => navigate(-1)} className="mx-auto flex w-full max-w-[700px] items-center gap-4 select-none">
-          <button className="grid">
-            <ArrowLeftSvg size="36" />
+        <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
+          <button onClick={() => navigate(-1)} className="grid">
+            <ArrowLeftSvg size="30" />
           </button>
-          <span className="text-2xl">Account</span>
+          <span className="text-xl">Account</span>
         </div>
       </div>
 
-      <div className="size-full pt-24 pb-8">
+      <div className="size-full pt-24">
         <div className="mb-5 space-y-4">
           <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200"></div>
 

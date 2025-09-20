@@ -7,7 +7,7 @@ function Ratings({ state, func }) {
 
   return (
     <>
-      <div className="">
+      <div className="pl-1">
         <h2 className="text-3xl">Give feedback</h2>
         <span className="opacity-80">Please share you experience about our app</span>
       </div>
