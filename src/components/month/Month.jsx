@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format, formatDistanceToNow, isThisWeek, isThisYear, isToday } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
@@ -45,23 +45,35 @@ function Month() {
     setSelectedMonthData(filteredMonthData);
   }
 
+  let stat = {
+    totalSpent: 0,
+    totalItems: 0,
+    totalSessions: 0,
+    lastSession: '',
+  };
+  if (selectedMonthData.length > 0) {
+    stat = {
+      totalSpent: selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0),
+      totalItems: selectedMonthData.reduce((acc, s) => acc + s.bazarList.length, 0),
+      totalSessions: selectedMonthData.length,
+      lastSession: isThisWeek(selectedMonthData[0].sessionAt) ? format(selectedMonthData[0].sessionAt, 'EEEE') : format(selectedMonthData[0].sessionAt, 'd MMM y'),
+    };
+  }
+  console.log(stat);
+
   const [sessionDetails, setSessionDetails] = useState(null);
 
   return (
     <div className="min-h-full py-2">
       <h1 className="text-2xl">Monthly history</h1>
 
-      <div className="my-2 space-y-2">
+      <div className="my-2">
         {months.length > 1 && (
-          <button onClick={() => setMonthSelectionModalOpen(true)} className="flex rounded-md border border-(--slick-border) bg-zinc-100 px-3 py-1 text-sm">
+          <button onClick={() => setMonthSelectionModalOpen(true)} className="flex rounded-md border border-(--slick-border) bg-(--primary) px-3 py-1 text-sm shadow">
             Select date ({selectedMonth})
           </button>
         )}
-        {selectedMonthData.length > 0 && (
-          <p>
-            Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
-          </p>
-        )}
+
         {selectedMonthData.length < 1 && (
           <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--primary) text-center">
             <span>You didn't add anything this month!</span>
@@ -69,45 +81,39 @@ function Month() {
         )}
       </div>
 
-      <AnimatePresence>
-        {monthSelectionModalOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setMonthSelectionModalOpen(false)} className="fixed inset-0 z-15 grid place-items-center bg-black/30">
-            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scale: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
-              <p>Select months:</p>
-              <div className="scrollbar-thin grid max-h-[300px] divide-y-1 divide-(--slick-border) overflow-y-auto rounded-lg bg-(--second-lvl-bg)">
-                {months.map((m) => {
-                  const [month, year] = m.split('-');
+      {selectedMonthData.length > 0 && (
+        <div className="mb-2 grid grid-cols-[1fr_auto_1fr] gap-4 rounded-lg bg-(--primary) p-3 shadow">
+          <div className="divide-y divide-(--slick-border)">
+            <div className="grid content-center justify-items-center py-4">
+              <span className="text-lg leading-6">{stat.totalSpent.toLocaleString()} ৳</span>
+              <span className="text-sm leading-4">Spent</span>
+            </div>
+            <div className="grid content-center justify-items-center py-4">
+              <span className="text-lg leading-6">{stat.totalItems}</span>
+              <span className="text-sm leading-4">Items</span>
+            </div>
+          </div>
 
-                  let monthYear = new Date(year, month - 1).toLocaleString('default', {
-                    month: 'long',
-                    year: 'numeric',
-                  });
+          <div className="w-[1px] bg-(--slick-border)"></div>
 
-                  let btnText = monthYear;
+          <div className="divide-y divide-(--slick-border)">
+            <div className="grid content-center justify-items-center py-4">
+              <span className="text-lg leading-6">{stat.totalSessions}</span>
+              <span className="text-sm leading-4">Sessions</span>
+            </div>
+            <div className="grid content-center justify-items-center py-4">
+              <span className="text-lg leading-6">{stat.lastSession}</span>
+              <span className="text-sm leading-4">Last session</span>
+            </div>
+          </div>
+        </div>
+      )}
 
-                  if (month == format(new Date(), 'M') && year == format(new Date(), 'y')) {
-                    btnText = 'This month';
-                  }
-
-                  return (
-                    <button
-                      onClick={() => {
-                        filterMonthBasedData(month, year);
-                        setSelectedMonth(btnText);
-                        setMonthSelectionModalOpen(false);
-                      }}
-                      key={m}
-                      className="flex px-3.5 py-1.5"
-                    >
-                      {btnText}
-                    </button>
-                  );
-                })}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {selectedMonthData.length > 0 && (
+        <p className="mb-2">
+          Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
+        </p>
+      )}
 
       <div className="grid gap-2">
         <AnimatePresence>
@@ -135,7 +141,7 @@ function Month() {
                   },
                 }}
                 key={id}
-                className="relative rounded-md bg-(--primary) p-3"
+                className="relative rounded-md bg-(--primary) p-3 shadow"
               >
                 <div className="grid">
                   <div className="flex justify-between">
@@ -234,6 +240,46 @@ function Month() {
               </div>
             }
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {monthSelectionModalOpen && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setMonthSelectionModalOpen(false)} className="fixed inset-0 z-15 grid place-items-center bg-black/30">
+            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scale: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
+              <p>Select months:</p>
+              <div className="scrollbar-thin grid max-h-[300px] divide-y-1 divide-(--slick-border) overflow-y-auto rounded-lg bg-(--second-lvl-bg)">
+                {months.map((m) => {
+                  const [month, year] = m.split('-');
+
+                  let monthYear = new Date(year, month - 1).toLocaleString('default', {
+                    month: 'long',
+                    year: 'numeric',
+                  });
+
+                  let btnText = monthYear;
+
+                  if (month == format(new Date(), 'M') && year == format(new Date(), 'y')) {
+                    btnText = 'This month';
+                  }
+
+                  return (
+                    <button
+                      onClick={() => {
+                        filterMonthBasedData(month, year);
+                        setSelectedMonth(btnText);
+                        setMonthSelectionModalOpen(false);
+                      }}
+                      key={m}
+                      className="flex px-3.5 py-1.5"
+                    >
+                      {btnText}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

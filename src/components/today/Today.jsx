@@ -63,7 +63,7 @@ function Today() {
                       },
                     }}
                     key={id}
-                    className="relative rounded-md bg-(--primary) p-3"
+                    className="relative shadow rounded-md bg-(--primary) p-3"
                   >
                     <div className="grid">
                       <div className="flex justify-between">

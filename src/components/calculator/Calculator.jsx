@@ -45,11 +45,11 @@ function Calculator() {
     <div className="min-h-full py-2">
       <div className="mb-3 space-y-2">
         <h1 className="text-2xl">Bazar List</h1>
-        <input onChange={(e) => setCurrentSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={currentSession.sessionTitle} type="text" placeholder="Bazar title" className="w-full font-light min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
+        <input onChange={(e) => setCurrentSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={currentSession.sessionTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg font-light transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
       </div>
 
       <div className={`space-y-2 transition-[padding] duration-450 ${isCalcExpanded ? 'pb-80' : 'pb-20'}`}>
-        <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2">
+        <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2 shadow">
           <div className="space-y-2">
             <p>
               Total items: <span className="font-medium">{currentSession.bazarList.length}</span>, Total price: <span className="font-medium">{currentSession.bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
