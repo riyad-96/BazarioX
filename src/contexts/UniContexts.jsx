@@ -14,10 +14,12 @@ function UniContexts({ children }) {
     phone: '',
     pictures: [],
   });
+
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
   //app
   const [clickDisabled, setClickDisabled] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   // Home page
   const [unsavedSessionModal, setUnsavedSessionModal] = useState(false);
@@ -57,7 +59,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

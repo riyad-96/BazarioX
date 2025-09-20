@@ -2,12 +2,16 @@ import { Outlet } from 'react-router-dom';
 import { useUniContexts } from './contexts/UniContexts';
 import { motion, AnimatePresence } from 'motion/react';
 import { Toaster } from 'react-hot-toast';
+import { LoadingTopBar, useLoadingTopBar } from './components/helpers/LoadingTopBar';
 
 function App() {
   const { clickDisabled, isUserDataLoading } = useUniContexts();
 
+  const { start, complete } = useLoadingTopBar();
+
   return (
     <div className="mx-auto h-dvh max-w-[700px] bg-(--main-bg)">
+      <LoadingTopBar />
       <Toaster position="top-center" />
 
       {clickDisabled && <div className="fixed inset-0 z-[100000] cursor-not-allowed"></div>}
@@ -32,7 +36,6 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
       <AnimatePresence>
         {!isUserDataLoading && (
           <motion.div
