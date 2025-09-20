@@ -1,29 +1,47 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg, ProfilePlaceholderSvg } from '../assets/Svg';
 import { useUniContexts } from '../contexts/UniContexts';
+import Statistics from '../components/profile/Statistics';
 
 function Profile() {
   const { user } = useUniContexts();
   const navigate = useNavigate();
 
   return (
-    <div className="relative grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-2">
-      <button onClick={() => navigate('/')} className="absolute top-4 left-4 flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 py-1 pr-2.5 pl-1 text-sm dark:border-zinc-700 dark:bg-zinc-800">
-        <ArrowLeftSvg size="20" />
-        <span>Go back</span>
-      </button>
+    <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
+      <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
+        <div onClick={() => navigate(-1)} className="mx-auto flex w-full max-w-[700px] items-center gap-4 select-none">
+          <button className="grid">
+            <ArrowLeftSvg size="36" />
+          </button>
+          <span className="text-2xl">Profile</span>
+        </div>
+      </div>
+
       <div className="size-full pt-24">
-        <div className="grid justify-items-center gap-2">
-          <div>
+        <div className="mb-4 grid justify-items-center gap-2">
+          <div className="">
             <div className="size-[150px] overflow-hidden rounded-full transition-[width,height] duration-150 sm:size-[250px]">
               <ProfilePlaceholderSvg className="size-full" />
             </div>
           </div>
-          <p className="text-center text-sm">{user.email}</p>
         </div>
-        <div>
-          <h2 className="my-4 text-center text-2xl">Profile name</h2>
+
+        <div className="mb-8 grid justify-items-center">
+          <h2 className="text-2xl">user's name</h2>
+          <p className="text-sm">{user.email}</p>
         </div>
+
+        <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
+          <button onClick={() => navigate('/account')} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+            Account
+          </button>
+          <button onClick={() => navigate('/feedback')} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+            Feedback & feature request
+          </button>
+        </div>
+
+        <Statistics />
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ import Today from './components/today/Today.jsx';
 import Month from './components/month/Month.jsx';
 import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
+import Account from './pages/Account.jsx';
+import FeedbackAndFeature from './pages/FeedbackAndFeature.jsx';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'account',
+        element: <Account />,
+      },
+      {
+        path: 'feedback',
+        element: <FeedbackAndFeature />,
       },
     ],
   },

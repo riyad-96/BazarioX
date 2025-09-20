@@ -9,6 +9,11 @@ function UniContexts({ children }) {
   // user
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({
+    username: '',
+    phone: '',
+    pictures: [],
+  });
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
   //app
@@ -52,7 +57,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;
