@@ -33,7 +33,7 @@ function Today() {
       )}
 
       {todaysSessions.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-2 mt-4">
           <p>
             Today's total expenses: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
           </p>

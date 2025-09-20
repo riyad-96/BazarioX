@@ -82,7 +82,7 @@ function Month() {
       </div>
 
       {selectedMonthData.length > 0 && (
-        <div className="mb-2 grid grid-cols-[1fr_auto_1fr] gap-4 rounded-lg bg-(--primary) p-3 shadow">
+        <div className="mb-2 grid mt-4 grid-cols-[1fr_auto_1fr] gap-4 rounded-lg bg-(--primary) p-3 shadow">
           <div className="divide-y divide-(--slick-border)">
             <div className="grid content-center justify-items-center py-4">
               <span className="text-lg leading-6">{stat.totalSpent.toLocaleString()} ৳</span>
@@ -110,7 +110,7 @@ function Month() {
       )}
 
       {selectedMonthData.length > 0 && (
-        <p className="mb-2">
+        <p className="mb-2 mt-4">
           Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
         </p>
       )}

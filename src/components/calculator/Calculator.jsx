@@ -43,7 +43,7 @@ function Calculator() {
 
   return (
     <div className="min-h-full py-2">
-      <div className="mb-3 space-y-2">
+      <div className="mb-3 space-y-4">
         <h1 className="text-2xl">Bazar List</h1>
         <input onChange={(e) => setCurrentSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={currentSession.sessionTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg font-light transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
       </div>

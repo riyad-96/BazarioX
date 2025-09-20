@@ -43,7 +43,7 @@ function Header({ className }) {
 
   return (
     <div className={`flex items-center border-b-1 border-(--slick-border) bg-(--primary) ${className}`}>
-      <div className="flex w-full items-center justify-between px-2">
+      <div className="flex w-full items-center justify-between px-3">
         <span onClick={() => window.location.reload()} className="text-xl font-medium select-none">
           KitzoBazar
         </span>
