@@ -112,6 +112,34 @@ function Account() {
     }
   }
 
+  // change username and phone
+  const [userName, setUserName] = useState('');
+
+  async function changeUserName() {
+    try {
+      const docRef = doc(db, 'users', user.uid);
+      await updateDoc(docRef, { username: userName });
+      setUserData((prev) => ({ ...prev, username: userName }));
+      setUserName('');
+      toast.success('Username successfully changed');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  const [phone, setPhone] = useState('');
+
+  async function changePhone() {
+    try {
+      const docRef = doc(db, 'users', user.uid);
+      await updateDoc(docRef, { phone });
+      setUserData((prev) => ({ ...prev, phone }));
+      setPhone('');
+      toast.success('Phone successfully changed');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
       <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
@@ -160,11 +188,11 @@ function Account() {
         </div>
 
         <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-          <button className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+          <button onClick={() => setUserName(userData.username)} className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">
             <span>Username</span>
             <span className="font-light opacity-70">{userData.username || 'set user name'}</span>
           </button>
-          <button className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+          <button onClick={() => setPhone(userData.phone)} className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">
             <span>Phone number</span>
             <span className="font-light opacity-70">{userData.phone || 'set number'}</span>
           </button>
@@ -219,6 +247,90 @@ function Account() {
                   Cancel
                 </button>
                 <button onClick={triggerImageSaving} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
+                  Save
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {userName && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setUserName('')} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
+            <motion.div
+              initial={{ y: '50px' }}
+              animate={{ y: 0 }}
+              exit={{ y: '50px' }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              className="w-full max-w-[600px] space-y-6 rounded-2xl bg-(--second-lvl-bg) p-4"
+            >
+              <div className="grid w-full gap-2">
+                <label htmlFor="phone">Username</label>
+                <input
+                  onKeyDownCapture={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      changeUserName();
+                    }
+                  }}
+                  autoFocus
+                  className="w-full min-w-0 rounded-full border border-transparent bg-(--primary) px-4 py-2 outline-none focus:border-(--input-focus-border)"
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => setUserName('')} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
+                  Cancel
+                </button>
+                <button onClick={changeUserName} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
+                  Save
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {phone && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setPhone('')} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
+            <motion.div
+              initial={{ y: '50px' }}
+              animate={{ y: 0 }}
+              exit={{ y: '50px' }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              className="w-full max-w-[600px] space-y-6 rounded-2xl bg-(--second-lvl-bg) p-4"
+            >
+              <div className="grid w-full gap-2">
+                <label htmlFor="phone">Phone number</label>
+                <input
+                  onKeyDownCapture={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      changePhone();
+                    }
+                  }}
+                  autoFocus
+                  className="w-full min-w-0 rounded-full border border-transparent bg-(--primary) px-4 py-2 outline-none focus:border-(--input-focus-border)"
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => setPhone('')} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
+                  Cancel
+                </button>
+                <button onClick={changePhone} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
                   Save
                 </button>
               </div>
