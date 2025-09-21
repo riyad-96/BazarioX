@@ -10,7 +10,7 @@ function Profile() {
 
   return (
     <div className="grid h-dvh max-w-[700px] grid-rows-[auto_1fr] bg-(--main-bg)">
-      <div className="grid h-[60px] bg-(--main-bg)">
+      <div className="grid h-[60px] bg-(--main-bg) px-2">
         <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
           <button onClick={() => navigate(-1)} className="grid">
             <ArrowLeftSvg size="30" />
@@ -19,7 +19,7 @@ function Profile() {
         </div>
       </div>
 
-      <div className="scrollbar-thin size-full overflow-y-auto px-3 pt-24 pb-16">
+      <div className="scrollbar-thin size-full overflow-y-auto px-3 pt-24 pb-8">
         <div className="mb-4 grid justify-items-center gap-2">
           <div className="">
             <div onClick={() => navigate('/account')} className="size-[150px] overflow-hidden rounded-full shadow transition-[width,height] duration-150 sm:size-[250px]">
