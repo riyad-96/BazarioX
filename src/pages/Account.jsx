@@ -115,7 +115,7 @@ function Account() {
 
           <div>
             <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture</h4>
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               {userData.pictures.length > 0 &&
                 userData.pictures.map((p) => {
                   const { id, isSelected, url } = p;
