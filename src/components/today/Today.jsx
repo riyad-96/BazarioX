@@ -33,7 +33,7 @@ function Today() {
       )}
 
       {todaysSessions.length > 0 && (
-        <div className="space-y-2 mt-4">
+        <div className="mt-4 space-y-2">
           <p>
             Today's total expenses: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
           </p>
@@ -63,7 +63,7 @@ function Today() {
                       },
                     }}
                     key={id}
-                    className="relative shadow rounded-md bg-(--primary) p-3"
+                    className="relative rounded-md bg-(--primary) p-3 shadow"
                   >
                     <div className="grid">
                       <div className="flex justify-between">
@@ -143,7 +143,7 @@ function Today() {
                   {sessionDetails.bazarList.map((eachItem, i) => {
                     const { id, itemName, price, quantity, unit, total, addedAt } = eachItem;
                     return (
-                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100 dark:nth-[odd]:bg-zinc-900">
+                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[odd]:bg-zinc-100">
                         <span className="grid flex-3">
                           <span>
                             {i + 1}. {itemName || '...'} {`(${price} ৳)`}

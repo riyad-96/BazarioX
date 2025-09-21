@@ -3,13 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { useUniContexts } from '../../contexts/UniContexts';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../configs/firebase';
-import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
 function Header({ className }) {
-  const { user, userData, isUserDataLoading, setAllMonthData, setCurrentSession } = useUniContexts();
+  const { user, userData, isUserDataLoading } = useUniContexts();
 
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -53,7 +50,7 @@ function Header({ className }) {
             {format(new Date(), 'h:m aa')}
           </span>
           <div className="relative flex items-center gap-4">
-            {!isUserDataLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) dark:outline-zinc-800 ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}
+            {!isUserDataLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}
             <div
               data-dropdown-trigger
               onClick={() => {
@@ -70,9 +67,9 @@ function Header({ className }) {
               }}
               className={`${isUserDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
             >
-              <div className="size-full overflow-hidden rounded-full bg-zinc-100 shadow dark:bg-zinc-800">
+              <div className="size-full overflow-hidden rounded-full bg-zinc-100 shadow">
                 {userData.pictures.length < 1 ? (
-                  <ProfilePlaceholderSvg className="size-full fill-zinc-800 dark:fill-zinc-300" />
+                  <ProfilePlaceholderSvg className="size-full fill-zinc-800" />
                 ) : (
                   (() => {
                     const selectedImg = userData.pictures.find((p) => p.isSelected);

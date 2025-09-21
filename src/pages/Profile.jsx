@@ -22,12 +22,14 @@ function Profile() {
       <div className="size-full pt-24">
         <div className="mb-4 grid justify-items-center gap-2">
           <div className="">
-            <div className="size-[150px] overflow-hidden rounded-full transition-[width,height] duration-150 sm:size-[250px] shadow">
-              {userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full" /> : (
+            <div onClick={() => navigate('/account')} className="size-[150px] overflow-hidden rounded-full shadow transition-[width,height] duration-150 sm:size-[250px]">
+              {userData.pictures.length < 1 ? (
+                <ProfilePlaceholderSvg className="size-full fill-zinc-800" />
+              ) : (
                 (() => {
-                  const selectedImg = userData.pictures.find(p => p.isSelected)
+                  const selectedImg = userData.pictures.find((p) => p.isSelected);
 
-                  return <img className="size-full object-cover object-center" src={selectedImg.url} alt={`${userData.username} profile photo`} />
+                  return <img className="size-full object-cover object-center" src={selectedImg.url} alt={`${userData.username} profile photo`} />;
                 })()
               )}
             </div>

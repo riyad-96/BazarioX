@@ -13,7 +13,7 @@ function UniModal({ onMouseDown, jsx }) {
         opacity: 0,
       }}
       onMouseDown={onMouseDown}
-      className="fixed inset-0 z-20 grid place-items-center bg-black/30 dark:bg-black/70 overflow-y-auto px-4 py-10"
+      className="fixed inset-0 z-20 grid place-items-center overflow-y-auto bg-black/30 px-4 py-10"
     >
       <motion.div
         initial={{
