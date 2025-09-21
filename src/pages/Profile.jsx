@@ -35,8 +35,8 @@ function Profile() {
         </div>
 
         <div className="mb-8 grid justify-items-center">
-          <h2 className="text-2xl">{userData.username}</h2>
-          <p className="text-sm">{user?.email}</p>
+          <h2 className="text-2xl">{userData.username ? `Hey, ${userData.username} !` : 'Unknown'}</h2>
+          <p className="text-sm">{user?.email || "user's email here"}</p>
         </div>
 
         <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
