@@ -31,6 +31,22 @@ function Month() {
     }
   }, [allMonthData]);
 
+  const stat = useRef({
+    totalSpent: 0,
+    totalItems: 0,
+    totalSessions: 0,
+    lastSession: '',
+  });
+
+  if (selectedMonthData.length > 0) {
+    stat.current = {
+      totalSpent: selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0),
+      totalItems: selectedMonthData.reduce((acc, s) => acc + s.bazarList.length, 0),
+      totalSessions: selectedMonthData.length,
+      lastSession: isThisWeek(selectedMonthData[0].sessionAt) ? format(selectedMonthData[0].sessionAt, 'EEEE') : format(selectedMonthData[0].sessionAt, 'd MMM y'),
+    };
+  }
+
   // refresh times
   const [tick, setTick] = useState(0);
 
@@ -44,22 +60,6 @@ function Month() {
     const filteredMonthData = allMonthData.filter((eachSession) => eachSession.month == month && eachSession.year == year);
     setSelectedMonthData(filteredMonthData);
   }
-
-  let stat = {
-    totalSpent: 0,
-    totalItems: 0,
-    totalSessions: 0,
-    lastSession: '',
-  };
-  if (selectedMonthData.length > 0) {
-    stat = {
-      totalSpent: selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0),
-      totalItems: selectedMonthData.reduce((acc, s) => acc + s.bazarList.length, 0),
-      totalSessions: selectedMonthData.length,
-      lastSession: isThisWeek(selectedMonthData[0].sessionAt) ? format(selectedMonthData[0].sessionAt, 'EEEE') : format(selectedMonthData[0].sessionAt, 'd MMM y'),
-    };
-  }
-  console.log(stat);
 
   const [sessionDetails, setSessionDetails] = useState(null);
 
@@ -82,14 +82,14 @@ function Month() {
       </div>
 
       {selectedMonthData.length > 0 && (
-        <div className="mb-2 grid mt-4 grid-cols-[1fr_auto_1fr] gap-4 rounded-lg bg-(--primary) p-3 shadow">
+        <div className="mt-4 mb-2 grid grid-cols-[1fr_auto_1fr] gap-4 rounded-lg bg-(--primary) p-3 shadow">
           <div className="divide-y divide-(--slick-border)">
             <div className="grid content-center justify-items-center py-4">
-              <span className="text-lg leading-6">{stat.totalSpent.toLocaleString()} ৳</span>
+              <span className="text-lg leading-6">{stat.current.totalSpent.toLocaleString()} ৳</span>
               <span className="text-sm leading-4">Spent</span>
             </div>
             <div className="grid content-center justify-items-center py-4">
-              <span className="text-lg leading-6">{stat.totalItems}</span>
+              <span className="text-lg leading-6">{stat.current.totalItems}</span>
               <span className="text-sm leading-4">Items</span>
             </div>
           </div>
@@ -98,11 +98,11 @@ function Month() {
 
           <div className="divide-y divide-(--slick-border)">
             <div className="grid content-center justify-items-center py-4">
-              <span className="text-lg leading-6">{stat.totalSessions}</span>
+              <span className="text-lg leading-6">{stat.current.totalSessions}</span>
               <span className="text-sm leading-4">Sessions</span>
             </div>
             <div className="grid content-center justify-items-center py-4">
-              <span className="text-lg leading-6">{stat.lastSession}</span>
+              <span className="text-lg leading-6">{stat.current.lastSession}</span>
               <span className="text-sm leading-4">Last session</span>
             </div>
           </div>
@@ -110,7 +110,7 @@ function Month() {
       )}
 
       {selectedMonthData.length > 0 && (
-        <p className="mb-2 mt-4">
+        <p className="mt-4 mb-2">
           Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
         </p>
       )}

@@ -74,7 +74,7 @@ function Login() {
       await signInWithEmailAndPassword(auth, loginEmail, loginPass);
       setIsTrying(false);
       toast.success('Welcome back!', { duration: 3500 });
-      navigate('/', { replace: true });
+      navigate(-1);
     } catch (err) {
       if (err.code === 'auth/invalid-credential') {
         setLoginError('Email or password is wrong');

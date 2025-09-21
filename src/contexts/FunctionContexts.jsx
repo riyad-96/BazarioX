@@ -1,6 +1,6 @@
-import { useEffect, createContext, useContext, useRef } from 'react';
+import { useEffect, createContext, useContext } from 'react';
 import { useUniContexts } from './UniContexts';
-import { addDoc, collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 
@@ -8,7 +8,7 @@ const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
 
 function FunctionContexts({ children }) {
-  const { user, setAllMonthData, setAllMonthDataLoading, setUnsavedSessionModal, setClickDisabled } = useUniContexts();
+  const { user, setUserData, setAllMonthData, setAllMonthDataLoading, setUnsavedSessionModal, setClickDisabled } = useUniContexts();
 
   // ! -------------- New functions --------------
   // save to local function
@@ -23,7 +23,7 @@ function FunctionContexts({ children }) {
   }
 
   //! Handle new session storing functionality
-  async function handleStoringNewSession(newSession) {
+  function handleStoringNewSession(newSession) {
     saveToLocalStorage(newSession);
     const localSessions = JSON.parse(localStorage.getItem('localSessions'));
     setAllMonthData(localSessions);
@@ -202,6 +202,26 @@ function FunctionContexts({ children }) {
       }
     });
   }, []);
+
+  // load user data
+  useEffect(() => {
+    if (user) {
+      (async () => {
+        try {
+          const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
+          const images = await getDocs(imgCollectionQuery);
+          const userDataObject = await getDoc(doc(db, 'users', user.uid));
+          setUserData({
+            username: userDataObject.data().username,
+            phone: userDataObject.data().phone,
+            pictures: images.docs.map((doc) => doc.data()),
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    }
+  }, [user]);
 
   return <functionContext.Provider value={{ handleStoringNewSession, discardLocalAndLoadCloudData, saveToCloudAndLoadCloudData }}>{children}</functionContext.Provider>;
 }

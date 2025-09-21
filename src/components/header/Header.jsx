@@ -62,7 +62,11 @@ function Header({ className }) {
                   setIsDropdownOpen(false);
                   return;
                 }
-                setIsDropdownOpen(true);
+                if (!user) {
+                  setIsDropdownOpen(true);
+                } else {
+                  navigate('/profile');
+                }
               }}
               className={`${isUserDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
             >
@@ -100,16 +104,6 @@ function Header({ className }) {
                   >
                     {user && <p className="mb-2 text-center text-sm font-light">{user.email}</p>}
                     <div className="grid divide-y divide-(--slick-border) rounded-md bg-(--second-lvl-bg)">
-                      {user && (
-                        <button
-                          onClick={() => {
-                            navigate('/profile');
-                          }}
-                          className="flex px-3 py-2"
-                        >
-                          Profile
-                        </button>
-                      )}
                       {!user && (
                         <button
                           onClick={() => {
@@ -118,25 +112,6 @@ function Header({ className }) {
                           className="flex px-3 py-2"
                         >
                           Login/Signup
-                        </button>
-                      )}
-                      {user && (
-                        <button
-                          onClick={async () => {
-                            try {
-                              await signOut(auth);
-                              toast.success('Logged out successfully!', { duration: 3500 });
-                              localStorage.clear();
-                              setAllMonthData([]);
-                              setCurrentSession({ sessionTitle: '', bazarList: [] });
-                            } catch (err) {
-                              toast.error('Logout failed, please try again.', { duration: 3500 });
-                              console.error(err);
-                            }
-                          }}
-                          className="flex px-3 py-2"
-                        >
-                          Logout
                         </button>
                       )}
                     </div>

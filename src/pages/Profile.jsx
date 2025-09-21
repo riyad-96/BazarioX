@@ -4,8 +4,9 @@ import { useUniContexts } from '../contexts/UniContexts';
 import Statistics from '../components/profile/Statistics';
 
 function Profile() {
-  const { user } = useUniContexts();
+  const { user, userData } = useUniContexts();
   const navigate = useNavigate();
+  const { allMonthData } = useUniContexts();
 
   return (
     <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
@@ -22,14 +23,20 @@ function Profile() {
         <div className="mb-4 grid justify-items-center gap-2">
           <div className="">
             <div className="size-[150px] overflow-hidden rounded-full transition-[width,height] duration-150 sm:size-[250px]">
-              <ProfilePlaceholderSvg className="size-full" />
+              {userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full" /> : (
+                (() => {
+                  const selectedImg = userData.pictures.find(p => p.isSelected)
+
+                  return <img className="size-full object-cover object-center" src={selectedImg.url} alt={`${userData.username} profile photo`} />
+                })()
+              )}
             </div>
           </div>
         </div>
 
         <div className="mb-8 grid justify-items-center">
-          <h2 className="text-2xl">user's name</h2>
-          <p className="text-sm">{user.email}</p>
+          <h2 className="text-2xl">{userData.username}</h2>
+          <p className="text-sm">{user?.email}</p>
         </div>
 
         <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
@@ -41,7 +48,13 @@ function Profile() {
           </button>
         </div>
 
-        <Statistics />
+        {allMonthData.length > 0 ? (
+          <Statistics />
+        ) : (
+          <div className="flex justify-center rounded-lg bg-(--primary) p-3 shadow">
+            <span className="opacity-70">Please add at least one session to see statistics !</span>
+          </div>
+        )}
       </div>
     </div>
   );

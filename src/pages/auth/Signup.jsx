@@ -74,7 +74,7 @@ function Signup() {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPass);
       setIsTrying(false);
       toast.success('Account created! Let’s get started', { duration: 5500 });
-      navigate('/', { replace: true });
+      navigate(-1);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setSignupError('Email already in use.');

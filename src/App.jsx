@@ -1,11 +1,12 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useUniContexts } from './contexts/UniContexts';
 import { motion, AnimatePresence } from 'motion/react';
 import { Toaster } from 'react-hot-toast';
 import { LoadingTopBar, useLoadingTopBar } from './components/helpers/LoadingTopBar';
+import { useEffect } from 'react';
 
 function App() {
-  const { clickDisabled, isUserDataLoading } = useUniContexts();
+  const { user, clickDisabled, isUserDataLoading } = useUniContexts();
 
   const { start, complete } = useLoadingTopBar();
 
