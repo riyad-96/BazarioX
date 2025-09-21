@@ -75,8 +75,8 @@ function Month() {
         )}
 
         {selectedMonthData.length < 1 && (
-          <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--primary) text-center">
-            <span>You didn't add anything this month!</span>
+          <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--primary) text-center shadow">
+            <span className="opacity-70">You didn't add anything this month!</span>
           </p>
         )}
       </div>

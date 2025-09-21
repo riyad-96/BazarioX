@@ -1,7 +1,5 @@
 import { motion } from 'motion/react';
 
-import React from 'react';
-
 function PhoneEditingModal({ state, func }) {
   const { phone, setPhone, setPhoneEditing } = state;
   const { changePhone } = func;

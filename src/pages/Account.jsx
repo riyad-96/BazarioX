@@ -7,7 +7,7 @@ import { useUniContexts } from '../contexts/UniContexts';
 import { ImagePlus, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc, writeBatch } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import ImagePreviewModal from '../components/account/ImagePreviewModal';
 import NameEditingModal from '../components/account/NameEditingModal';
 import PhoneEditingModal from '../components/account/PhoneEditingModal';
@@ -161,7 +161,7 @@ function Account() {
   async function changeUserName() {
     try {
       const docRef = doc(db, 'users', user.uid);
-      await updateDoc(docRef, { username: userName });
+      await setDoc(docRef, { username: userName });
       setUserData((prev) => ({ ...prev, username: userName }));
       setUserNameEditing(false);
       toast.success('Username successfully changed');
@@ -176,7 +176,7 @@ function Account() {
   async function changePhone() {
     try {
       const docRef = doc(db, 'users', user.uid);
-      await updateDoc(docRef, { phone });
+      await setDoc(docRef, { phone });
       setUserData((prev) => ({ ...prev, phone }));
       setPhoneEditing(false);
       toast.success('Phone successfully changed');
