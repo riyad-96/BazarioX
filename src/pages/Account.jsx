@@ -5,9 +5,13 @@ import { auth, db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../contexts/UniContexts';
 import { ImagePlus, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc, writeBatch } from 'firebase/firestore';
+import ImagePreviewModal from '../components/account/ImagePreviewModal';
+import NameEditingModal from '../components/account/NameEditingModal';
+import PhoneEditingModal from '../components/account/PhoneEditingModal';
+import ProfilePicDeleteModal from '../components/account/ProfilePicDeleteModal';
 
 function Account() {
   const navigate = useNavigate();
@@ -288,151 +292,13 @@ function Account() {
       </div>
 
       {/* modals */}
+      <AnimatePresence>{selectedImg && <ImagePreviewModal state={{ selectedImg }} func={{ cancelImageSelection, triggerImageSaving }} />}</AnimatePresence>
 
-      <AnimatePresence>
-        {selectedImg && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={cancelImageSelection} className="fixed inset-0 z-20 grid place-items-center overflow-y-auto bg-black/30 p-3">
-            <motion.div
-              initial={{ y: '50px' }}
-              animate={{ y: 0 }}
-              exit={{ y: '50px' }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-              className="w-full max-w-[600px] space-y-4 rounded-2xl bg-(--second-lvl-bg) p-4"
-            >
-              <div className="aspect-square overflow-hidden rounded-xl shadow">
-                <img className="size-full object-cover object-center" src={selectedImg} alt="selected image" />
-              </div>
+      <AnimatePresence>{userNameEditing && <NameEditingModal state={{ userName, setUserNameEditing, setUserName }} func={{ changeUserName }} />}</AnimatePresence>
 
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={cancelImageSelection} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Cancel
-                </button>
-                <button onClick={triggerImageSaving} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Save
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{phoneEditing && <PhoneEditingModal state={{ phone, setPhone, setPhoneEditing }} func={{ changePhone }} />}</AnimatePresence>
 
-      <AnimatePresence>
-        {userNameEditing && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setUserNameEditing(false)} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
-            <motion.div
-              initial={{ y: '50px' }}
-              animate={{ y: 0 }}
-              exit={{ y: '50px' }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-              className="w-full max-w-[600px] space-y-6 rounded-2xl bg-(--second-lvl-bg) p-4"
-            >
-              <div className="grid w-full gap-2">
-                <label htmlFor="phone">Username</label>
-                <input
-                  onKeyDownCapture={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      changeUserName();
-                    }
-                  }}
-                  autoFocus
-                  className="w-full min-w-0 rounded-full border border-transparent bg-(--primary) px-4 py-2 outline-none focus:border-(--input-focus-border)"
-                  type="text"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => setUserNameEditing(false)} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Cancel
-                </button>
-                <button onClick={changeUserName} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Save
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {phoneEditing && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setPhoneEditing(false)} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
-            <motion.div
-              initial={{ y: '50px' }}
-              animate={{ y: 0 }}
-              exit={{ y: '50px' }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-              className="w-full max-w-[600px] space-y-6 rounded-2xl bg-(--second-lvl-bg) p-4"
-            >
-              <div className="grid w-full gap-2">
-                <label htmlFor="phone">Phone number</label>
-                <input
-                  onKeyDownCapture={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      changePhone();
-                    }
-                  }}
-                  autoFocus
-                  className="w-full min-w-0 rounded-full border border-transparent bg-(--primary) px-4 py-2 outline-none focus:border-(--input-focus-border)"
-                  type="number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => setPhoneEditing(false)} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Cancel
-                </button>
-                <button onClick={changePhone} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Save
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {profilePicId && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setProfilePicId('')} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
-            <motion.div
-              initial={{ y: '50px' }}
-              animate={{ y: 0 }}
-              exit={{ y: '50px' }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-              className="w-full max-w-[400px] space-y-6 rounded-2xl bg-(--second-lvl-bg) p-4"
-            >
-              <div className="space-y-4">
-                <h3 className="text-lg">Delete this photo?</h3>
-                <div className="mx-auto size-[200px] overflow-hidden rounded-full">
-                  <img className="size-full object-cover object-center" src={userData.pictures.find((p) => p.id === profilePicId)?.url} alt={`${userData.username} profile picture`} />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => setProfilePicId('')} className="rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70">
-                  Cancel
-                </button>
-                <button onClick={deleteProfileImage} className="rounded-full border-2 border-red-500 bg-(--primary) py-2.5 text-sm font-medium tracking-wide text-red-500 shadow hover:bg-(--primary)/70">
-                  Delete
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{profilePicId && <ProfilePicDeleteModal state={{ userData, profilePicId, setProfilePicId }} func={{ deleteProfileImage }} />}</AnimatePresence>
     </div>
   );
 }
