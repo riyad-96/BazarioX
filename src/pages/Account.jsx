@@ -121,14 +121,14 @@ function Account() {
                   const { id, isSelected, url } = p;
 
                   return (
-                    <div key={id} className={`size-[60px] overflow-hidden rounded-lg bg-zinc-200 ${isSelected && 'outline-2 outline-orange-400'}`}>
+                    <div key={id} className={`size-[50px] sm:size-[60px] overflow-hidden rounded-lg bg-zinc-200 ${isSelected && 'outline-2 outline-orange-400'}`}>
                       <img className="size-full object-cover object-center" src={url} alt={`${userData.username} profile photo`} />
                     </div>
                   );
                 })}
               {userData.pictures.length !== 5 && (
                 <>
-                  <label className="grid size-[60px] place-items-center rounded-lg bg-zinc-200" htmlFor="img-input">
+                  <label className="grid size-[50px] sm:size-[60px] place-items-center rounded-lg bg-zinc-200" htmlFor="img-input">
                     <ImagePlus color="currentColor" />
                   </label>
                   <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
