@@ -214,12 +214,18 @@ function FunctionContexts({ children }) {
           setUserData({
             username: userDataObject.data().username,
             phone: userDataObject.data().phone,
-            pictures: images.docs.map((doc) => doc.data()),
+            pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
           });
         } catch (err) {
           console.error(err);
         }
       })();
+    } else {
+      setUserData({
+        username: '',
+        phone: '',
+        pictures: [],
+      });
     }
   }, [user]);
 

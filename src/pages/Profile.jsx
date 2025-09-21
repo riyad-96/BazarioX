@@ -22,7 +22,7 @@ function Profile() {
       <div className="size-full pt-24">
         <div className="mb-4 grid justify-items-center gap-2">
           <div className="">
-            <div className="size-[150px] overflow-hidden rounded-full transition-[width,height] duration-150 sm:size-[250px]">
+            <div className="size-[150px] overflow-hidden rounded-full transition-[width,height] duration-150 sm:size-[250px] shadow">
               {userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full" /> : (
                 (() => {
                   const selectedImg = userData.pictures.find(p => p.isSelected)

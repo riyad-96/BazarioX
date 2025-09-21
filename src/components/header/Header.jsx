@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
 function Header({ className }) {
-  const { user, isUserDataLoading, setAllMonthData, setCurrentSession } = useUniContexts();
+  const { user, userData, isUserDataLoading, setAllMonthData, setCurrentSession } = useUniContexts();
 
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -70,8 +70,16 @@ function Header({ className }) {
               }}
               className={`${isUserDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
             >
-              <div className="size-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                <ProfilePlaceholderSvg className="size-full fill-zinc-800 dark:fill-zinc-300" />
+              <div className="size-full overflow-hidden rounded-full bg-zinc-100 shadow dark:bg-zinc-800">
+                {userData.pictures.length < 1 ? (
+                  <ProfilePlaceholderSvg className="size-full fill-zinc-800 dark:fill-zinc-300" />
+                ) : (
+                  (() => {
+                    const selectedImg = userData.pictures.find((p) => p.isSelected);
+
+                    return <img className="size-full object-cover object-center" src={selectedImg.url} alt={`${userData.username} profile photo`} />;
+                  })()
+                )}
               </div>
 
               <AnimatePresence>

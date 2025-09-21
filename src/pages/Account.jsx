@@ -7,7 +7,7 @@ import { useUniContexts } from '../contexts/UniContexts';
 import { ImagePlus } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { addDoc, collection, getDocs, writeBatch } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 
 function Account() {
   const navigate = useNavigate();
@@ -55,16 +55,15 @@ function Account() {
 
       const imgObj = {
         addedAt: new Date(),
-        id: Date.now(),
         url: selectedImg,
         isSelected: true,
       };
-      await addDoc(imgCollection, imgObj);
+      const newImg = await addDoc(imgCollection, imgObj);
       await batch.commit();
 
       setUserData((prev) => ({
         ...prev,
-        pictures: [imgObj, ...prev.pictures.map((p) => ({ ...p, isSelected: false }))],
+        pictures: [{ ...imgObj, id: newImg.id }, ...prev.pictures.map((p) => ({ ...p, isSelected: false }))],
       }));
 
       cancelImageSelection();
@@ -88,6 +87,31 @@ function Account() {
     );
   }
 
+  async function changePhoto(id) {
+    const img = userData.pictures.find((p) => p.id === id);
+    if (img.isSelected) return;
+
+    try {
+      const imgCollection = collection(db, 'users', user.uid, 'pictures');
+
+      const snapshot = await getDocs(imgCollection);
+      const batch = writeBatch(db);
+
+      snapshot.forEach((docSnap) => {
+        batch.update(docSnap.ref, { isSelected: docSnap.id === id });
+      });
+      await batch.commit();
+
+      setUserData((prev) => ({
+        ...prev,
+        pictures: [...prev.pictures.map((p) => (p.id === id ? { ...p, isSelected: true } : { ...p, isSelected: false }))],
+      }));
+      toast.success('Selected new picture');
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
       <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
@@ -101,7 +125,7 @@ function Account() {
 
       <div className="size-full pt-24">
         <div className="mb-5 space-y-4">
-          <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200">
+          <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200 shadow">
             <div className="size-full">
               {userData.pictures.length > 0 &&
                 (() => {
@@ -117,18 +141,15 @@ function Account() {
             <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture</h4>
             <div className="flex gap-2 sm:gap-4">
               {userData.pictures.length > 0 &&
-                userData.pictures.map((p) => {
-                  const { id, isSelected, url } = p;
+                userData.pictures.map((p) => (
+                  <div onClick={() => changePhoto(p.id)} key={p.id} className={`size-[50px] overflow-hidden rounded-lg bg-zinc-200 shadow sm:size-[60px] ${p.isSelected && 'outline-2 outline-orange-400'}`}>
+                    <img className="size-full object-cover object-center" src={p.url} alt={`${userData.username} profile photo`} />
+                  </div>
+                ))}
 
-                  return (
-                    <div key={id} className={`size-[50px] sm:size-[60px] overflow-hidden rounded-lg bg-zinc-200 ${isSelected && 'outline-2 outline-orange-400'}`}>
-                      <img className="size-full object-cover object-center" src={url} alt={`${userData.username} profile photo`} />
-                    </div>
-                  );
-                })}
               {userData.pictures.length !== 5 && (
                 <>
-                  <label className="grid size-[50px] sm:size-[60px] place-items-center rounded-lg bg-zinc-200" htmlFor="img-input">
+                  <label className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px]" htmlFor="img-input">
                     <ImagePlus color="currentColor" />
                   </label>
                   <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
@@ -179,7 +200,7 @@ function Account() {
 
       <AnimatePresence>
         {selectedImg && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={cancelImageSelection} className="fixed inset-0 z-20 grid place-items-center bg-black/30 p-3 overflow-y-auto">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={cancelImageSelection} className="fixed inset-0 z-20 grid place-items-center overflow-y-auto bg-black/30 p-3">
             <motion.div
               initial={{ y: '50px' }}
               animate={{ y: 0 }}
