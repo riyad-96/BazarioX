@@ -9,8 +9,8 @@ function Profile() {
   const { allMonthData } = useUniContexts();
 
   return (
-    <div className="scrollbar-thin grid h-dvh max-w-[700px] place-items-center overflow-y-auto bg-(--main-bg) p-3">
-      <div className="absolute top-0 left-0 z-10 grid h-[60px] w-full content-center bg-(--main-bg) px-3">
+    <div className="grid h-dvh max-w-[700px] grid-rows-[auto_1fr] bg-(--main-bg)">
+      <div className="grid h-[60px] bg-(--main-bg)">
         <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
           <button onClick={() => navigate(-1)} className="grid">
             <ArrowLeftSvg size="30" />
@@ -19,7 +19,7 @@ function Profile() {
         </div>
       </div>
 
-      <div className="size-full pt-24">
+      <div className="scrollbar-thin size-full overflow-y-auto px-3 pt-24 pb-16">
         <div className="mb-4 grid justify-items-center gap-2">
           <div className="">
             <div onClick={() => navigate('/account')} className="size-[150px] overflow-hidden rounded-full shadow transition-[width,height] duration-150 sm:size-[250px]">
