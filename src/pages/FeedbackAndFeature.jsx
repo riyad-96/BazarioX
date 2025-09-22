@@ -1,14 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg } from '../assets/Svg';
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
-import RatingsField from '../feedbackandfeatures/RatingsField';
-import FeatureField from '../feedbackandfeatures/FeatureField';
-import ReportField from '../feedbackandfeatures/ReportField';
-import { useUniContexts } from '../contexts/UniContexts';
+import { useState } from 'react';
+import RatingsField from '../components/feedbackandfeatures/RatingsField';
+import FeatureField from '../components/feedbackandfeatures/FeatureField';
+import ReportField from '../components/feedbackandfeatures/ReportField';
 
 function FeedbackAndFeature() {
-  const { userData } = useUniContexts();
   const navigate = useNavigate();
 
   // tabs

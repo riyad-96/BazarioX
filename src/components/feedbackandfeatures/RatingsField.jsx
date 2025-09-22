@@ -1,13 +1,15 @@
 import { StarIcon } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useUniContexts } from '../contexts/UniContexts';
+import { useUniContexts } from '../../contexts/UniContexts';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { db } from '../../configs/firebase';
 
 function RatingsField() {
-  const { userData } = useUniContexts();
+  const { user, userData, setUserData } = useUniContexts();
 
-  const [starsCount, setStarsCount] = useState(Array.from({ length: userData.rating }).map((_, i) => i + 1));
+  const [starsCount, setStarsCount] = useState([]);
 
   function handleStarCount(e) {
     const stars = +e.target.closest('[data-star-id]').dataset.starId;
@@ -19,16 +21,19 @@ function RatingsField() {
   }
 
   // send feedback
+  const [commentText, setCommentText] = useState('');
+  const [ratingErr, setRatingErr] = useState('');
+
   async function sendFeedBack(feedback) {
+    console.log(feedback);
     try {
-      console.log(feedback);
+      const feedbackCollectionRef = doc(db, 'feedbacks', user.uid);
+      await setDoc(feedbackCollectionRef, feedback, { merge: true });
+      setUserData((prev) => ({ ...prev, feedback }));
     } catch (err) {
       console.error(err);
     }
   }
-
-  const [commentText, setCommentText] = useState('');
-  const [ratingErr, setRatingErr] = useState('');
 
   function checkFeedbackAndSend() {
     if (starsCount.length < 1) {
@@ -36,13 +41,23 @@ function RatingsField() {
       return;
     }
 
-    const feedBackPromise = sendFeedBack({ stars: starsCount.length, comment: commentText });
+    const feedBackPromise = sendFeedBack({
+      rating: starsCount.length,
+      comment: commentText,
+    });
+
     toast.promise(feedBackPromise, {
       loading: 'Saving...',
       success: 'Feedback sent',
       error: 'Sending feedback failed',
     });
   }
+
+  // load saved rating and comment
+  useEffect(() => {
+    setStarsCount(Array.from({ length: userData.feedback.rating }).map((_, i) => i + 1));
+    setCommentText(userData.feedback.comment);
+  }, [userData]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">

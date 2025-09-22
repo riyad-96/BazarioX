@@ -201,13 +201,15 @@ function FunctionContexts({ children }) {
 
           // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
+          const feedbackDocRef = doc(db, 'feedbacks', user.uid);
+          const feedbacksnap = await getDoc(feedbackDocRef);
 
           setUserData({
             username: userDataObject.data().username || '',
             phone: userDataObject.data().phone || '',
             pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
-            rating: userDataObject.data().rating || 0,
-            reports: []
+            feedback: feedbacksnap.data(),
+            reports: [],
           });
         } catch (err) {
           console.error(err);
@@ -218,8 +220,8 @@ function FunctionContexts({ children }) {
         username: '',
         phone: '',
         pictures: [],
-        rating: 0,
-        reports: []
+        feedback: {},
+        reports: [],
       });
     }
   }, [user]);
