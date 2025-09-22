@@ -23,7 +23,7 @@ function FeatureField() {
       const featureObj = {
         ...featureRequest,
         status: 'pending',
-        reqAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
       };
       await addDoc(featureCollectionRef, featureObj);
       setUserData((prev) => ({ ...prev, featureRequests: [featureObj, ...prev.featureRequests] }));
@@ -96,7 +96,7 @@ function FeatureField() {
         {userData.featureRequests.length > 0 ? (
           <div className="space-y-3">
             {userData.featureRequests.map((f, i) => {
-              const { title, details, reqAt, status } = f;
+              const { title, details, createdAt, status } = f;
 
               return (
                 <motion.div
@@ -127,7 +127,7 @@ function FeatureField() {
                   </div>
                   <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
                     <span className="font-normal capitalize">{status}</span>
-                    <span className="opacity-80">{format(reqAt, 'd MMM y')}</span>
+                    <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
 
                     <span className={`absolute top-0 right-0 size-[20px] translate-x-1/2 -translate-y-1/2`}>
                       {status === 'pending' && (

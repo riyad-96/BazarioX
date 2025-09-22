@@ -94,3 +94,18 @@ input[type='number'] {
   word-wrap: break-word;
   word-break: break-word;
 }
+
+@keyframes blur-effect {
+  0% {
+    filter: blur(10px);
+    scale: 1;
+  }
+  50% {
+    filter: blur(20px);
+    scale: 1.05;
+  }
+  100% {
+    filter: blur(10px);
+    scale: 1;
+  }
+}

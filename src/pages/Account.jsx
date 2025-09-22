@@ -196,11 +196,11 @@ function Account() {
         </div>
       </div>
 
-      <div className="scrollbar-thin size-full overflow-y-auto px-3 py-8">
+      <div className="scrollbar-thin size-full overflow-y-auto px-3 pt-20 pb-8">
         <div className="mx-auto max-w-[700px]">
           <div className="mb-5 space-y-4">
-            <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200 shadow">
-              <div className="size-full">
+            <div className="relative mx-auto mb-8 aspect-1/1 max-w-[400px] rounded-xl bg-zinc-200 shadow">
+              <div className="relative z-2 size-full overflow-hidden rounded-2xl">
                 {userData.pictures.length > 0 ? (
                   (() => {
                     const imgObj = userData.pictures.find((p) => p.isSelected);
@@ -214,10 +214,16 @@ function Account() {
                   </div>
                 )}
               </div>
+
+              {userData.pictures.length > 0 && (
+                <div className="absolute inset-0 z-1 animate-[blur-effect_5s_ease-in-out_infinite]">
+                  <img className="size-full rounded-2xl object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />
+                </div>
+              )}
             </div>
 
-            <div>
-              <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture</h4>
+            <div className="mt-12">
+              <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture{userData.pictures.length > 1 && 's'}</h4>
               <div className="flex gap-2.5 sm:gap-4">
                 {userData.pictures.length > 0 &&
                   userData.pictures.map((p) => (

@@ -202,7 +202,8 @@ function FunctionContexts({ children }) {
           // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
           const feedbacksnap = await getDoc(doc(db, 'feedbacks', user.uid));
-          const featureRequests = await getDocs(query(collection(db, 'features', user.uid, 'entries'), orderBy('reqAt', 'desc')));
+          const featureRequests = await getDocs(query(collection(db, 'features', user.uid, 'entries'), orderBy('createdAt', 'desc')));
+          const reports = await getDocs(query(collection(db, 'reports', user.uid, 'entries'), orderBy('createdAt', 'desc')));
           console.log(featureRequests.docs.map((f) => f.data()));
 
           setUserData({
@@ -211,7 +212,7 @@ function FunctionContexts({ children }) {
             pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
             feedback: feedbacksnap.data(),
             featureRequests: featureRequests.docs.map((f) => f.data()),
-            reports: [],
+            reports: reports.docs.map((r) => r.data()),
           });
         } catch (err) {
           toast.error('Error loading user data, please reload the page.', { duration: 3000 });
