@@ -93,7 +93,9 @@ function Home() {
 
       <Header />
       <div className="scrollbar-thin overflow-y-auto px-3">
-        <Outlet />
+        <div className="mx-auto max-w-[700px]">
+          <Outlet />
+        </div>
       </div>
       <TabBar />
     </div>

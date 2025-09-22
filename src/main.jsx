@@ -16,6 +16,8 @@ import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import Account from './pages/Account.jsx';
 import FeedbackAndFeature from './pages/FeedbackAndFeature.jsx';
+import Dashboard from './admin/Dashboard/Dashboard.jsx';
+import ProtectedDashboardRoute from './admin/Dashboard/ProtectedDashboardRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
       {
         path: 'feedback',
         element: <FeedbackAndFeature />,
+      },
+      {
+        path: 'dashboard',
+        element: (
+          <ProtectedDashboardRoute>
+            <Dashboard />
+          </ProtectedDashboardRoute>
+        ),
       },
     ],
   },

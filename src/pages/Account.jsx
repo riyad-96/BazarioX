@@ -186,8 +186,8 @@ function Account() {
   }
 
   return (
-    <div className="grid h-dvh max-w-[700px] grid-rows-[auto_1fr] bg-(--main-bg)">
-      <div className="grid h-[60px] bg-(--main-bg) px-2">
+    <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
+      <div className="grid h-[60px] bg-(--main-bg) px-3">
         <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
           <button onClick={() => navigate(-1)} className="grid">
             <ArrowLeftSvg size="30" />
@@ -196,98 +196,100 @@ function Account() {
         </div>
       </div>
 
-      <div className="scrollbar-thin scrollbar-thin size-full overflow-y-auto px-3 py-8">
-        <div className="mb-5 space-y-4">
-          <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200 shadow">
-            <div className="size-full">
-              {userData.pictures.length > 0 ? (
-                (() => {
-                  const imgObj = userData.pictures.find((p) => p.isSelected);
-                  if (imgObj) {
-                    return <img className="size-full object-cover object-center" src={imgObj.url} alt={`${userData.username} profile photo`} />;
-                  }
-                })()
-              ) : (
-                <div className="grid size-full place-items-center">
-                  <ProfilePlaceholderSvg className="size-1/2 fill-zinc-800" />
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture</h4>
-            <div className="flex gap-2.5 sm:gap-4">
-              {userData.pictures.length > 0 &&
-                userData.pictures.map((p) => (
-                  <div key={p.id} className={`group relative size-[50px] rounded-lg bg-zinc-200 shadow outline-2 transition-[outline-color] duration-150 sm:size-[60px] pointer-fine:cursor-pointer ${p.isSelected ? 'outline-orange-400' : 'outline-transparent'}`}>
-                    <div onClick={() => changePhoto(p.id)} className="size-full overflow-hidden rounded-lg">
-                      <img className="size-full object-cover object-center" src={p.url} alt={`${userData.username} profile photo`} />
-                    </div>
-                    <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
-                      <X strokeWidth={3} color="currentColor" size="14" />
-                    </button>
+      <div className="scrollbar-thin size-full overflow-y-auto px-3 py-8">
+        <div className="mx-auto max-w-[700px]">
+          <div className="mb-5 space-y-4">
+            <div className="aspect-3/2 overflow-hidden rounded-xl bg-zinc-200 shadow">
+              <div className="size-full">
+                {userData.pictures.length > 0 ? (
+                  (() => {
+                    const imgObj = userData.pictures.find((p) => p.isSelected);
+                    if (imgObj) {
+                      return <img className="size-full object-cover object-center" src={imgObj.url} alt={`${userData.username} profile photo`} />;
+                    }
+                  })()
+                ) : (
+                  <div className="grid size-full place-items-center">
+                    <ProfilePlaceholderSvg className="size-1/2 fill-zinc-800" />
                   </div>
-                ))}
+                )}
+              </div>
+            </div>
 
-              {userData.pictures.length !== 5 && (
-                <>
-                  <label className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px] pointer-fine:cursor-pointer" htmlFor="img-input">
-                    <ImagePlus color="currentColor" />
-                  </label>
-                  <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
-                </>
-              )}
+            <div>
+              <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture</h4>
+              <div className="flex gap-2.5 sm:gap-4">
+                {userData.pictures.length > 0 &&
+                  userData.pictures.map((p) => (
+                    <div key={p.id} className={`group relative size-[50px] rounded-lg bg-zinc-200 shadow outline-2 transition-[outline-color] duration-150 sm:size-[60px] pointer-fine:cursor-pointer ${p.isSelected ? 'outline-orange-400' : 'outline-transparent'}`}>
+                      <div onClick={() => changePhoto(p.id)} className="size-full overflow-hidden rounded-lg">
+                        <img className="size-full object-cover object-center" src={p.url} alt={`${userData.username} profile photo`} />
+                      </div>
+                      <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
+                        <X strokeWidth={3} color="currentColor" size="14" />
+                      </button>
+                    </div>
+                  ))}
+
+                {userData.pictures.length !== 5 && (
+                  <>
+                    <label className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px] pointer-fine:cursor-pointer" htmlFor="img-input">
+                      <ImagePlus color="currentColor" />
+                    </label>
+                    <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-          <button
-            onClick={() => {
-              setUserName(userData.username);
-              setUserNameEditing(true);
-            }}
-            className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
-          >
-            <span>Username</span>
-            <span className="font-light opacity-70">{userData.username || 'set user name'}</span>
-          </button>
-          <button
-            onClick={() => {
-              setPhoneEditing(true);
-              setPhone(userData.phone);
-            }}
-            className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
-          >
-            <span>Phone number</span>
-            <span className="font-light opacity-70">{userData.phone || 'set number'}</span>
-          </button>
-          <button className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
-            <span>Change password</span>
-          </button>
-        </div>
+          <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
+            <button
+              onClick={() => {
+                setUserName(userData.username);
+                setUserNameEditing(true);
+              }}
+              className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
+            >
+              <span>Username</span>
+              <span className="font-light opacity-70">{userData.username || 'set user name'}</span>
+            </button>
+            <button
+              onClick={() => {
+                setPhoneEditing(true);
+                setPhone(userData.phone);
+              }}
+              className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
+            >
+              <span>Phone number</span>
+              <span className="font-light opacity-70">{userData.phone || 'set number'}</span>
+            </button>
+            <button className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+              <span>Change password</span>
+            </button>
+          </div>
 
-        <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-          <button
-            onClick={async () => {
-              try {
-                await signOut(auth);
-                toast.success('Logged out successfully!', { duration: 2500 });
-                localStorage.clear();
-                setAllMonthData([]);
-                setCurrentSession({ sessionTitle: '', bazarList: [] });
-                navigate(-2);
-              } catch (err) {
-                toast.error('Logout failed, please try again.', { duration: 2500 });
-                console.error(err);
-              }
-            }}
-            className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
-          >
-            Log out
-          </button>
-          <button className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">Delete account</button>
+          <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
+            <button
+              onClick={async () => {
+                try {
+                  await signOut(auth);
+                  toast.success('Logged out successfully!', { duration: 2500 });
+                  localStorage.clear();
+                  setAllMonthData([]);
+                  setCurrentSession({ sessionTitle: '', bazarList: [] });
+                  navigate(-2);
+                } catch (err) {
+                  toast.error('Logout failed, please try again.', { duration: 2500 });
+                  console.error(err);
+                }
+              }}
+              className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
+            >
+              Log out
+            </button>
+            <button className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">Delete account</button>
+          </div>
         </div>
       </div>
 

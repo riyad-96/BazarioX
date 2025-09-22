@@ -198,9 +198,11 @@ function FunctionContexts({ children }) {
           const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
           const images = await getDocs(imgCollectionQuery);
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
+          console.log(userDataObject.data());
           setUserData({
-            username: userDataObject.data().username,
-            phone: userDataObject.data().phone,
+            username: userDataObject.data().username || '',
+            phone: userDataObject.data().phone || '',
+            rated: userDataObject.data().rated || false,
             pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
           });
         } catch (err) {
@@ -211,6 +213,7 @@ function FunctionContexts({ children }) {
       setUserData({
         username: '',
         phone: '',
+        rated: false,
         pictures: [],
       });
     }

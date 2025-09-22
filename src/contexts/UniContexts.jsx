@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { auth } from '../configs/firebase';
+import { adminEmail, auth } from '../configs/firebase';
 
 const uniContexts = createContext();
 export const useUniContexts = () => useContext(uniContexts);
@@ -13,10 +13,16 @@ function UniContexts({ children }) {
   const [userData, setUserData] = useState({
     username: '',
     phone: '',
+    rated: false,
     pictures: [],
   });
 
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
+
+  // admin
+  function isAdmin() {
+    return user && user?.email === adminEmail;
+  }
 
   //app
   const [clickDisabled, setClickDisabled] = useState(false);
@@ -43,7 +49,7 @@ function UniContexts({ children }) {
 
   // user watcher function
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
       } else {
@@ -60,7 +66,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, isAdmin, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

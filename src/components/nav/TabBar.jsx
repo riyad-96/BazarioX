@@ -14,8 +14,8 @@ function TabBar({ className }) {
   }, []);
 
   return (
-    <div className={`border-t-1 relative z-10 border-(--slick-border) bg-(--primary) text-(--text-clr) ${className}`}>
-      <div className="flex h-full items-center px-2 font-medium select-none">
+    <div className={`relative z-10 border-t-1 border-(--slick-border) bg-(--primary) text-(--text-clr) ${className}`}>
+      <div className="mx-auto flex h-full max-w-[700px] items-center font-medium select-none">
         <div onClick={() => navigate('/', { replace: true })} className="flex h-full flex-1 items-center justify-center">
           <NavLink replace to="/" className={({ isActive }) => `${isActive ? 'bg-(--nav-link-bg)' : 'bg-(--primary)'} nav-link rounded-full px-6 py-2 transition-colors duration-300`}>
             <span>Calc</span>

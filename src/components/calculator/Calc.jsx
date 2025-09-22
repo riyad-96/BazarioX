@@ -71,7 +71,7 @@ function Calc({ props }) {
   const focusedInput = useRef();
 
   return (
-    <div className={`absolute bottom-[70px] left-1/2 z-5 w-[calc(100%_-_1rem)] -translate-x-1/2 rounded-xl border border-(--slick-border) bg-(--primary) p-3 shadow transition-[translate] duration-450 ${isCalcExpanded ? 'translate-0' : 'translate-y-[105%]'}`}>
+    <div className={`max-w-[700px] absolute bottom-[70px] left-1/2 z-5 w-[calc(100%_-_1rem)] -translate-x-1/2 rounded-xl border border-(--slick-border) bg-(--primary) p-3 shadow transition-[translate] duration-450 ${isCalcExpanded ? 'translate-0' : 'translate-y-[105%]'}`}>
       <button onClick={() => setIsCalcExpanded((prev) => !prev)} className={`absolute right-2 grid size-[35px] translate-y-[calc(-100%_+_1px)] place-items-center border-(--slick-border) bg-(--primary) transition-[top,box-shadow] duration-350 ${isCalcExpanded ? 'top-0 rounded-t-md border-t border-r border-l' : 'top-[-15px] rounded-md border shadow'}`}>
         <ArrowUpSvg className={`transition-[rotate] duration-450 ${isCalcExpanded ? 'rotate-[180deg]' : 'rotate-0'}`} size="22" />
       </button>

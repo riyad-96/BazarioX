@@ -10,7 +10,7 @@ function App() {
   const { start, complete } = useLoadingTopBar();
 
   return (
-    <div className="mx-auto h-dvh max-w-[700px] bg-(--main-bg)">
+    <div className="h-dvh bg-(--main-bg)">
       <LoadingTopBar />
       <Toaster position="top-center" />
 
