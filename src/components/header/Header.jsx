@@ -47,7 +47,7 @@ function Header({ className }) {
 
         <div className="flex items-center gap-4">
           <span key={tick} className="text-sm select-none">
-            {format(new Date(), 'h:m aa')}
+            {format(new Date(), 'h:mm aa')}
           </span>
           <div className="relative flex items-center gap-4">
             {!isUserDataLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}

@@ -15,6 +15,7 @@ function UniContexts({ children }) {
     phone: '',
     pictures: [],
     feedback: {},
+    featureRequests: [],
     reports: [],
   });
 

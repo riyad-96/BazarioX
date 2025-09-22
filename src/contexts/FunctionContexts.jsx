@@ -201,14 +201,14 @@ function FunctionContexts({ children }) {
 
           // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
-          const feedbackDocRef = doc(db, 'feedbacks', user.uid);
-          const feedbacksnap = await getDoc(feedbackDocRef);
+          const feedbacksnap = await getDoc(doc(db, 'feedbacks', user.uid));
 
           setUserData({
             username: userDataObject.data().username || '',
             phone: userDataObject.data().phone || '',
             pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
             feedback: feedbacksnap.data(),
+            featureRequests: [],
             reports: [],
           });
         } catch (err) {
@@ -221,6 +221,7 @@ function FunctionContexts({ children }) {
         phone: '',
         pictures: [],
         feedback: {},
+        featureRequests: [],
         reports: [],
       });
     }

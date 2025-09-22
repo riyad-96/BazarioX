@@ -94,7 +94,7 @@ function RatingsField() {
           <span>Comment</span>
           <span className="opacity-70">(optional)</span>
         </label>
-        <textarea onChange={(e) => setCommentText(e.target.value)} value={commentText} id="comment" className="min-h-[200px] w-full min-w-0 resize-y rounded-lg border border-transparent bg-(--textarea-bg) p-3 transition-[border-color] duration-150 outline-none focus:border-(--input-focus-border)" placeholder="Enter your message"></textarea>
+        <textarea onChange={(e) => setCommentText(e.target.value)} value={commentText} id="comment" className="min-h-[150px] w-full min-w-0 resize-y rounded-lg border border-transparent bg-(--textarea-bg) p-3 transition-[border-color] duration-150 outline-none focus:border-(--input-focus-border)" placeholder="Enter your message"></textarea>
       </div>
 
       <button onClick={checkFeedbackAndSend} className="w-full rounded-lg bg-green-200 py-2 shadow">

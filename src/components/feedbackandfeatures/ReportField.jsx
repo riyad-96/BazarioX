@@ -1,6 +1,9 @@
 import { motion } from 'motion/react';
+import { useUniContexts } from '../../contexts/UniContexts';
 
 function ReportField() {
+  const { user, userData, setUserData } = useUniContexts();
+
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
       <h3 className="mb-2 flex gap-2 pl-1 text-2xl">

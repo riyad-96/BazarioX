@@ -7,6 +7,8 @@ function Profile() {
   const { user, userData, isAdmin, allMonthData } = useUniContexts();
   const navigate = useNavigate();
 
+  // blur the photo background
+
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
       <div className="grid h-[60px] bg-(--main-bg) px-3">
