@@ -195,15 +195,19 @@ function FunctionContexts({ children }) {
     if (user) {
       (async () => {
         try {
+          // get profile pictures
           const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
           const images = await getDocs(imgCollectionQuery);
+
+          // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
-          console.log(userDataObject.data());
+
           setUserData({
             username: userDataObject.data().username || '',
             phone: userDataObject.data().phone || '',
-            rated: userDataObject.data().rated || false,
             pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+            rating: userDataObject.data().rating || 0,
+            reports: []
           });
         } catch (err) {
           console.error(err);
@@ -213,8 +217,9 @@ function FunctionContexts({ children }) {
       setUserData({
         username: '',
         phone: '',
-        rated: false,
         pictures: [],
+        rating: 0,
+        reports: []
       });
     }
   }, [user]);

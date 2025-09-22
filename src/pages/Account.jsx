@@ -161,7 +161,7 @@ function Account() {
   async function changeUserName() {
     try {
       const docRef = doc(db, 'users', user.uid);
-      await setDoc(docRef, { username: userName });
+      await setDoc(docRef, { username: userName }, { merge: true });
       setUserData((prev) => ({ ...prev, username: userName }));
       setUserNameEditing(false);
       toast.success('Username successfully changed');
@@ -176,7 +176,7 @@ function Account() {
   async function changePhone() {
     try {
       const docRef = doc(db, 'users', user.uid);
-      await setDoc(docRef, { phone });
+      await setDoc(docRef, { phone }, { merge: true });
       setUserData((prev) => ({ ...prev, phone }));
       setPhoneEditing(false);
       toast.success('Phone successfully changed');

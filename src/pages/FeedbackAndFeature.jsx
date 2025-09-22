@@ -11,27 +11,6 @@ function FeedbackAndFeature() {
   const { userData } = useUniContexts();
   const navigate = useNavigate();
 
-  // feedback
-  const [starsCount, setStarsCount] = useState([]);
-  function handleStarCount(e) {
-    const stars = +e.target.closest('[data-star-id]').dataset.starId;
-
-    if (starsCount.length === stars) {
-      setStarsCount([]);
-      return;
-    }
-    setStarsCount(Array.from({ length: stars }).map((_, i) => i + 1));
-  }
-
-  // send feedback
-  async function sendFeedBack(feedback) {
-    try {
-      console.log(feedback);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   // tabs
   const [tab, setTab] = useState('feedback');
 
@@ -57,7 +36,7 @@ function FeedbackAndFeature() {
           </div>
 
           <div>
-            {tab === 'feedback' && <RatingsField state={{ starsCount }} func={{ handleStarCount, sendFeedBack }} />}
+            {tab === 'feedback' && <RatingsField />}
             {tab === 'feature' && <FeatureField />}
             {tab === 'report' && <ReportField />}
           </div>

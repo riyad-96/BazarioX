@@ -2,10 +2,30 @@ import { StarIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useUniContexts } from '../contexts/UniContexts';
 
-function RatingsField({ state, func }) {
-  const { starsCount } = state;
-  const { handleStarCount, sendFeedBack } = func;
+function RatingsField() {
+  const { userData } = useUniContexts();
+
+  const [starsCount, setStarsCount] = useState(Array.from({ length: userData.rating }).map((_, i) => i + 1));
+
+  function handleStarCount(e) {
+    const stars = +e.target.closest('[data-star-id]').dataset.starId;
+    if (starsCount.length === stars) {
+      setStarsCount([]);
+      return;
+    }
+    setStarsCount(Array.from({ length: stars }).map((_, i) => i + 1));
+  }
+
+  // send feedback
+  async function sendFeedBack(feedback) {
+    try {
+      console.log(feedback);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const [commentText, setCommentText] = useState('');
   const [ratingErr, setRatingErr] = useState('');
@@ -25,7 +45,7 @@ function RatingsField({ state, func }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}  className="space-y-4">
+    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
       <div className="pl-1">
         <h2 className="text-3xl">Give feedback</h2>
         <span className="opacity-80">Please share you experience about our app</span>

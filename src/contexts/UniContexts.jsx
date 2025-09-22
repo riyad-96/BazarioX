@@ -13,8 +13,9 @@ function UniContexts({ children }) {
   const [userData, setUserData] = useState({
     username: '',
     phone: '',
-    rated: false,
     pictures: [],
+    rating: 0,
+    reports: [],
   });
 
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
