@@ -1,6 +1,6 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { motion } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { db } from '../../configs/firebase';
 import { useUniContexts } from '../../contexts/UniContexts';
@@ -23,9 +23,9 @@ function FeatureField() {
       const featureObj = {
         ...featureRequest,
         status: 'pending',
-        createdAt: new Date(),
+        reqAt: new Date().toISOString(),
       };
-      // await addDoc(featureCollectionRef, featureObj);
+      await addDoc(featureCollectionRef, featureObj);
       setUserData((prev) => ({ ...prev, featureRequests: [featureObj, ...prev.featureRequests] }));
       setFeatureRequest({
         title: '',
@@ -91,12 +91,12 @@ function FeatureField() {
         </button>
       </div>
 
-      {userData.featureRequests.length > 0 && (
-        <div className="mt-8">
-          <h3 className="mb-2 pl-1 text-xl">Previous requests</h3>
+      <div className="mt-8 space-y-2">
+        <h3 className="mb-2 pl-1 text-xl">Previous requests</h3>
+        {userData.featureRequests.length > 0 ? (
           <div className="space-y-3">
             {userData.featureRequests.map((f, i) => {
-              const { title, details, createdAt, status } = f;
+              const { title, details, reqAt, status } = f;
 
               return (
                 <motion.div
@@ -119,15 +119,15 @@ function FeatureField() {
                     },
                   }}
                   key={`featureKey${i}`}
-                  className="flex items-start gap-2 rounded-lg bg-(--primary) p-3 shadow"
+                  className="flex items-start gap-4 rounded-lg bg-(--primary) p-3 shadow"
                 >
                   <div className="flex-5 space-y-2">
                     <h4 className="text-lg leading-6 underline underline-offset-2">{title.trim() || 'Untitled'}</h4>
-                    <p className="leading-5 font-light">{details}</p>
+                    <p className="long-text leading-5 font-light">{details}</p>
                   </div>
                   <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
                     <span className="font-normal capitalize">{status}</span>
-                    <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
+                    <span className="opacity-80">{format(reqAt, 'd MMM y')}</span>
 
                     <span className={`absolute top-0 right-0 size-[20px] translate-x-1/2 -translate-y-1/2`}>
                       {status === 'pending' && (
@@ -161,8 +161,12 @@ function FeatureField() {
               );
             })}
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="rounded-lg bg-(--primary) py-2 text-center shadow">
+            <span className="opacity-70">Add a feature request.</span>
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 }
