@@ -12,6 +12,7 @@ import ImagePreviewModal from '../components/account/ImagePreviewModal';
 import NameEditingModal from '../components/account/NameEditingModal';
 import PhoneEditingModal from '../components/account/PhoneEditingModal';
 import ProfilePicDeleteModal from '../components/account/ProfilePicDeleteModal';
+import LogoutModal from '../components/account/LogoutModal';
 
 function Account() {
   const navigate = useNavigate();
@@ -185,6 +186,9 @@ function Account() {
     }
   }
 
+  // logout
+  const [requestingLogout, setRequestingLogout] = useState(false);
+
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
       <div className="grid h-[60px] bg-(--main-bg) px-3">
@@ -290,22 +294,7 @@ function Account() {
           </div>
 
           <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-            <button
-              onClick={async () => {
-                try {
-                  await signOut(auth);
-                  toast.success('Logged out successfully!', { duration: 2500 });
-                  localStorage.clear();
-                  setAllMonthData([]);
-                  setCurrentSession({ sessionTitle: '', bazarList: [] });
-                  navigate(-2);
-                } catch (err) {
-                  toast.error('Logout failed, please try again.', { duration: 2500 });
-                  console.error(err);
-                }
-              }}
-              className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
-            >
+            <button onClick={() => setRequestingLogout(true)} className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">
               Log out
             </button>
             <button className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)">Delete account</button>
@@ -321,6 +310,8 @@ function Account() {
       <AnimatePresence>{phoneEditing && <PhoneEditingModal state={{ phone, setPhone, setPhoneEditing }} func={{ changePhone }} />}</AnimatePresence>
 
       <AnimatePresence>{profilePicId && <ProfilePicDeleteModal state={{ userData, profilePicId, setProfilePicId }} func={{ deleteProfileImage }} />}</AnimatePresence>
+
+      <AnimatePresence>{requestingLogout && <LogoutModal state={{ setRequestingLogout }} />}</AnimatePresence>
     </div>
   );
 }

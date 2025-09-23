@@ -65,7 +65,7 @@ input[type='number'] {
   }
   30% {
     outline-offset: 2px;
-    outline-color: hsl(0, 0%, 40%);
+    outline-color: hsl(0, 0%, 70%);
   }
   100% {
     outline-offset: 5px;
