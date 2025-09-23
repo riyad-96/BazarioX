@@ -102,7 +102,7 @@ input[type='number'] {
   }
   50% {
     filter: blur(20px);
-    scale: 1.05;
+    scale: 1.03;
   }
   100% {
     filter: blur(10px);
