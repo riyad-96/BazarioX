@@ -7,8 +7,21 @@ export const useUniContexts = () => useContext(uniContexts);
 
 function UniContexts({ children }) {
   // user
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [isUserLoading, setIsUserLoading] = useState(true);
+
+  // user watcher function
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setUser(user);
+      setIsUserLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // user data
+  const [userDataLoading, setUserDataLoading] = useState(true);
 
   const [userData, setUserData] = useState({
     username: '',
@@ -18,8 +31,6 @@ function UniContexts({ children }) {
     featureRequests: [],
     reports: [],
   });
-
-  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
   // admin
   function isAdmin() {
@@ -49,26 +60,11 @@ function UniContexts({ children }) {
 
   const [isCalcExpanded, setIsCalcExpanded] = useState(true);
 
-  // user watcher function
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-
-      setIsUserDataLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   // monthly history
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, clickDisabled, setClickDisabled, isUserDataLoading, setIsUserDataLoading, isAdmin, userData, setUserData, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, clickDisabled, setClickDisabled, isUserLoading, setIsUserLoading, isAdmin, userData, setUserData, userDataLoading, setUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

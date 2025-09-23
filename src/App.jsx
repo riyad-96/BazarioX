@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { LoadingTopBar, useLoadingTopBar } from './components/helpers/LoadingTopBar';
 
 function App() {
-  const { user, clickDisabled, isUserDataLoading } = useUniContexts();
+  const { user, clickDisabled, isUserLoading } = useUniContexts();
 
   const { start, complete } = useLoadingTopBar();
 
@@ -16,7 +16,7 @@ function App() {
 
       {clickDisabled && <div className="fixed inset-0 z-[100000] cursor-not-allowed"></div>}
       <AnimatePresence>
-        {isUserDataLoading && (
+        {isUserLoading && (
           <motion.div
             initial={{
               opacity: 0,
@@ -38,7 +38,7 @@ function App() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!isUserDataLoading && (
+        {!isUserLoading && (
           <motion.div
             initial={{
               opacity: 0,

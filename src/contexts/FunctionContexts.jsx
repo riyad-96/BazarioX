@@ -8,7 +8,7 @@ const functionContext = createContext();
 export const useFunctionContext = () => useContext(functionContext);
 
 function FunctionContexts({ children }) {
-  const { user, setUserData, setAllMonthData, setAllMonthDataLoading, setUnsavedSessionModal, setClickDisabled } = useUniContexts();
+  const { user, setUserData, setUserDataLoading, setAllMonthData, setAllMonthDataLoading, setUnsavedSessionModal, setClickDisabled } = useUniContexts();
 
   // ! -------------- New functions --------------
   // save to local function
@@ -192,8 +192,10 @@ function FunctionContexts({ children }) {
 
   // load user data
   useEffect(() => {
+    setUserDataLoading(false);
     if (user) {
       (async () => {
+        setUserDataLoading(true);
         try {
           // get profile pictures
           const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
@@ -216,6 +218,8 @@ function FunctionContexts({ children }) {
         } catch (err) {
           toast.error('Error loading user data, please reload the page.', { duration: 3000 });
           console.error(err);
+        } finally {
+          setUserDataLoading(false);
         }
       })();
     } else {

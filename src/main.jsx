@@ -17,6 +17,9 @@ import Account from './pages/Account.jsx';
 import FeedbackAndFeature from './pages/FeedbackAndFeature.jsx';
 import Dashboard from './admin/Dashboard/Dashboard.jsx';
 import ProtectedDashboardRoute from './admin/Dashboard/ProtectedDashboardRoute.jsx';
+import ProfileProtectedRoute from './Routes/ProfileProtectedRoute.jsx';
+import ProfileIndex from './components/profile/ProfileIndex.jsx';
+import AuthProtectedRoute from './Routes/AuthProtectedRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -43,7 +46,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'auth',
-        element: <Auth />,
+        element: (
+          <AuthProtectedRoute>
+            <Auth />
+          </AuthProtectedRoute>
+        ),
         children: [
           {
             path: 'log-in',
@@ -57,15 +64,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <Profile />,
-      },
-      {
-        path: 'account',
-        element: <Account />,
-      },
-      {
-        path: 'feedback',
-        element: <FeedbackAndFeature />,
+        element: (
+          <ProfileProtectedRoute>
+            <Profile />
+          </ProfileProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <ProfileIndex />,
+          },
+          {
+            path: 'account',
+            element: <Account />,
+          },
+          {
+            path: 'feedback',
+            element: <FeedbackAndFeature />,
+          },
+        ],
       },
       {
         path: 'dashboard',

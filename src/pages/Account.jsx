@@ -112,7 +112,7 @@ function Account() {
       }));
       toast.success('Selected new picture');
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -231,7 +231,7 @@ function Account() {
                       <div onClick={() => changePhoto(p.id)} className="size-full overflow-hidden rounded-lg">
                         <img className="size-full object-cover object-center" src={p.url} alt={`${userData.username} profile photo`} />
                       </div>
-                      <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
+                      <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 bg-black/70 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
                         <X strokeWidth={3} color="currentColor" size="14" />
                       </button>
                     </div>

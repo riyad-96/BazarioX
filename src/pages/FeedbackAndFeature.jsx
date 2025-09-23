@@ -25,7 +25,7 @@ function FeedbackAndFeature() {
 
         <div className="px-3 pt-8 pb-6">
           <div className="mx-auto max-w-[700px]">
-            <div className="grid divide-(--slick-border) rounded-lg bg-(--primary) shadow max-sm:divide-y sm:flex sm:divide-x">
+            <div className="grid divide-(--slick-border) overflow-hidden rounded-lg bg-(--primary) shadow max-sm:divide-y sm:flex sm:divide-x">
               {['feedback', 'feature', 'report'].map((t) => (
                 <button key={t} onClick={() => setTab(t)} className={`flex px-4 py-2 sm:flex-1 sm:justify-center ${tab === t && 'bg-zinc-200'}`}>
                   <span className="capitalize">{t}</span>

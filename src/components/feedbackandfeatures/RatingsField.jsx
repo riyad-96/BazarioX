@@ -25,7 +25,6 @@ function RatingsField() {
   const [ratingErr, setRatingErr] = useState('');
 
   async function sendFeedBack(feedback) {
-    console.log(feedback);
     try {
       const feedbackCollectionRef = doc(db, 'feedbacks', user.uid);
       await setDoc(feedbackCollectionRef, feedback, { merge: true });

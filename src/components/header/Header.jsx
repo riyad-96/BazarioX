@@ -5,8 +5,8 @@ import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
 
-function Header({ className }) {
-  const { user, userData, isUserDataLoading } = useUniContexts();
+function Header() {
+  const { user, userData, isUserLoading, userDataLoading } = useUniContexts();
 
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -50,11 +50,11 @@ function Header({ className }) {
             {format(new Date(), 'h:mm aa')}
           </span>
           <div className="relative flex items-center gap-4">
-            {!isUserDataLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}
+            {!isUserLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}
             <div
               data-dropdown-trigger
               onClick={() => {
-                if (isUserDataLoading) return;
+                if (isUserLoading) return;
                 if (isDropdownOpen) {
                   setIsDropdownOpen(false);
                   return;
@@ -65,18 +65,16 @@ function Header({ className }) {
                   navigate('/profile');
                 }
               }}
-              className={`${isUserDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
+              className={`${userDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
             >
               <div className="size-full overflow-hidden rounded-full bg-zinc-100 shadow">
-                {userData.pictures.length < 1 ? (
-                  <ProfilePlaceholderSvg className="size-full fill-zinc-800" />
-                ) : (
-                  (() => {
-                    const selectedImg = userData.pictures.find((p) => p.isSelected);
-
-                    return <img className="size-full object-cover object-center" src={selectedImg.url} alt={`${userData.username} profile photo`} />;
-                  })()
-                )}
+                {userDataLoading ?
+                  <span className="size-full animate-pulse bg-zinc-400 block"></span> 
+                :
+                  <>
+                    {userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full fill-zinc-800" /> : <motion.img initial={{opacity: 0}} animate={{opacity: 1}} className="size-full object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />}
+                  </>
+                }
               </div>
 
               <AnimatePresence>

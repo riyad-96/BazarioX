@@ -140,17 +140,12 @@ function ReportField() {
                           <ScanEye size="14" color="currentColor" strokeWidth="2" />
                         </span>
                       )}
-                      {status === 'working' && (
-                        <span className="grid size-full place-items-center rounded-md bg-blue-300 text-black">
-                          <Hammer size="14" color="currentColor" strokeWidth="2" />
-                        </span>
-                      )}
-                      {status === 'implemented' && (
+                      {status === 'resolved' && (
                         <span className="grid size-full place-items-center rounded-md bg-emerald-300 text-black">
                           <BadgeCheck size="14" color="currentColor" strokeWidth="2" />
                         </span>
                       )}
-                      {status === 'rejected' && (
+                      {status === 'dismissed' && (
                         <span className="grid size-full place-items-center rounded-md bg-red-300 text-black">
                           <Ban size="14" color="currentColor" strokeWidth="2" />
                         </span>
