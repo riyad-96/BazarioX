@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth, db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../contexts/UniContexts';
-import { ImagePlus, X } from 'lucide-react';
+import { ImagePlus, LoaderCircle, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
@@ -16,7 +16,7 @@ import ProfilePicDeleteModal from '../components/account/ProfilePicDeleteModal';
 function Account() {
   const navigate = useNavigate();
 
-  const { user, userData, setUserData, setAllMonthData, setCurrentSession, setClickDisabled } = useUniContexts();
+  const { user, userData, userDataLoading, setUserData, setAllMonthData, setCurrentSession, setClickDisabled } = useUniContexts();
 
   // profile image updation
   const [selectedImg, setSelectedImg] = useState('');
@@ -200,25 +200,31 @@ function Account() {
         <div className="mx-auto max-w-[700px]">
           <div className="mb-5 space-y-4">
             <div className="relative mx-auto mb-8 aspect-1/1 max-w-[400px] rounded-xl bg-zinc-200 shadow">
-              <div className="relative z-2 size-full overflow-hidden rounded-2xl">
-                {userData.pictures.length > 0 ? (
-                  (() => {
-                    const imgObj = userData.pictures.find((p) => p.isSelected);
-                    if (imgObj) {
-                      return <img className="size-full object-cover object-center" src={imgObj.url} alt={`${userData.username} profile photo`} />;
-                    }
-                  })()
-                ) : (
-                  <div className="grid size-full place-items-center">
-                    <ProfilePlaceholderSvg className="size-1/2 fill-zinc-800" />
-                  </div>
-                )}
-              </div>
+              {userDataLoading ? (
+                <span className="block size-full animate-pulse rounded-xl bg-zinc-300"></span>
+              ) : (
+                <>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="relative z-2 size-full overflow-hidden rounded-2xl">
+                    {userData.pictures.length > 0 ? (
+                      (() => {
+                        const imgObj = userData.pictures.find((p) => p.isSelected);
+                        if (imgObj) {
+                          return <img className="size-full object-cover object-center" src={imgObj.url} alt={`${userData.username} profile photo`} />;
+                        }
+                      })()
+                    ) : (
+                      <span className="grid size-full place-items-center">
+                        <ProfilePlaceholderSvg className="size-1/2 fill-zinc-800" />
+                      </span>
+                    )}
+                  </motion.div>
 
-              {userData.pictures.length > 0 && (
-                <div className="absolute inset-0 z-1 animate-[blur-effect_5s_ease-in-out_infinite]">
-                  <img className="size-full rounded-2xl object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />
-                </div>
+                  {userData.pictures.length > 0 && (
+                    <div className="absolute inset-0 z-1 animate-[blur-effect_5s_ease-in-out_infinite]">
+                      <img className="size-full rounded-2xl object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -226,21 +232,29 @@ function Account() {
               <h4 className="mb-2 flex items-center gap-2 pl-1">Profile picture{userData.pictures.length > 1 && 's'}</h4>
               <div className="flex gap-2.5 sm:gap-4">
                 {userData.pictures.length > 0 &&
-                  userData.pictures.map((p) => (
-                    <div key={p.id} className={`group relative size-[50px] rounded-lg bg-zinc-200 shadow outline-2 transition-[outline-color] duration-150 sm:size-[60px] pointer-fine:cursor-pointer ${p.isSelected ? 'outline-orange-400' : 'outline-transparent'}`}>
+                  userData.pictures.map((p, i) => (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.05 }} key={p.id} className={`group relative size-[50px] rounded-lg bg-zinc-200 shadow outline-2 transition-[outline-color] duration-150 sm:size-[60px] pointer-fine:cursor-pointer ${p.isSelected ? 'outline-orange-400' : 'outline-transparent'}`}>
                       <div onClick={() => changePhoto(p.id)} className="size-full overflow-hidden rounded-lg">
                         <img className="size-full object-cover object-center" src={p.url} alt={`${userData.username} profile photo`} />
                       </div>
-                      <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 bg-black/70 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
+                      <button onClick={() => setProfilePicId(p.id)} className="absolute top-0 right-0 grid translate-x-1/3 -translate-y-1/3 place-items-center rounded-full bg-black/70 p-0.5 text-white transition-opacity duration-150 group-hover:opacity-100 pointer-fine:bg-black/50 pointer-fine:opacity-0 pointer-fine:hover:bg-black">
                         <X strokeWidth={3} color="currentColor" size="14" />
                       </button>
-                    </div>
+                    </motion.div>
                   ))}
 
                 {userData.pictures.length !== 5 && (
                   <>
                     <label className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px] pointer-fine:cursor-pointer" htmlFor="img-input">
-                      <ImagePlus color="currentColor" />
+                      {userDataLoading ? (
+                        <span className="animate-spin">
+                          <LoaderCircle />
+                        </span>
+                      ) : (
+                        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          <ImagePlus color="currentColor" />
+                        </motion.span>
+                      )}
                     </label>
                     <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
                   </>
@@ -258,7 +272,7 @@ function Account() {
               className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
             >
               <span>Username</span>
-              <span className="font-light opacity-70">{userData.username || 'set user name'}</span>
+              <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.username || 'set user name'} </>}</span>
             </button>
             <button
               onClick={() => {
@@ -268,7 +282,7 @@ function Account() {
               className="flex gap-2 px-6 py-2.5 hover:bg-(--second-lvl-bg)"
             >
               <span>Phone number</span>
-              <span className="font-light opacity-70">{userData.phone || 'set number'}</span>
+              <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.phone || 'set number'} </>}</span>
             </button>
             <button className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
               <span>Change password</span>
