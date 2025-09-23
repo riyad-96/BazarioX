@@ -13,6 +13,7 @@ import NameEditingModal from '../components/account/NameEditingModal';
 import PhoneEditingModal from '../components/account/PhoneEditingModal';
 import ProfilePicDeleteModal from '../components/account/ProfilePicDeleteModal';
 import LogoutModal from '../components/account/LogoutModal';
+import PasswordChangeModal from '../components/account/PasswordChangeModal';
 
 function Account() {
   const navigate = useNavigate();
@@ -189,6 +190,12 @@ function Account() {
   // logout
   const [requestingLogout, setRequestingLogout] = useState(false);
 
+  // change password
+  const [changingPassword, setChangingPassword] = useState(false);
+  async function sendPasswordChangeRequest(newPass) {
+    console.log(newPass);
+  }
+
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
       <div className="grid h-[60px] bg-(--main-bg) px-3">
@@ -288,7 +295,7 @@ function Account() {
               <span>Phone number</span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.phone || 'set number'} </>}</span>
             </button>
-            <button className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setChangingPassword(true)} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
               <span>Change password</span>
             </button>
           </div>
@@ -312,6 +319,8 @@ function Account() {
       <AnimatePresence>{profilePicId && <ProfilePicDeleteModal state={{ userData, profilePicId, setProfilePicId }} func={{ deleteProfileImage }} />}</AnimatePresence>
 
       <AnimatePresence>{requestingLogout && <LogoutModal state={{ setRequestingLogout }} />}</AnimatePresence>
+
+      <AnimatePresence>{changingPassword && <PasswordChangeModal state={{ setChangingPassword }} func={{ sendPasswordChangeRequest }} />}</AnimatePresence>
     </div>
   );
 }
