@@ -24,7 +24,7 @@ function ProfileIndex() {
           <div className="mb-4 grid justify-items-center gap-2">
             <div onClick={() => navigate('/profile/account')} className="size-[150px] overflow-hidden rounded-full shadow transition-[width,height] duration-150 sm:size-[250px]">
               {!userDataLoading ? (
-                <>{userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full fill-zinc-800" /> : <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="size-full object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />}</>
+                <>{userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full fill-zinc-800" /> : <motion.img initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} transition={{duration: 0.4, delay: 0.1}} className="size-full object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />}</>
               ) : (
                 <>
                   <span className="block size-full animate-pulse bg-zinc-400"></span>

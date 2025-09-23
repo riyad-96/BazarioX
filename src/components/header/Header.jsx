@@ -68,13 +68,13 @@ function Header() {
               className={`${userDataLoading && 'animate-[outline-effect_1300ms_infinite] outline'} relative size-[30px] rounded-full bg-zinc-300`}
             >
               <div className="size-full overflow-hidden rounded-full bg-zinc-100 shadow">
-                {userDataLoading ?
-                  <span className="size-full animate-pulse bg-zinc-400 block"></span> 
-                :
+                {userDataLoading ? (
                   <>
-                    {userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full fill-zinc-800" /> : <motion.img initial={{opacity: 0}} animate={{opacity: 1}} className="size-full object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />}
+                    <span className="block size-full animate-pulse bg-zinc-400"></span>
                   </>
-                }
+                ) : (
+                  <>{userData.pictures.length < 1 ? <ProfilePlaceholderSvg className="size-full fill-zinc-800" /> : <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="size-full object-cover object-center" src={userData.pictures.find((p) => p.isSelected).url} alt={`${userData.username} profile photo`} />}</>
+                )}
               </div>
 
               <AnimatePresence>
