@@ -36,17 +36,19 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
       <AnimatePresence>
         {!isUserDataLoading && (
           <motion.div
             initial={{
               opacity: 0,
-              scale: 0.99,
+              scale: 0.98,
             }}
             animate={{
               opacity: 1,
               scale: 1,
             }}
+            transition={{ duration: 0.2 }}
             className="h-full"
           >
             <Outlet />
