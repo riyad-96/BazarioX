@@ -208,12 +208,12 @@ function FunctionContexts({ children }) {
           const reports = await getDocs(query(collection(db, 'reports', user.uid, 'entries'), orderBy('createdAt', 'desc')));
 
           setUserData({
-            username: userDataObject.data().username || '',
-            phone: userDataObject.data().phone || '',
-            pictures: images.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
-            feedback: feedbacksnap.data(),
-            featureRequests: featureRequests.docs.map((f) => f.data()),
-            reports: reports.docs.map((r) => r.data()),
+            username: userDataObject?.data()?.username || '',
+            phone: userDataObject?.data()?.phone || '',
+            pictures: images?.docs?.map((doc) => ({ ...doc.data(), id: doc.id })) || [],
+            feedback: feedbacksnap?.data() || {},
+            featureRequests: featureRequests?.docs?.map((f) => f.data()) || [],
+            reports: reports?.docs?.map((r) => r.data()) || [],
           });
         } catch (err) {
           toast.error('Error loading user data, please reload the page.', { duration: 3000 });
