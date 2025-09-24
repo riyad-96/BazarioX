@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg, ProfilePlaceholderSvg } from '../assets/Svg';
 import { signOut } from 'firebase/auth';
 import { auth, db } from '../configs/firebase';

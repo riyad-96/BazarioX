@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useRef, useState } from 'react';
 import { useUniContexts } from '../../contexts/UniContexts';
-import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
 import { auth } from '../../configs/firebase';
 import { Loader, LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -10,7 +10,7 @@ function PasswordChangeModal({ state, func }) {
   const { setChangingPassword } = state;
   const { sendPasswordChangeRequest } = func;
 
-  const { user } = useUniContexts();
+  const { user, setClickDisabled } = useUniContexts();
 
   const [passObj, setPassObj] = useState({
     currentPass: '',
@@ -67,7 +67,7 @@ function PasswordChangeModal({ state, func }) {
     return canSendRequest;
   }
 
-  async function checkPassword() {
+  async function changePassword() {
     setUniError('');
     const canSendRequest = isAbleToSendRequest();
 
@@ -79,6 +79,7 @@ function PasswordChangeModal({ state, func }) {
       await reauthenticateWithCredential(user, credential);
       await updatePassword(user, passObj.newPass);
       toast.success('Password successfully updated', { duration: 2500 });
+      setChangingPassword(false);
     } catch (err) {
       if (err.code === 'auth/invalid-credential') setCurrentPassInputErr('Wrong password, please try again');
       if (err.code === 'auth/too-many-requests') setUniError('Too many requests, try again later');
@@ -89,7 +90,7 @@ function PasswordChangeModal({ state, func }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setChangingPassword(false)} className="fixed inset-0 z-20 grid items-end justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setChangingPassword(false)} className="fixed inset-0 z-20 grid place-items-center overflow-hidden bg-black/30 p-3 pb-6">
       <motion.div
         initial={{ y: '50px' }}
         animate={{ y: 0 }}
@@ -133,7 +134,7 @@ function PasswordChangeModal({ state, func }) {
               type="text"
               id="newPass"
               className="w-full min-w-0 rounded-full border border-(--slick-border) bg-(--primary) px-4 py-2 transition-[border-color] duration-150 outline-none focus:border-(--input-focus-border)"
-              placeholder="Current password"
+              placeholder="New password"
               autoComplete="off"
             />
             <span className={`block overflow-hidden pl-2 text-sm font-light text-red-500 transition-[height] duration-150 ${newPassInputErr ? 'h-[20px]' : 'h-0'}`}>{newPassInputErr}</span>
@@ -156,7 +157,7 @@ function PasswordChangeModal({ state, func }) {
           <button
             onClick={() => {
               if (tryingPasswordChange) return;
-              checkPassword();
+              changePassword();
             }}
             className={`grid place-items-center rounded-full bg-(--primary) py-3 text-sm shadow hover:bg-(--primary)/70 ${tryingPasswordChange && '!cursor-not-allowed'}`}
           >

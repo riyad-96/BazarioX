@@ -20,6 +20,7 @@ import ProtectedDashboardRoute from './admin/Dashboard/ProtectedDashboardRoute.j
 import ProfileProtectedRoute from './Routes/ProfileProtectedRoute.jsx';
 import ProfileIndex from './components/profile/ProfileIndex.jsx';
 import AuthProtectedRoute from './Routes/AuthProtectedRoute.jsx';
+import ResetPassword from './pages/auth/ResetPassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
           {
             path: 'create-account',
             element: <Signup />,
+          },
+          {
+            path: 'reset-password',
+            element: <ResetPassword />,
           },
         ],
       },

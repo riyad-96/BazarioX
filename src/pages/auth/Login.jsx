@@ -5,6 +5,7 @@ import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
 import { auth } from '../../configs/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import toast from 'react-hot-toast';
+import ForgotPassModal from './ForgotPassModal';
 
 function Login() {
   const navigate = useNavigate();
@@ -63,12 +64,17 @@ function Login() {
     return ableToLogin;
   }
 
+  // wrong pass
+  const [wrongPass, setWrongPass] = useState(false);
+  const [forgotPassModalShowing, setForgotPassModalShowing] = useState(false);
+
   //! Handle login
   async function handleLogin() {
     const addToLogin = isAbleToLogin();
     if (!addToLogin) return;
     setIsTrying(true);
     setLoginError(null);
+    setWrongPass(false);
 
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPass);
@@ -78,6 +84,7 @@ function Login() {
     } catch (err) {
       if (err.code === 'auth/invalid-credential') {
         setLoginError('Email or password is wrong');
+        setWrongPass(true);
       } else if (err.code === 'auth/too-many-requests') {
         setLoginError('Too many attempts, try again later');
       } else {
@@ -99,6 +106,7 @@ function Login() {
                 if (emailError || loginError) {
                   setEmailError(null);
                   setLoginError(null);
+                  setWrongPass(false);
                 }
                 setLoginEmail(e.target.value.trim());
               }}
@@ -126,6 +134,7 @@ function Login() {
                   if (passError || loginError) {
                     setPassError(null);
                     setLoginError(null);
+                    setWrongPass(false);
                   }
                   setLoginPass(e.target.value);
                 }}
@@ -184,6 +193,16 @@ function Login() {
         </button>
       </form>
 
+      <button
+        onClick={() => {
+          setLoginError('');
+          setForgotPassModalShowing(true);
+        }}
+        className={`mx-auto block overflow-hidden text-sm text-blue-500 transition-[height] duration-150 pointer-coarse:underline pointer-fine:hover:underline ${wrongPass ? 'h-[20px]' : 'h-0'}`}
+      >
+        Forgot password?
+      </button>
+
       <p className={`overflow-hidden text-center text-red-500 transition-[height] duration-150 ${loginError ? 'h-[24px]' : 'h-0'}`}>{loginError}</p>
 
       <p className="mt-4 text-center">
@@ -192,6 +211,8 @@ function Login() {
           Sign up
         </button>
       </p>
+
+      <AnimatePresence>{forgotPassModalShowing && <ForgotPassModal state={{ loginEmail, setForgotPassModalShowing }} />}</AnimatePresence>
     </div>
   );
 }
