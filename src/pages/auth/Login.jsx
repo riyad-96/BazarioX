@@ -96,7 +96,7 @@ function Login() {
 
   return (
     <div>
-      <h1 className="mb-8 text-center text-[1.725rem]">Welcome back</h1>
+      <h2 className="mb-8 text-center text-[1.725rem]">Welcome back</h2>
       <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
         <div className="grid gap-1">
           <div className="grid gap-1">
@@ -193,17 +193,17 @@ function Login() {
         </button>
       </form>
 
+      <p className={`overflow-hidden text-center text-red-500 transition-[height] duration-150 ${loginError ? 'h-[24px]' : 'h-0'}`}>{loginError}</p>
+
       <button
         onClick={() => {
           setLoginError('');
           setForgotPassModalShowing(true);
         }}
-        className={`mx-auto block overflow-hidden text-sm text-blue-500 transition-[height] duration-150 pointer-coarse:underline pointer-fine:hover:underline ${wrongPass ? 'h-[20px]' : 'h-0'}`}
+        className={`mx-auto block overflow-hidden text-sm text-blue-500 transition-[height,margin] duration-150 pointer-coarse:underline pointer-fine:hover:underline ${wrongPass ? 'mt-4 h-[20px]' : 'mt-0 h-0'}`}
       >
         Forgot password?
       </button>
-
-      <p className={`overflow-hidden text-center text-red-500 transition-[height] duration-150 ${loginError ? 'h-[24px]' : 'h-0'}`}>{loginError}</p>
 
       <p className="mt-4 text-center">
         Don't have an account?{' '}
