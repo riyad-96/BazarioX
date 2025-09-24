@@ -1,4 +1,4 @@
-function Dashboard() {
+function Admin() {
   return (
     <div>
       <p>It is a secret place, only authorized user admin can access.</p>
@@ -6,4 +6,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Admin;

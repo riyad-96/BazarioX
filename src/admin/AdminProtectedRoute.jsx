@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
-import { useUniContexts } from '../../contexts/UniContexts';
+import { useUniContexts } from '../contexts/UniContexts';
 
-function ProtectedDashboardRoute({ children }) {
+function AdminProtectedRoute({ children }) {
   const { isAdmin } = useUniContexts();
   if (!isAdmin()) {
     return <Navigate to={'/'} />;
@@ -9,4 +9,4 @@ function ProtectedDashboardRoute({ children }) {
   return children;
 }
 
-export default ProtectedDashboardRoute;
+export default AdminProtectedRoute;

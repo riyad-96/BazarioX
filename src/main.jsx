@@ -15,12 +15,14 @@ import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import Account from './pages/Account.jsx';
 import FeedbackAndFeature from './pages/FeedbackAndFeature.jsx';
-import Dashboard from './admin/Dashboard/Dashboard.jsx';
-import ProtectedDashboardRoute from './admin/Dashboard/ProtectedDashboardRoute.jsx';
 import ProfileProtectedRoute from './Routes/ProfileProtectedRoute.jsx';
 import ProfileIndex from './components/profile/ProfileIndex.jsx';
 import AuthProtectedRoute from './Routes/AuthProtectedRoute.jsx';
-import ResetPassword from './pages/auth/ResetPassword.jsx'
+import ResetPassword from './pages/auth/ResetPassword.jsx';
+
+import Admin from './admin/Admin.jsx';
+import AdminProtectedRoute from './admin/AdminProtectedRoute.jsx';
+import PageNotFound from './pages/PageNotFound.jsx';
 
 const router = createBrowserRouter([
   {
@@ -90,14 +92,16 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'dashboard',
+        path: 'admin',
         element: (
-          <ProtectedDashboardRoute>
-            <Dashboard />
-          </ProtectedDashboardRoute>
+          <AdminProtectedRoute>
+            <Admin />
+          </AdminProtectedRoute>
         ),
+        children: [],
       },
     ],
+    errorElement: <PageNotFound />
   },
 ]);
 
