@@ -203,7 +203,7 @@ function FunctionContexts({ children }) {
 
           // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
-          const feedbacksnap = await getDoc(doc(db, 'feedbacks', user.uid));
+          const feedbackSnap = await getDoc(doc(db, 'feedbacks', user.uid));
           const featureRequests = await getDocs(query(collection(db, 'features', user.uid, 'entries'), orderBy('createdAt', 'desc')));
           const reports = await getDocs(query(collection(db, 'reports', user.uid, 'entries'), orderBy('createdAt', 'desc')));
 
@@ -211,9 +211,9 @@ function FunctionContexts({ children }) {
             username: userDataObject?.data()?.username || '',
             phone: userDataObject?.data()?.phone || '',
             pictures: images?.docs?.map((doc) => ({ ...doc.data(), id: doc.id })) || [],
-            feedback: feedbacksnap?.data() || {},
-            featureRequests: featureRequests?.docs?.map((f) => f.data()) || [],
-            reports: reports?.docs?.map((r) => r.data()) || [],
+            feedback: { ...feedbackSnap.data(), ratedAt: feedbackSnap.data().ratedAt.toDate() } || {},
+            featureRequests: featureRequests?.docs?.map((f) => ({ ...f.data(), createdAt: f.data().createdAt?.toDate() })) || [],
+            reports: reports?.docs?.map((r) => ({ ...r.data(), createdAt: r.data().createdAt?.toDate() })) || [],
           });
         } catch (err) {
           toast.error('Error loading user data, please reload the page.', { duration: 3000 });

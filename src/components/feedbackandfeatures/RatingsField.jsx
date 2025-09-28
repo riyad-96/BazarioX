@@ -33,7 +33,7 @@ function RatingsField() {
         ratedAt: serverTimestamp(),
       };
       await setDoc(feedbackCollectionRef, feedbackObj, { merge: true });
-      setUserData((prev) => ({ ...prev, feedback: feedbackObj }));
+      setUserData((prev) => ({ ...prev, feedback: { ...feedbackObj, ratedAt: new Date() } }));
     } catch (err) {
       console.error(err);
     }

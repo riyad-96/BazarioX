@@ -18,7 +18,7 @@ function Admin() {
         const usersSnap = await getDocs(collection(db, 'users'));
         setAllUsers(usersSnap.docs.map((res) => res.data()));
       } catch (err) {
-        toast.error('Error loading users')
+        toast.error('Error loading users');
         console.error(err);
       }
     })();
@@ -35,7 +35,7 @@ function Admin() {
 
         <div className="grid flex-1 grid-rows-[auto_1fr] gap-3">
           <NavBar state={{ setSidebarOpen }} />
-          <div className="overflow-y-auto rounded-xl">
+          <div className="overflow-y-auto px-0.5">
             <Outlet />
           </div>
         </div>

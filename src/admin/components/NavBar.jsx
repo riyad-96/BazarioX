@@ -3,7 +3,7 @@ import Clock from '../../components/header/Clock';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { useNavigate } from 'react-router-dom';
-import { PanelLeftOpen } from 'lucide-react';
+import { Home, PanelLeftOpen } from 'lucide-react';
 
 function NavBar({ state }) {
   const { setSidebarOpen } = state;
@@ -15,13 +15,17 @@ function NavBar({ state }) {
     <div className="h-[45px] transition-[height] duration-150 md:h-[50px]">
       <div className="flex h-full gap-2">
         <div className="h-full overflow-hidden rounded-xl bg-white shadow lg:hidden">
-          <motion.button onClick={() => setSidebarOpen(true)} whileTap={{ scale: 0.9 }} transition={{ scale: { type: 'spring', stiffness: 900, damping: 25 } }} className="size-full px-3 md:px-4 transition-[padding] duration-150 text-zinc-600 hover:text-black">
+          <motion.button onClick={() => setSidebarOpen(true)} whileTap={{ scale: 0.9 }} transition={{ scale: { type: 'spring', stiffness: 900, damping: 25 } }} className="size-full px-3 text-zinc-600 transition-[padding] duration-150 hover:text-black md:px-4">
             <PanelLeftOpen size="20" />
           </motion.button>
         </div>
 
         <div className="flex flex-1 items-center justify-between rounded-xl bg-white px-3 shadow">
-          <div>
+          <div className="flex items-center gap-3">
+            <motion.button onClick={() => navigate('/')} whileTap={{ scale: 0.9 }} transition={{ scale: { type: 'spring', stiffness: 900, damping: 25 } }} className="relative text-zinc-600 transition-[padding] duration-150 hover:text-black">
+              <span className="absolute -inset-2 z-5"></span>
+              <Home size="20" />
+            </motion.button>
             <Clock />
           </div>
 

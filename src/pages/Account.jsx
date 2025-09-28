@@ -7,7 +7,7 @@ import { useUniContexts } from '../contexts/UniContexts';
 import { ImagePlus, LoaderCircle, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import ImagePreviewModal from '../components/account/ImagePreviewModal';
 import NameEditingModal from '../components/account/NameEditingModal';
 import PhoneEditingModal from '../components/account/PhoneEditingModal';
@@ -60,7 +60,7 @@ function Account() {
       });
 
       const imgObj = {
-        addedAt: new Date(),
+        addedAt: serverTimestamp(),
         url: selectedImg,
         isSelected: true,
       };
@@ -69,7 +69,7 @@ function Account() {
 
       setUserData((prev) => ({
         ...prev,
-        pictures: [{ ...imgObj, id: newImg.id }, ...prev.pictures.map((p) => ({ ...p, isSelected: false }))],
+        pictures: [{ ...imgObj, id: newImg.id, addedAt: new Date() }, ...prev.pictures.map((p) => ({ ...p, isSelected: false }))],
       }));
 
       cancelImageSelection();
