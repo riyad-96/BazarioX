@@ -29,14 +29,14 @@ function LogoutModal({ state }) {
       <motion.div
         initial={{ y: '50px' }}
         animate={{ y: 0 }}
-        exit={{ y: '50px' }}
+        exit={{ y: '50px', opacity: 0 }}
         onMouseDown={(e) => {
           e.stopPropagation();
         }}
         className="w-full max-w-[450px] space-y-4 rounded-2xl bg-(--second-lvl-bg) p-4"
       >
         <div className="space-y-2">
-          <h3 className='text-2xl'>Logout !</h3>
+          <h3 className="text-2xl">Logout !</h3>
           <span>Do you want to logout from this account?</span>
         </div>
 

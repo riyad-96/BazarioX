@@ -15,7 +15,7 @@ function NavBar({ state }) {
     <div className="h-[45px] transition-[height] duration-150 md:h-[50px]">
       <div className="flex h-full gap-2">
         <div className="h-full overflow-hidden rounded-xl bg-white shadow lg:hidden">
-          <motion.button onClick={() => setSidebarOpen(true)} whileTap={{ scale: 0.9 }} transition={{ scale: { type: 'spring', stiffness: 900, damping: 30 } }} className="size-full px-3 text-zinc-600 hover:text-black">
+          <motion.button onClick={() => setSidebarOpen(true)} whileTap={{ scale: 0.9 }} transition={{ scale: { type: 'spring', stiffness: 900, damping: 25 } }} className="size-full px-3 md:px-4 transition-[padding] duration-150 text-zinc-600 hover:text-black">
             <PanelLeftOpen size="20" />
           </motion.button>
         </div>

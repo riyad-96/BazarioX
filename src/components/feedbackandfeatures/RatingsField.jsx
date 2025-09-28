@@ -45,7 +45,9 @@ function RatingsField() {
       return;
     }
 
-    toast.promise(sendFeedBack, {
+    const ratingsPromise = sendFeedBack();
+
+    toast.promise(ratingsPromise, {
       loading: 'Saving...',
       success: 'Feedback sent',
       error: 'Sending feedback failed',

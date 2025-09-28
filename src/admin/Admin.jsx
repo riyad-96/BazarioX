@@ -1,10 +1,32 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../configs/firebase';
+import { useUniContexts } from '../contexts/UniContexts';
+import toast from 'react-hot-toast';
 
 function Admin() {
+  const { allUsers, setAllUsers } = useUniContexts();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const usersSnap = await getDocs(collection(db, 'users'));
+        setAllUsers(usersSnap.docs.map((res) => res.data()));
+      } catch (err) {
+        toast.error('Error loading users')
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log(allUsers);
+  }, [allUsers]);
 
   return (
     <div className="h-dvh bg-(--main-bg) p-2">

@@ -94,7 +94,7 @@ function PasswordChangeModal({ state, func }) {
       <motion.div
         initial={{ y: '50px' }}
         animate={{ y: 0 }}
-        exit={{ y: '50px' }}
+        exit={{ y: '50px', opacity: 0 }}
         onMouseDown={(e) => {
           e.stopPropagation();
         }}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { db } from '../../configs/firebase';
 import { format } from 'date-fns';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { Star } from 'lucide-react';
 
 function Dashboard() {
   const [dashboardDataLoading, setDashboardDataLoading] = useState(true);
@@ -18,7 +19,6 @@ function Dashboard() {
       try {
         const usersSnap = await getDocs(collection(db, 'users'));
         const usersArray = usersSnap.docs.map((res) => ({ uid: res.id, ...res.data() }));
-        console.log(usersArray);
         // total users
         const totalUser = usersArray.length;
 
@@ -40,16 +40,12 @@ function Dashboard() {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(dasboardData);
-  }, [dasboardData]);
-
   return (
     <div className="">
       {dashboardDataLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="gap-3 text-nowrap sm:flex max-sm:space-y-3">
+        <div className="gap-3 text-nowrap max-sm:space-y-3 sm:flex">
           <div className="grid flex-1 space-y-4 rounded-xl bg-white p-4 pb-8 shadow">
             <h4 className="text-center">User stats</h4>
             <div className="flex items-center text-zinc-700">
@@ -71,7 +67,12 @@ function Dashboard() {
             <h4 className="text-center">App ratings</h4>
             <div className="flex items-center text-zinc-700">
               <div className="grid flex-1 text-center">
-                <span className="text-3xl">{dasboardData.averageRating}</span>
+                <span className="text-3xl flex items-center justify-center gap-2">
+                  <span>{dasboardData.averageRating}</span>
+                  <span className="text-yellow-400">
+                    <Star size="30" fill="currentColor"/>
+                  </span>
+                </span>
                 <span>Average stars</span>
               </div>
 

@@ -39,6 +39,7 @@ function UniContexts({ children }) {
   function isAdmin() {
     return user && user?.email === adminEmail;
   }
+  const [allUsers, setAllUsers] = useState([]);
 
   //app
   const [clickDisabled, setClickDisabled] = useState(false);
@@ -67,7 +68,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, clickDisabled, setClickDisabled, isUserLoading, setIsUserLoading, isAdmin, userData, setUserData, userDataLoading, setUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, clickDisabled, setClickDisabled, isUserLoading, setIsUserLoading, isAdmin, allUsers, setAllUsers, userData, setUserData, userDataLoading, setUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;
