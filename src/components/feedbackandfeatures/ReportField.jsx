@@ -127,7 +127,7 @@ function ReportField() {
                   </div>
                   <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
                     <span className="font-normal capitalize">{status}</span>
-                    <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
+                    <span className="opacity-80">{format(createdAt.toDate() || new Date(), 'd MMM y')}</span>
 
                     <span className={`absolute top-0 right-0 size-[20px] translate-x-1/2 -translate-y-1/2`}>
                       {status === 'pending' && (

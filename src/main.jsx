@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import { lazy } from 'react';
 import './index.css';
 import App from './App.jsx';
 import ContextProvider from './contexts/ContextProvider.jsx';
@@ -20,9 +21,13 @@ import ProfileIndex from './components/profile/ProfileIndex.jsx';
 import AuthProtectedRoute from './Routes/AuthProtectedRoute.jsx';
 import ResetPassword from './pages/auth/ResetPassword.jsx';
 
-import Admin from './admin/Admin.jsx';
+const Admin = lazy(() => import('./admin/Admin.jsx'));
 import AdminProtectedRoute from './admin/AdminProtectedRoute.jsx';
 import PageNotFound from './pages/PageNotFound.jsx';
+import Dashboard from './admin/pages/Dashboard.jsx';
+import Feedbacks from './admin/pages/Feedbacks.jsx';
+import FeatureRequests from './admin/pages/FeatureRequests.jsx';
+import Reports from './admin/pages/Reports.jsx';
 
 const router = createBrowserRouter([
   {
@@ -98,10 +103,27 @@ const router = createBrowserRouter([
             <Admin />
           </AdminProtectedRoute>
         ),
-        children: [],
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+          {
+            path: 'feedbacks',
+            element: <Feedbacks />,
+          },
+          {
+            path: 'feature-requests',
+            element: <FeatureRequests />,
+          },
+          {
+            path: 'reports',
+            element: <Reports />,
+          },
+        ],
       },
     ],
-    errorElement: <PageNotFound />
+    errorElement: <PageNotFound />,
   },
 ]);
 

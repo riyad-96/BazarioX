@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../../contexts/UniContexts';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 
 function RatingsField() {
@@ -43,6 +43,7 @@ function RatingsField() {
     const feedBackPromise = sendFeedBack({
       rating: starsCount.length,
       comment: commentText,
+      ratedAt: serverTimestamp(),
     });
 
     toast.promise(feedBackPromise, {

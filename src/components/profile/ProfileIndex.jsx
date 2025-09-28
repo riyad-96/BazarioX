@@ -63,8 +63,8 @@ function ProfileIndex() {
 
           <div className="mb-5 grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
             {isAdmin() && (
-              <button onClick={() => navigate('/dashboard')} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
-                Dashboard
+              <button onClick={() => navigate('/admin')} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">
+                Admin panel
               </button>
             )}
             <button onClick={() => navigate('/profile/account')} className="flex px-6 py-2.5 hover:bg-(--second-lvl-bg)">

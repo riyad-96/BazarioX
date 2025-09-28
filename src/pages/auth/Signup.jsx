@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../configs/firebase';
+import { auth, db } from '../../configs/firebase';
 import toast from 'react-hot-toast';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 function Signup() {
   const navigate = useNavigate();
@@ -71,10 +72,19 @@ function Signup() {
     setSignupError(null);
 
     try {
-      await createUserWithEmailAndPassword(auth, signupEmail, signupPass);
+      const userObj = await createUserWithEmailAndPassword(auth, signupEmail, signupPass);
+      await setDoc(doc(db, 'users', userObj.user.uid), {
+        uid: userObj.user.uid,
+        email: userObj.user.email,
+        emailVerified: userObj.user.emailVerified,
+        username: '',
+        phone: '',
+        joinDate: serverTimestamp(),
+        admin: false,
+      });
+
       setIsTrying(false);
       toast.success('Account created! Let’s get started', { duration: 5500 });
-      navigate(-1);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setSignupError('Email already in use.');

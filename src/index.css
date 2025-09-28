@@ -109,3 +109,46 @@ input[type='number'] {
     scale: 1;
   }
 }
+
+/* ! Admin styling */
+@media (width < 1024px) {
+  .admin-sidebar {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background-color: hsl(0 0 0 / 0.3);
+    padding: 0.5rem;
+    overflow: hidden;
+
+    display: none;
+    opacity: 0;
+    transition-duration: 350ms;
+    transition-behavior: allow-discrete;
+
+    .admin-sidebar-content {
+      translate: -110% 0;
+      scale: 0.9;
+
+      transition-duration: 250ms;
+      transition-delay: 50ms;
+    }
+  }
+  .admin-sidebar.show {
+    display: initial;
+    opacity: 1;
+
+    .admin-sidebar-content {
+      translate: 0 0;
+      scale: 1;
+    }
+
+    @starting-style {
+      opacity: 0;
+
+      .admin-sidebar-content {
+        translate: -110% 0;
+        scale: 0.9;
+      }
+    }
+  }
+}

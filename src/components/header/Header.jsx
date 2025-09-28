@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
+import Clock from './Clock';
 
 function Header() {
   const { user, userData, isUserLoading, userDataLoading } = useUniContexts();
@@ -28,15 +29,7 @@ function Header() {
     };
   }, []);
 
-  const [tick, setTick] = useState(0);
-  const tickInterval = useRef();
-  useEffect(() => {
-    tickInterval.current = setInterval(() => {
-      setTick((prev) => prev + 1);
-    }, 1000);
 
-    return () => clearInterval(tickInterval.current);
-  }, []);
 
   return (
     <div className="flex items-center border-b-1 border-(--slick-border) bg-(--primary) px-3">
@@ -46,9 +39,7 @@ function Header() {
         </span>
 
         <div className="flex items-center gap-4">
-          <span key={tick} className="text-sm select-none">
-            {format(new Date(), 'h:mm aa')}
-          </span>
+          <Clock />
           <div className="relative flex items-center gap-4">
             {!isUserLoading && <span className={`pointer-events-none absolute top-0 left-0 z-10 flex size-[8px] rounded-full outline-1 outline-(--primary) ${user ? 'bg-green-500' : 'bg-yellow-500'}`}></span>}
             <div
