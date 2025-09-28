@@ -27,7 +27,10 @@ function UniContexts({ children }) {
     username: '',
     phone: '',
     pictures: [],
-    feedback: {},
+    feedback: {
+      comment: '',
+      rating: 0,
+    },
     featureRequests: [],
     reports: [],
   });

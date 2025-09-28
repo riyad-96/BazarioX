@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../../contexts/UniContexts';
-import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 
 function RatingsField() {
@@ -24,11 +24,16 @@ function RatingsField() {
   const [commentText, setCommentText] = useState('');
   const [ratingErr, setRatingErr] = useState('');
 
-  async function sendFeedBack(feedback) {
+  async function sendFeedBack() {
     try {
       const feedbackCollectionRef = doc(db, 'feedbacks', user.uid);
-      await setDoc(feedbackCollectionRef, feedback, { merge: true });
-      setUserData((prev) => ({ ...prev, feedback }));
+      const feedbackObj = {
+        rating: starsCount.length,
+        comment: commentText,
+        ratedAt: serverTimestamp(),
+      };
+      await setDoc(feedbackCollectionRef, feedbackObj, { merge: true });
+      setUserData((prev) => ({ ...prev, feedback: feedbackObj }));
     } catch (err) {
       console.error(err);
     }
@@ -40,13 +45,7 @@ function RatingsField() {
       return;
     }
 
-    const feedBackPromise = sendFeedBack({
-      rating: starsCount.length,
-      comment: commentText,
-      ratedAt: serverTimestamp(),
-    });
-
-    toast.promise(feedBackPromise, {
+    toast.promise(sendFeedBack, {
       loading: 'Saving...',
       success: 'Feedback sent',
       error: 'Sending feedback failed',
