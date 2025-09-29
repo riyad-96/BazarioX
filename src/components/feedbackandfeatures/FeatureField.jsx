@@ -12,24 +12,25 @@ function FeatureField() {
 
   const [featureRequest, setFeatureRequest] = useState({
     title: '',
-    details: '',
+    body: '',
   });
   const [detailsError, setDetailsError] = useState('');
   const detailsInput = useRef();
 
   async function sendFeatureRequest() {
     try {
-      const featureCollectionRef = collection(db, 'features', user.uid, 'entries');
       const featureObj = {
-        ...featureRequest,
+        uid: user.uid,
         status: 'pending',
         createdAt: serverTimestamp(),
+        request: { ...featureRequest },
       };
-      // await addDoc(featureCollectionRef, featureObj);
+      console.log(featureObj);
+      await addDoc(collection(db, 'features'), featureObj);
       setUserData((prev) => ({ ...prev, featureRequests: [{ ...featureObj, createdAt: new Date() }, ...prev.featureRequests] }));
       setFeatureRequest({
         title: '',
-        details: '',
+        body: '',
       });
     } catch (err) {
       console.error(err);
@@ -37,11 +38,11 @@ function FeatureField() {
   }
 
   function checkIsAbleToRequest() {
-    if (!featureRequest.details.trim()) {
+    if (!featureRequest.body.trim()) {
       setDetailsError('Please add details');
       detailsInput.current.focus();
       return;
-    } else if (featureRequest.details.trim().length < 20) {
+    } else if (featureRequest.body.trim().length < 20) {
       setDetailsError('Please add some more details');
       detailsInput.current.focus();
       return;
@@ -54,6 +55,8 @@ function FeatureField() {
       error: 'Request Failed',
     });
   }
+
+  useEffect(() => {}, [userData.featureRequests]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -76,9 +79,9 @@ function FeatureField() {
             ref={detailsInput}
             onChange={(e) => {
               setDetailsError('');
-              setFeatureRequest((prev) => ({ ...prev, details: e.target.value }));
+              setFeatureRequest((prev) => ({ ...prev, body: e.target.value }));
             }}
-            value={featureRequest.details}
+            value={featureRequest.body}
             id="feature-details"
             className="min-h-[150px] w-full min-w-0 resize-y rounded-lg border border-transparent bg-(--textarea-bg) px-4 py-2 transition-[border-color] duration-150 outline-none focus:border-(--input-focus-border)"
             placeholder="Enter your message"
@@ -96,7 +99,8 @@ function FeatureField() {
         {userData.featureRequests.length > 0 ? (
           <div className="space-y-3">
             {userData.featureRequests.map((f, i) => {
-              const { title, details, createdAt, status } = f;
+              const { request, createdAt, status } = f;
+              const { title, body } = request;
 
               return (
                 <motion.div
@@ -123,7 +127,7 @@ function FeatureField() {
                 >
                   <div className="flex-5 space-y-2">
                     <h4 className="text-lg leading-6 underline underline-offset-2">{title.trim() || 'Untitled'}</h4>
-                    <p className="long-text leading-5 font-light">{details}</p>
+                    <p className="long-text leading-5 font-light">{body}</p>
                   </div>
                   <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
                     <span className="font-normal capitalize">{status}</span>

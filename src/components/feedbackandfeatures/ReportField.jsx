@@ -12,24 +12,24 @@ function ReportField() {
 
   const [report, setReport] = useState({
     title: '',
-    details: '',
+    body: '',
   });
   const [detailsError, setDetailsError] = useState('');
   const detailsInput = useRef();
 
   async function sendReport() {
     try {
-      const featureCollectionRef = collection(db, 'reports', user.uid, 'entries');
-      const featureObj = {
-        ...report,
+      const reportObj = {
+        uid: user.uid,
         status: 'pending',
         createdAt: serverTimestamp(),
+        report: { ...report },
       };
-      await addDoc(featureCollectionRef, featureObj);
-      setUserData((prev) => ({ ...prev, reports: [{ ...featureObj, createdAt: new Date() }, ...prev.featureRequests] }));
+      await addDoc(collection(db, 'reports'), reportObj);
+      setUserData((prev) => ({ ...prev, reports: [{ ...reportObj, createdAt: new Date() }, ...prev.featureRequests] }));
       setReport({
         title: '',
-        details: '',
+        body: '',
       });
     } catch (err) {
       console.error(err);
@@ -37,11 +37,11 @@ function ReportField() {
   }
 
   function checkIsAbleToReport() {
-    if (!report.details.trim()) {
+    if (!report.body.trim()) {
       setDetailsError('Please add details');
       detailsInput.current.focus();
       return;
-    } else if (report.details.trim().length < 20) {
+    } else if (report.body.trim().length < 20) {
       setDetailsError('Please add some more details');
       detailsInput.current.focus();
       return;
@@ -76,9 +76,9 @@ function ReportField() {
             ref={detailsInput}
             onChange={(e) => {
               setDetailsError('');
-              setReport((prev) => ({ ...prev, details: e.target.value }));
+              setReport((prev) => ({ ...prev, body: e.target.value }));
             }}
-            value={report.details}
+            value={report.body}
             id="feature-details"
             className="min-h-[150px] w-full min-w-0 resize-y rounded-lg border border-transparent bg-(--textarea-bg) px-4 py-2 transition-[border-color] duration-150 outline-none focus:border-(--input-focus-border)"
             placeholder="Enter your message"
@@ -96,7 +96,8 @@ function ReportField() {
         {userData.reports.length > 0 ? (
           <div className="space-y-3">
             {userData.reports.map((f, i) => {
-              const { title, details, createdAt, status } = f;
+              const { report, createdAt, status } = f;
+              const { title, body } = report;
 
               return (
                 <motion.div
@@ -123,7 +124,7 @@ function ReportField() {
                 >
                   <div className="flex-5 space-y-2">
                     <h4 className="text-lg leading-6 underline underline-offset-2">{title.trim() || 'Untitled'}</h4>
-                    <p className="long-text leading-5 font-light">{details}</p>
+                    <p className="long-text leading-5 font-light">{body}</p>
                   </div>
                   <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
                     <span className="font-normal capitalize">{status}</span>

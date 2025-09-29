@@ -1,6 +1,6 @@
 import { useEffect, createContext, useContext } from 'react';
 import { useUniContexts } from './UniContexts';
-import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 
@@ -204,14 +204,16 @@ function FunctionContexts({ children }) {
           // get userData
           const userDataObject = await getDoc(doc(db, 'users', user.uid));
           const feedbackSnap = await getDoc(doc(db, 'feedbacks', user.uid));
-          const featureRequests = await getDocs(query(collection(db, 'features', user.uid, 'entries'), orderBy('createdAt', 'desc')));
-          const reports = await getDocs(query(collection(db, 'reports', user.uid, 'entries'), orderBy('createdAt', 'desc')));
+          const featureRequests = await getDocs(query(collection(db, 'features'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
+          const reports = await getDocs(query(collection(db, 'reports'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
+
+          console.log(featureRequests.docs.map((res) => res.data()));
 
           setUserData({
             username: userDataObject?.data()?.username || '',
             phone: userDataObject?.data()?.phone || '',
             pictures: images?.docs?.map((doc) => ({ ...doc.data(), id: doc.id })) || [],
-            feedback: { ...feedbackSnap.data(), ratedAt: feedbackSnap.data().ratedAt.toDate() } || {},
+            feedback: feedbackSnap.data() || {},
             featureRequests: featureRequests?.docs?.map((f) => ({ ...f.data(), createdAt: f.data().createdAt?.toDate() })) || [],
             reports: reports?.docs?.map((r) => ({ ...r.data(), createdAt: r.data().createdAt?.toDate() })) || [],
           });
