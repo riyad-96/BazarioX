@@ -72,12 +72,33 @@ function Feedbacks() {
         <LoadingSpinner />
       ) : (
         <div className="divide-y divide-(--slick-border) overflow-hidden rounded-xl bg-white shadow">
-          {feedbacks.map((fb) => {
+          {feedbacks.map((fb, i) => {
             const { feedback, picture, uid, username } = fb;
             const { rating } = feedback;
 
             return (
-              <div key={uid} className="relative flex items-center justify-between px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100">
+              <motion.div
+                initial={{
+                  opacity: 0.2,
+                  scale: 0.99,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.3,
+                    delay: 0.05 * i,
+                  },
+                  scale: {
+                    duration: 0.2,
+                    delay: 0.05 * i,
+                  },
+                }}
+                key={uid}
+                className="relative flex items-center justify-between px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
+              >
                 <button onClick={() => setFeedbackPreview(fb)} className="absolute inset-0 z-1"></button>
                 <div className="flex items-center gap-3">
                   <div className="size-[35px] overflow-hidden rounded-full">
@@ -97,7 +118,7 @@ function Feedbacks() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { fetchRequestOrReport, updateFeatureOrReportStatus } from '../helpers/fetchAdminData';
+import { listenRequestOrReport, updateFeatureOrReportStatus } from '../helpers/fetchAdminData';
 import { ProfilePlaceholderSvg } from '../../assets/Svg';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'motion/react';
@@ -15,16 +15,13 @@ function FeatureRequests() {
 
   useEffect(() => {
     setRequestsLoading(true);
-    (async () => {
-      try {
-        const data = await fetchRequestOrReport('features', requestStatus);
-        setRequests(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setRequestsLoading(false);
-      }
-    })();
+
+    const unsubscribe = listenRequestOrReport('features', requestStatus, (data) => {
+      setRequests(data);
+      setRequestsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, [requestStatus]);
 
   function updateStatus(docId, status) {
@@ -46,7 +43,7 @@ function FeatureRequests() {
       <div className="space-y-3">
         <div className="flex flex-wrap gap-2">
           {['all', 'pending', 'reviewing', 'implemented', 'rejected', 'working'].map((btn) => (
-            <button key={`btn${btn}`} onClick={() => setRequestStatus(btn)} className={`rounded-md bg-white px-3 py-1 shadow-xs outline-2 transition-colors ${requestStatus === btn ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
+            <button key={`btn${btn}`} onClick={() => setRequestStatus(btn)} className={`rounded-md bg-white px-3 py-1 shadow-xs outline-2 transition-colors max-sm:text-sm ${requestStatus === btn ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
               <span className="capitalize">{btn}</span>
             </button>
           ))}
@@ -59,18 +56,39 @@ function FeatureRequests() {
         ) : (
           <>
             {requests.length < 1 ? (
-              <div className="grid place-items-center rounded-lg bg-white py-2 text-center shadow">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid place-items-center rounded-lg bg-white py-2 text-center shadow">
                 <span className="font-light opacity-80">No '{requestStatus}' requests.</span>
-              </div>
+              </motion.div>
             ) : (
               <div className="divide-y divide-(--slick-border) overflow-hidden rounded-xl bg-white shadow">
                 {requests.map((req, i) => {
                   const { createdAt, picture, request, status, uid, user } = req;
                   const { username } = user;
                   return (
-                    <div key={`${uid}${i}`} className="relative flex items-center justify-between px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100">
+                    <motion.div
+                      initial={{
+                        opacity: 0.2,
+                        scale: 0.99,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      transition={{
+                        opacity: {
+                          duration: 0.3,
+                          delay: 0.05 * i,
+                        },
+                        scale: {
+                          duration: 0.2,
+                          delay: 0.05 * i,
+                        },
+                      }}
+                      key={`${uid}${i}`}
+                      className="relative flex items-center justify-between px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
+                    >
                       <button onClick={() => setReacting(req)} className="absolute inset-0 z-1"></button>
-                      <span className="absolute top-1 left-1 size-[18px] ">
+                      <span className="absolute top-1 left-1 size-[18px]">
                         <GetStatus status={status} />
                       </span>
                       <div className="flex items-center gap-3">
@@ -85,7 +103,7 @@ function FeatureRequests() {
                       </div>
 
                       <p>{request.title}</p>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
