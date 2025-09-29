@@ -1,3 +1,4 @@
+import { Bug, LayoutDashboard, MessageCircle, Telescope } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 function Sidebar({ state }) {
@@ -5,7 +6,7 @@ function Sidebar({ state }) {
 
   return (
     <div onClick={() => setSidebarOpen(false)} className={`admin-sidebar h-full ${sidebarOpen && 'show'}`}>
-      <div onClick={(e) => e.stopPropagation()} className="admin-sidebar-content grid h-full w-[230px] sm:w-[250px] grid-rows-[auto_1fr] gap-4 rounded-xl bg-white p-3 shadow">
+      <div onClick={(e) => e.stopPropagation()} className="admin-sidebar-content grid h-full w-[230px] grid-rows-[auto_1fr] gap-4 rounded-xl bg-white p-3 shadow sm:w-[250px]">
         <div className="py-4">
           <h2 onClick={() => window.location.reload()} className="mx-auto w-fit text-center text-2xl select-none">
             KitzoBazar
@@ -19,12 +20,15 @@ function Sidebar({ state }) {
                 setSidebarOpen(false);
               }
             }}
-            className={({ isActive }) => `${isActive && 'bg-zinc-100'} rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
+            className={({ isActive }) => `${isActive && 'bg-zinc-100'} flex items-center gap-2 rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
             to="/admin"
             end
             replace
           >
-            Dashboard
+            <span>
+              <LayoutDashboard size="18" />
+            </span>
+            <span>Dashboard</span>
           </NavLink>
           <NavLink
             onClick={() => {
@@ -32,11 +36,14 @@ function Sidebar({ state }) {
                 setSidebarOpen(false);
               }
             }}
-            className={({ isActive }) => `${isActive && 'bg-zinc-100'} rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
+            className={({ isActive }) => `${isActive && 'bg-zinc-100'} flex items-center gap-2 rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
             to="/admin/feedbacks"
             replace
           >
-            Feedbacks
+            <span>
+              <MessageCircle size="20" />
+            </span>
+            <span>Feedbacks</span>
           </NavLink>
           <NavLink
             onClick={() => {
@@ -44,11 +51,14 @@ function Sidebar({ state }) {
                 setSidebarOpen(false);
               }
             }}
-            className={({ isActive }) => `${isActive && 'bg-zinc-100'} rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
+            className={({ isActive }) => `${isActive && 'bg-zinc-100'} flex items-center gap-2 rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
             to="/admin/feature-requests"
             replace
           >
-            Feature requests
+            <span>
+              <Telescope size="20" />
+            </span>
+            <span>Feature requests</span>
           </NavLink>
           <NavLink
             onClick={() => {
@@ -56,11 +66,14 @@ function Sidebar({ state }) {
                 setSidebarOpen(false);
               }
             }}
-            className={({ isActive }) => `${isActive && 'bg-zinc-100'} rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
+            className={({ isActive }) => `${isActive && 'bg-zinc-100'} flex items-center gap-2 rounded-lg px-3 py-2 pointer-fine:hover:bg-(--main-bg)`}
             to="/admin/reports"
             replace
           >
-            Reports
+            <span>
+              <Bug />
+            </span>
+            <span>Reports</span>
           </NavLink>
         </div>
       </div>

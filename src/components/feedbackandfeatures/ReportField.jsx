@@ -121,20 +121,19 @@ function ReportField() {
                     },
                   }}
                   key={`featureKey${i}`}
-                  className="flex items-start gap-4 rounded-lg bg-(--primary) p-3 shadow"
+                  className="relative flex items-start gap-4 rounded-lg bg-(--primary) p-3 shadow"
                 >
                   <div className="flex-5 space-y-2">
                     <h4 className="text-lg leading-6 underline underline-offset-2">{title.trim() || 'Untitled'}</h4>
                     <p className="long-text leading-5 font-light">{body}</p>
-                  </div>
-                  <div className="relative grid h-auto flex-2 justify-items-center rounded-md border border-zinc-100 py-0.5 text-center text-xs font-light sm:text-sm">
-                    <span className="font-normal capitalize">{status}</span>
-                    <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
-
-                    <span className={`absolute top-0 right-0 size-[20px] rounded-md overflow-hidden translate-x-1/2 -translate-y-1/2`}>
-                      <GetStatus status={status}/>
+                    <span className="block text-xs opacity-70">
+                      {format(createdAt, 'd MMMM y')}, {format(createdAt, 'h:mm a')}
                     </span>
                   </div>
+
+                  <span className={`absolute top-[-5px] right-[-5px] overflow-hidden rounded-md shadow select-none`}>
+                    <GetStatus status={status} text={status} />
+                  </span>
                 </motion.div>
               );
             })}

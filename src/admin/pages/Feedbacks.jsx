@@ -112,7 +112,7 @@ function Feedbacks() {
                 <div className="flex gap-1">
                   {Array.from({ length: rating }).map((_, i) => (
                     <span key={`star${i}`} className="grid text-yellow-400">
-                      <Star fill="currentColor" />
+                      <Star fill="currentColor" size="22" />
                     </span>
                   ))}
                 </div>

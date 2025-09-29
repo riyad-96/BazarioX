@@ -5,6 +5,7 @@ import RatingsField from '../components/feedbackandfeatures/RatingsField';
 import FeatureField from '../components/feedbackandfeatures/FeatureField';
 import ReportField from '../components/feedbackandfeatures/ReportField';
 import { Home } from 'lucide-react';
+import GetSvg from '../components/helpers/GetSvg';
 
 function FeedbackAndFeature() {
   const navigate = useNavigate();
@@ -34,7 +35,10 @@ function FeedbackAndFeature() {
           <div className="mx-auto max-w-[700px]">
             <div className="grid divide-(--slick-border) overflow-hidden rounded-lg bg-(--primary) shadow max-sm:divide-y sm:flex sm:divide-x">
               {['feedback', 'feature', 'report'].map((t) => (
-                <button key={t} onClick={() => setTab(t)} className={`flex px-4 py-2 sm:flex-1 sm:justify-center ${tab === t && 'bg-zinc-200'}`}>
+                <button key={t} onClick={() => setTab(t)} className={`flex items-center gap-4 px-6 py-2 sm:flex-1 sm:justify-center ${tab === t && 'bg-zinc-200'}`}>
+                  <span>
+                    <GetSvg name={t} size="20" />
+                  </span>
                   <span className="capitalize">{t}</span>
                 </button>
               ))}

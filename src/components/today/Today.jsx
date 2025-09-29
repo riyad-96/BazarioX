@@ -28,7 +28,7 @@ function Today() {
 
       {todaysSessions.length < 1 && (
         <p className="shadow grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--primary) text-center">
-          <span className="opacity-70">Your daily bazar sessions will appear here.</span>
+          <span className="opacity-70 font-light">Your daily bazar sessions will appear here.</span>
         </p>
       )}
 

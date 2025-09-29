@@ -41,10 +41,13 @@ function Reports() {
       <h2 className="px-2 py-4 text-xl">Reports</h2>
 
       <div className="space-y-3">
-        <div className="flex flex-wrap gap-2">
-          {['all', 'pending', 'reviewing', 'resolved', 'dismissed'].map((btn) => (
-            <button key={`btn${btn}`} onClick={() => setReportStatus(btn)} className={`rounded-md bg-white px-3 py-1 shadow-xs outline-2 transition-colors max-sm:text-sm ${reportStatus === btn ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
-              <span className="capitalize">{btn}</span>
+        <div className="flex flex-wrap gap-3">
+          {['all', 'pending', 'reviewing', 'resolved', 'dismissed'].map((btnText) => (
+            <button key={`btn${btnText}`} onClick={() => setReportStatus(btnText)} className={`relative rounded-md bg-white px-3 py-1 text-sm shadow-xs outline-2 transition-colors ${reportStatus === btnText ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
+              <span className="absolute top-0 right-0 z-2 block size-[16px] translate-x-1/3 -translate-y-1/3 overflow-hidden rounded-sm">
+                <GetStatus status={btnText} size="12" />
+              </span>
+              <span className="capitalize">{btnText}</span>
             </button>
           ))}
         </div>
@@ -56,8 +59,8 @@ function Reports() {
         ) : (
           <>
             {reports.length < 1 ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid place-items-center rounded-lg bg-white py-2 text-center shadow">
-                <span className="font-light opacity-80 text-sm">No '{reportStatus}' reports.</span>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid place-items-center rounded-lg bg-white py-3 text-center shadow">
+                <span className="text-sm font-light opacity-80">No '{reportStatus}' reports.</span>
               </motion.div>
             ) : (
               <div className="divide-y divide-(--slick-border) overflow-hidden rounded-xl bg-white shadow">
@@ -88,8 +91,8 @@ function Reports() {
                       className="relative px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
                     >
                       <button onClick={() => setReacting(req)} className="absolute inset-0 z-1"></button>
-                      <span className="absolute top-1 right-1 size-[18px] overflow-hidden rounded-md">
-                        <GetStatus status={status} />
+                      <span className={`absolute top-0.5 right-0.5 overflow-hidden rounded-md shadow select-none`}>
+                        <GetStatus status={status} text={status} />
                       </span>
 
                       <div className="flex items-center gap-3">
@@ -100,7 +103,7 @@ function Reports() {
                         <div className="">
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium max-sm:text-sm">{username}</h4>
-                            <span className="text-sm font-light opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
+                            <span className="text-sm font-light opacity-70 max-sm:text-xs">Report on: {format(createdAt, 'd MMM y')}</span>
                           </div>
                           <p className="line-clamp-1 max-sm:text-sm">{report.title}</p>
                         </div>
@@ -142,7 +145,10 @@ function Reports() {
                           <h4>Mark as</h4>
                           <div className="flex flex-wrap gap-2">
                             {['pending', 'reviewing', 'resolved', 'dismissed'].map((btnText) => (
-                              <button key={`btn${btnText}`} onClick={() => updateStatus(docId, btnText)} className={`rounded-md border border-(--slick-border) bg-(--main-bg) px-3 py-1 text-sm shadow-xs outline-2 transition-colors ${status === btnText ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
+                              <button key={`btn${btnText}`} onClick={() => updateStatus(docId, btnText)} className={`relative rounded-md border border-(--slick-border) bg-(--main-bg) px-3 py-1 text-sm shadow-xs outline-2 transition-colors ${status === btnText ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
+                                <span className="absolute top-0 right-0 z-2 block size-[16px] translate-x-1/3 -translate-y-1/3 overflow-hidden rounded-sm">
+                                  <GetStatus status={btnText} size="12" />
+                                </span>
                                 <span className="capitalize">{btnText}</span>
                               </button>
                             ))}

@@ -6,8 +6,8 @@
   --font: 'Outfit', sans-serif;
 
   /* Colors */
-  --main-bg: #f8f8f8;
-  --primary: #ffffff;
+  --main-bg: hsl(0, 0%, 96%);
+  --primary: hsl(0, 0%, 100%);
   --text-clr: #000;
   --second-lvl-bg: hsl(from var(--primary) h s calc(l - 5));
   --nav-link-bg: hsl(from var(--primary) h s calc(l - 5));
