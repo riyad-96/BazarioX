@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
 import { BadgeCheck, Ban, ClockFading, Hammer, ScanEye } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 import toast from 'react-hot-toast';
@@ -25,8 +25,9 @@ function ReportField() {
         createdAt: serverTimestamp(),
         report: { ...report },
       };
+      console.log(reportObj);
       await addDoc(collection(db, 'reports'), reportObj);
-      setUserData((prev) => ({ ...prev, reports: [{ ...reportObj, createdAt: new Date() }, ...prev.featureRequests] }));
+      setUserData((prev) => ({ ...prev, reports: [{ ...reportObj, createdAt: new Date() }, ...prev.reports] }));
       setReport({
         title: '',
         body: '',
@@ -54,6 +55,10 @@ function ReportField() {
       error: 'Report Failed',
     });
   }
+
+  // useEffect(() => {
+  //   console.log(userData.reports);
+  // }, [userData.reports]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -95,8 +100,8 @@ function ReportField() {
         <h3 className="mb-2 pl-1 text-xl">Previous reports</h3>
         {userData.reports.length > 0 ? (
           <div className="space-y-3">
-            {userData.reports.map((f, i) => {
-              const { report, createdAt, status } = f;
+            {userData.reports.map((r, i) => {
+              const { report, createdAt, status } = r;
               const { title, body } = report;
 
               return (

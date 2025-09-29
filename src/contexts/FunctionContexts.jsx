@@ -207,8 +207,6 @@ function FunctionContexts({ children }) {
           const featureRequests = await getDocs(query(collection(db, 'features'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
           const reports = await getDocs(query(collection(db, 'reports'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
 
-          console.log(featureRequests.docs.map((res) => res.data()));
-
           setUserData({
             username: userDataObject?.data()?.username || '',
             phone: userDataObject?.data()?.phone || '',
