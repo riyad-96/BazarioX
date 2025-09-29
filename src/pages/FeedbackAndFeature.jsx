@@ -23,7 +23,7 @@ function FeedbackAndFeature() {
           </div>
         </div>
 
-        <div className="px-3 pt-8 pb-6">
+        <div className="px-3 pt-8 pb-4">
           <div className="mx-auto max-w-[700px]">
             <div className="grid divide-(--slick-border) overflow-hidden rounded-lg bg-(--primary) shadow max-sm:divide-y sm:flex sm:divide-x">
               {['feedback', 'feature', 'report'].map((t) => (
@@ -36,7 +36,7 @@ function FeedbackAndFeature() {
         </div>
       </div>
 
-      <div className="scrollbar-thin overflow-y-auto px-3 pb-8 pt-2">
+      <div className="scrollbar-thin overflow-y-auto px-3 pt-2 pb-16">
         <div className="mx-auto max-w-[700px]">
           {tab === 'feedback' && <RatingsField />}
           {tab === 'feature' && <FeatureField />}
