@@ -4,6 +4,7 @@ import { useState } from 'react';
 import RatingsField from '../components/feedbackandfeatures/RatingsField';
 import FeatureField from '../components/feedbackandfeatures/FeatureField';
 import ReportField from '../components/feedbackandfeatures/ReportField';
+import { Home } from 'lucide-react';
 
 function FeedbackAndFeature() {
   const navigate = useNavigate();
@@ -14,12 +15,18 @@ function FeedbackAndFeature() {
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
       <div>
-        <div className="grid h-[60px] bg-(--main-bg) px-3">
-          <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
-            <button onClick={() => navigate(-1)} className="grid">
-              <ArrowLeftSvg size="30" />
+        <div className="flex h-[60px] bg-(--main-bg) px-3">
+          <div className="mx-auto flex w-full max-w-[700px] items-center justify-between gap-2 select-none">
+            <div className="flex items-center gap-2">
+              <button onClick={() => navigate(-1)} className="grid">
+                <ArrowLeftSvg size="30" />
+              </button>
+              <span className="text-xl">Feedback & feature request</span>
+            </div>
+
+            <button onClick={() => navigate('/')} className="rounded-lg p-2 shadow max-sm:p-1.5">
+              <Home size="20" />
             </button>
-            <span className="text-xl">Feedback & feature request</span>
           </div>
         </div>
 

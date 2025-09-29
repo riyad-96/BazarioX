@@ -57,7 +57,7 @@ function FeatureRequests() {
           <>
             {requests.length < 1 ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid place-items-center rounded-lg bg-white py-2 text-center shadow">
-                <span className="font-light opacity-80">No '{requestStatus}' requests.</span>
+                <span className="font-light opacity-80 text-sm">No '{requestStatus}' requests.</span>
               </motion.div>
             ) : (
               <div className="divide-y divide-(--slick-border) overflow-hidden rounded-xl bg-white shadow">
@@ -85,24 +85,26 @@ function FeatureRequests() {
                         },
                       }}
                       key={`${uid}${i}`}
-                      className="relative flex items-center justify-between px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
+                      className="relative px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
                     >
                       <button onClick={() => setReacting(req)} className="absolute inset-0 z-1"></button>
-                      <span className="absolute top-1 left-1 size-[18px]">
+                      <span className="absolute top-1 right-1 size-[18px] rounded-md overflow-hidden">
                         <GetStatus status={status} />
                       </span>
+
                       <div className="flex items-center gap-3">
-                        <div className="size-[35px] overflow-hidden rounded-full shrink-0">
+                        <div className="size-[35px] shrink-0 overflow-hidden rounded-full sm:size-[40px]">
                           <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
                         </div>
 
-                        <div className="leading-4 sm:leading-5">
-                          <h4 className="max-sm:text-sm">{username}</h4>
-                          <span className="text-sm opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
+                        <div className="">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium max-sm:text-sm">{username}</h4>
+                            <span className="text-sm font-light opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
+                          </div>
+                          <p className="line-clamp-1 max-sm:text-sm">{request.title}</p>
                         </div>
                       </div>
-
-                      <p className="line-clamp-2 w-[100px] sm:w-[150px] text-sm max-sm:text-xs">{request.title}</p>
                     </motion.div>
                   );
                 })}
@@ -115,56 +117,61 @@ function FeatureRequests() {
       <AnimatePresence>
         {reacting && (
           <motion.div onMouseDown={() => setReacting(null)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-20 grid place-items-center overflow-y-auto bg-black/30 p-4">
-            <motion.div onMouseDown={(e) => e.stopPropagation()} initial={{ y: '50px' }} animate={{ y: 0 }} exit={{ y: '50px', opacity: 0 }} className="w-full max-w-[840px] rounded-xl bg-white p-4">
+            <motion.div onMouseDown={(e) => e.stopPropagation()} initial={{ y: '50px' }} animate={{ y: 0 }} exit={{ y: '50px', opacity: 0 }} className="relative w-full max-w-[840px] rounded-xl bg-white px-4 py-6 md:py-8">
               {(() => {
                 const { docId, createdAt, picture, request, status, uid, user } = reacting;
                 const { username, joinDate } = user;
                 const { title, body } = request;
 
                 return (
-                  <div className="gap-6 max-md:space-y-8 md:flex">
-                    <div className="flex-6 space-y-2">
-                      <h3 className="w-fit text-lg leading-6 font-medium">{title.trim() || 'Untitled'}</h3>
-                      <div>
-                        <p className="min-h-[50px] leading-5">{body}</p>
-                        <span className="text-xs font-light opacity-70 sm:text-sm">
-                          {format(createdAt, 'd MMMM y')}, {format(createdAt, 'h:mm a')}
-                        </span>
+                  <>
+                    <span className="absolute -top-2 -right-2 size-[26px] shadow-md rounded-md overflow-hidden">
+                      <GetStatus status={status} size="16" />
+                    </span>
+                    <div className="gap-6 max-md:space-y-8 md:flex">
+                      <div className="flex-6 space-y-2">
+                        <h3 className="w-fit text-lg leading-6 font-medium">{title.trim() || 'Untitled'}</h3>
+                        <div>
+                          <p className="min-h-[50px] leading-5">{body}</p>
+                          <span className="text-xs font-light opacity-70 sm:text-sm">
+                            {format(createdAt, 'd MMMM y')}, {format(createdAt, 'h:mm a')}
+                          </span>
+                        </div>
+
+                        <div className="space-y-2">
+                          <h4>Mark as</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {['pending', 'reviewing', 'implemented', 'rejected', 'working'].map((btnText) => (
+                              <button key={`btn${btnText}`} onClick={() => updateStatus(docId, btnText)} className={`rounded-md border border-(--slick-border) bg-(--main-bg) px-3 py-1 text-sm shadow-xs outline-2 transition-colors ${status === btnText ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
+                                <span className="capitalize">{btnText}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <h4>Mark as</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {['pending', 'reviewing', 'implemented', 'rejected', 'working'].map((btnText) => (
-                            <button key={`btn${btnText}`} onClick={() => updateStatus(docId, btnText)} className={`rounded-md border border-(--slick-border) bg-(--main-bg) px-3 py-1 text-sm shadow-xs outline-2 transition-colors ${status === btnText ? 'outline-black/20' : 'outline-transparent pointer-fine:hover:outline-black/10'}`}>
-                              <span className="capitalize">{btnText}</span>
-                            </button>
-                          ))}
+                      <div className="flex-4 space-y-4">
+                        <div className="flex items-center gap-2">
+                          <div className="size-[35px] overflow-hidden rounded-full">
+                            <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
+                          </div>
+
+                          <div className="grid leading-5">
+                            <h4>{user.username}</h4>
+                            <span className="text-xs font-light opacity-70 sm:text-sm">Joined on: {format(joinDate, 'd MMMM y')}</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="grid gap-1">
+                            <label htmlFor="notify-textarea">Notify this user</label>
+                            <textarea id="notify-textarea" placeholder="Write text as notification body" className="min-h-[90px] w-full min-w-0 rounded-lg border-1 border-transparent bg-(--textarea-bg) px-3 py-2 outline-none focus:border-(--input-focus-border)"></textarea>
+                          </div>
+                          <button className="rounded-md border border-(--slick-border) bg-(--main-bg) px-2 py-1 text-sm shadow-xs">Notify</button>
                         </div>
                       </div>
                     </div>
-
-                    <div className="flex-4 space-y-4">
-                      <div className="flex items-center gap-2">
-                        <div className="size-[35px] overflow-hidden rounded-full">
-                          <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
-                        </div>
-
-                        <div className="grid leading-5">
-                          <h4>{user.username}</h4>
-                          <span className="text-xs font-light opacity-70 sm:text-sm">Joined on: {format(joinDate, 'd MMMM y')}</span>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="grid gap-1">
-                          <label htmlFor="notify-textarea">Notify this user</label>
-                          <textarea id="notify-textarea" placeholder="Write text as notification body" className="min-h-[70px] w-full min-w-0 rounded-lg border-1 border-transparent bg-(--textarea-bg) px-3 py-2 outline-none focus:border-(--input-focus-border)"></textarea>
-                        </div>
-                        <button className="rounded-md border border-(--slick-border) bg-(--main-bg) px-2 py-1 text-sm shadow-xs">Notify</button>
-                      </div>
-                    </div>
-                  </div>
+                  </>
                 );
               })()}
             </motion.div>

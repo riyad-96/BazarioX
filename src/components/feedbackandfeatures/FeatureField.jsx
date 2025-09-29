@@ -133,7 +133,7 @@ function FeatureField() {
                     <span className="font-normal capitalize">{status}</span>
                     <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
 
-                    <span className={`absolute top-0 right-0 size-[20px] translate-x-1/2 -translate-y-1/2`}>
+                    <span className={`absolute top-0 right-0 size-[20px] rounded-md overflow-hidden translate-x-1/2 -translate-y-1/2`}>
                       <GetStatus status={status} />
                     </span>
                   </div>

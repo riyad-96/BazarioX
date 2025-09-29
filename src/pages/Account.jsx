@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth, db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../contexts/UniContexts';
-import { ImagePlus, LoaderCircle, X } from 'lucide-react';
+import { Home, ImagePlus, LoaderCircle, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
@@ -198,12 +198,18 @@ function Account() {
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
-      <div className="grid h-[60px] bg-(--main-bg) px-3">
-        <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
-          <button onClick={() => navigate(-1)} className="grid">
-            <ArrowLeftSvg size="30" />
+      <div className="flex h-[60px] bg-(--main-bg) px-3">
+        <div className="mx-auto flex w-full max-w-[700px] items-center justify-between gap-2 select-none">
+          <div className="flex items-center gap-2">
+            <button onClick={() => navigate(-1)} className="grid">
+              <ArrowLeftSvg size="30" />
+            </button>
+            <span className="text-xl">Account</span>
+          </div>
+
+          <button onClick={() => navigate('/')} className="rounded-lg p-2 shadow max-sm:p-1.5">
+            <Home size="20" />
           </button>
-          <span className="text-xl">Account</span>
         </div>
       </div>
 
@@ -280,7 +286,7 @@ function Account() {
                 setUserName(userData.username);
                 setUserNameEditing(true);
               }}
-              className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)"
+              className="flex gap-2 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)"
             >
               <span>Username</span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.username || 'set user name'} </>}</span>
@@ -290,21 +296,21 @@ function Account() {
                 setPhoneEditing(true);
                 setPhone(userData.phone);
               }}
-              className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)"
+              className="flex gap-2 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)"
             >
               <span>Phone number</span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.phone || 'set number'} </>}</span>
             </button>
-            <button onClick={() => setChangingPassword(true)} className="flex px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setChangingPassword(true)} className="flex px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)">
               <span>Change password</span>
             </button>
           </div>
 
           <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-            <button onClick={() => setRequestingLogout(true)} className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setRequestingLogout(true)} className="flex gap-2 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)">
               Log out
             </button>
-            <button className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">Delete account</button>
+            <button className="flex gap-2 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)">Delete account</button>
           </div>
         </div>
       </div>

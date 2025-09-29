@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg, ProfilePlaceholderSvg } from '../../assets/Svg';
 import Statistics from './Statistics';
 import { motion } from 'motion/react';
+import { Home } from 'lucide-react';
 
 function ProfileIndex() {
   const { user, userData, userDataLoading, isAdmin, allMonthData } = useUniContexts();
@@ -10,12 +11,18 @@ function ProfileIndex() {
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
-      <div className="grid h-[60px] bg-(--main-bg) px-3">
-        <div className="mx-auto flex w-full max-w-[700px] items-center gap-2 select-none">
-          <button onClick={() => navigate(-1)} className="grid">
-            <ArrowLeftSvg size="30" />
+      <div className="flex h-[60px] bg-(--main-bg) px-3">
+        <div className="mx-auto flex w-full max-w-[700px] items-center justify-between gap-2 select-none">
+          <div className="flex items-center gap-2">
+            <button onClick={() => navigate(-1)} className="grid">
+              <ArrowLeftSvg size="30" />
+            </button>
+            <span className="text-xl">Profile</span>
+          </div>
+
+          <button onClick={() => navigate('/')} className="rounded-lg p-2 shadow max-sm:p-1.5">
+            <Home size="20" />
           </button>
-          <span className="text-xl">Profile</span>
         </div>
       </div>
 

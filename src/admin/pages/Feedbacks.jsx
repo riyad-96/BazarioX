@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useUniContexts } from '../../contexts/UniContexts';
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 import { ProfilePlaceholderSvg } from '../../assets/Svg';
@@ -9,7 +8,6 @@ import { Star } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
 function Feedbacks() {
-  const { allUsers } = useUniContexts();
   const [rating, setRating] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
   const [feedbacksLoading, setFeedbacksLoading] = useState(true);
