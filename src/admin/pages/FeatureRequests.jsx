@@ -92,17 +92,17 @@ function FeatureRequests() {
                         <GetStatus status={status} />
                       </span>
                       <div className="flex items-center gap-3">
-                        <div className="size-[35px] overflow-hidden rounded-full">
+                        <div className="size-[35px] overflow-hidden rounded-full shrink-0">
                           <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
                         </div>
 
-                        <div className="leading-5">
-                          <h4>{username}</h4>
-                          <span className="text-sm opacity-70">Request date: {format(createdAt, 'd MMM y')}</span>
+                        <div className="leading-4 sm:leading-5">
+                          <h4 className="max-sm:text-sm">{username}</h4>
+                          <span className="text-sm opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
                         </div>
                       </div>
 
-                      <p>{request.title}</p>
+                      <p className="line-clamp-2 w-[100px] sm:w-[150px] text-sm max-sm:text-xs">{request.title}</p>
                     </motion.div>
                   );
                 })}
