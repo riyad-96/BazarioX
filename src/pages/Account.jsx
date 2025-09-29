@@ -280,7 +280,7 @@ function Account() {
                 setUserName(userData.username);
                 setUserNameEditing(true);
               }}
-              className="flex gap-2 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)"
+              className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)"
             >
               <span>Username</span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.username || 'set user name'} </>}</span>
@@ -290,21 +290,21 @@ function Account() {
                 setPhoneEditing(true);
                 setPhone(userData.phone);
               }}
-              className="flex gap-2 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)"
+              className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)"
             >
               <span>Phone number</span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.phone || 'set number'} </>}</span>
             </button>
-            <button onClick={() => setChangingPassword(true)} className="flex px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setChangingPassword(true)} className="flex px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">
               <span>Change password</span>
             </button>
           </div>
 
           <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">
-            <button onClick={() => setRequestingLogout(true)} className="flex gap-2 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setRequestingLogout(true)} className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">
               Log out
             </button>
-            <button className="flex gap-2 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">Delete account</button>
+            <button className="flex gap-2 px-6 py-2.5  pointer-fine:hover:bg-(--second-lvl-bg)">Delete account</button>
           </div>
         </div>
       </div>
