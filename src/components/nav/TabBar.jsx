@@ -40,7 +40,7 @@ function TabBar({ className }) {
             <span>
               <CalendarSearch size="18" />
             </span>
-            <span className="max-sm:text-sm">Monthly</span>
+            <span className="max-sm:text-sm">History</span>
           </NavLink>
         </div>
       </div>
