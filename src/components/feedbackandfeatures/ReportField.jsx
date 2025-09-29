@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 import toast from 'react-hot-toast';
+import GetStatus from '../helpers/GetStatus';
 
 function ReportField() {
   const { user, userData, setUserData } = useUniContexts();
@@ -131,26 +132,7 @@ function ReportField() {
                     <span className="opacity-80">{format(createdAt, 'd MMM y')}</span>
 
                     <span className={`absolute top-0 right-0 size-[20px] translate-x-1/2 -translate-y-1/2`}>
-                      {status === 'pending' && (
-                        <span className="grid size-full place-items-center rounded-md bg-zinc-300 text-black">
-                          <ClockFading size="14" color="currentColor" strokeWidth="2" />
-                        </span>
-                      )}
-                      {status === 'reviewing' && (
-                        <span className="grid size-full place-items-center rounded-md bg-yellow-300 text-black">
-                          <ScanEye size="14" color="currentColor" strokeWidth="2" />
-                        </span>
-                      )}
-                      {status === 'resolved' && (
-                        <span className="grid size-full place-items-center rounded-md bg-emerald-300 text-black">
-                          <BadgeCheck size="14" color="currentColor" strokeWidth="2" />
-                        </span>
-                      )}
-                      {status === 'dismissed' && (
-                        <span className="grid size-full place-items-center rounded-md bg-red-300 text-black">
-                          <Ban size="14" color="currentColor" strokeWidth="2" />
-                        </span>
-                      )}
+                      <GetStatus status={status}/>
                     </span>
                   </div>
                 </motion.div>

@@ -1,10 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import { lazy } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
+
 import App from './App.jsx';
 import ContextProvider from './contexts/ContextProvider.jsx';
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/Home.jsx';
 import Auth from './pages/auth/Auth.jsx';
@@ -32,7 +32,11 @@ import Reports from './admin/pages/Reports.jsx';
 const router = createBrowserRouter([
   {
     path: '',
-    element: <App />,
+    element: (
+      <ContextProvider>
+        <App />
+      </ContextProvider>
+    ),
     children: [
       {
         path: '',
@@ -127,8 +131,4 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')).render(
-  <ContextProvider>
-    <RouterProvider router={router} />
-  </ContextProvider>,
-);
+createRoot(document.getElementById('root')).render(<RouterProvider router={router} />);
