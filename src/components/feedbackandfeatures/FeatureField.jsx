@@ -25,7 +25,6 @@ function FeatureField() {
         createdAt: serverTimestamp(),
         request: { ...featureRequest },
       };
-      console.log(featureObj);
       await addDoc(collection(db, 'features'), featureObj);
       setUserData((prev) => ({ ...prev, featureRequests: [{ ...featureObj, createdAt: new Date() }, ...prev.featureRequests] }));
       setFeatureRequest({

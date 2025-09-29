@@ -29,7 +29,7 @@ function Dashboard() {
         const feedbacksSnap = await getDocs(collection(db, 'feedbacks'));
         const feedbacks = feedbacksSnap.docs.map((res) => res.data());
         const ratingCount = feedbacks.length;
-        const averageRating = feedbacks.reduce((acc, feedback) => acc + feedback.rating, 0) / ratingCount;
+        const averageRating = feedbacks.reduce((acc, feedback) => acc + feedback.rating, 0) / ratingCount || 0;
 
         setDashboardData({ totalUser, newThisMonth, ratingCount, averageRating });
       } catch (err) {
@@ -67,10 +67,10 @@ function Dashboard() {
             <h4 className="text-center">App ratings</h4>
             <div className="flex items-center text-zinc-700">
               <div className="grid flex-1 text-center">
-                <span className="text-3xl flex items-center justify-center gap-2">
+                <span className="flex items-center justify-center gap-2 text-3xl">
                   <span>{dasboardData.averageRating}</span>
                   <span className="text-yellow-400">
-                    <Star size="30" fill="currentColor"/>
+                    <Star size="30" fill="currentColor" />
                   </span>
                 </span>
                 <span>Average stars</span>

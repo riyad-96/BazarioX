@@ -25,7 +25,6 @@ function ReportField() {
         createdAt: serverTimestamp(),
         report: { ...report },
       };
-      console.log(reportObj);
       await addDoc(collection(db, 'reports'), reportObj);
       setUserData((prev) => ({ ...prev, reports: [{ ...reportObj, createdAt: new Date() }, ...prev.reports] }));
       setReport({
@@ -55,10 +54,6 @@ function ReportField() {
       error: 'Report Failed',
     });
   }
-
-  // useEffect(() => {
-  //   console.log(userData.reports);
-  // }, [userData.reports]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">

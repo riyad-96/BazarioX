@@ -30,7 +30,7 @@ function Feedbacks() {
           feedbacks.map(async (feedback) => {
             const picsSnap = await getDocs(query(collection(db, 'users', feedback.uid, 'pictures')), where('isSelected', '==', true));
             const username = (await getDoc(doc(db, 'users', feedback.uid))).data().username;
-            const picture = picsSnap.docs[0]?.data() || null;
+            const picture = picsSnap.docs.length < 1 ? null : picsSnap.docs[0].data().url;
             return {
               uid: feedback.uid,
               username,
@@ -40,7 +40,6 @@ function Feedbacks() {
           }),
         );
 
-        console.log(feedbacksWithUserData);
         setFeedbacks(feedbacksWithUserData);
       } catch (err) {
         console.error(err);
@@ -82,7 +81,7 @@ function Feedbacks() {
                 <button onClick={() => setFeedbackPreview(fb)} className="absolute inset-0 z-1"></button>
                 <div className="flex items-center gap-3">
                   <div className="size-[35px] overflow-hidden rounded-full">
-                    <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture.url} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
+                    <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
                   </div>
 
                   <div className="leading-5">
@@ -116,7 +115,7 @@ function Feedbacks() {
                     <div key={uid} className="relative flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="size-[35px] overflow-hidden rounded-full">
-                          <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture.url} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
+                          <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
                         </div>
 
                         <div className="leading-5">
