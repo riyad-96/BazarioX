@@ -1,7 +1,6 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg, ProfilePlaceholderSvg } from '../assets/Svg';
-import { signOut } from 'firebase/auth';
-import { auth, db } from '../configs/firebase';
+import { db } from '../configs/firebase';
 import toast from 'react-hot-toast';
 import { useUniContexts } from '../contexts/UniContexts';
 import { ALargeSmall, BookUser, Home, ImagePlus, KeyRound, LoaderCircle, LogOut, UserRoundX, X } from 'lucide-react';
