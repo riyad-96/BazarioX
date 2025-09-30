@@ -11,19 +11,6 @@ function LogoutModal({ state }) {
   const { setAllMonthData, setCurrentSession } = useUniContexts();
   const navigate = useNavigate();
 
-  // set time out logout
-  const [reverseCount, setReverseCount] = useState(5);
-  const timeout = useRef();
-
-  useEffect(() => {
-    timeout.current = setInterval(() => {
-      if (reverseCount === 0) return;
-      setReverseCount((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timeout.current);
-  }, [reverseCount]);
-
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setRequestingLogout(false)} className="fixed inset-0 z-20 grid place-items-center justify-items-center overflow-hidden bg-black/30 p-3 pb-6">
       <motion.div
@@ -46,7 +33,6 @@ function LogoutModal({ state }) {
           </button>
           <button
             onClick={async () => {
-              if (reverseCount > 0) return;
               try {
                 await signOut(auth);
                 toast.success('Logged out successfully!', { duration: 2500 });
@@ -59,16 +45,9 @@ function LogoutModal({ state }) {
                 console.error(err);
               }
             }}
-            className={`flex justify-center gap-1.5 rounded-full border-2 border-red-500 bg-(--primary) py-3 text-sm text-red-500 shadow hover:bg-(--primary)/70 ${reverseCount > 0 && '!cursor-not-allowed opacity-50'}`}
+            className={`flex justify-center gap-1.5 rounded-full border-2 border-red-500 bg-(--primary) py-3 text-sm text-red-500 shadow hover:bg-(--primary)/70`}
           >
             <span>Logout</span>
-            {reverseCount !== 0 && (
-              <span className="flex">
-                <span>(</span>
-                <span className="w-3">{reverseCount}</span>
-                <span>)</span>
-              </span>
-            )}
           </button>
         </div>
       </motion.div>

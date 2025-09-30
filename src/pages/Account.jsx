@@ -13,6 +13,7 @@ import PhoneEditingModal from '../components/account/PhoneEditingModal';
 import ProfilePicDeleteModal from '../components/account/ProfilePicDeleteModal';
 import LogoutModal from '../components/account/LogoutModal';
 import PasswordChangeModal from '../components/account/PasswordChangeModal';
+import AccountDelete from '../components/account/AccountDelete';
 
 function Account() {
   const navigate = useNavigate();
@@ -192,6 +193,9 @@ function Account() {
   // change password
   const [changingPassword, setChangingPassword] = useState(false);
 
+  // account delete
+  const [accountDeleting, setAccountDeleting] = useState(false);
+
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
       <div className="flex h-[60px] bg-(--main-bg) px-3">
@@ -322,7 +326,7 @@ function Account() {
               </span>
               <span>Log out</span>
             </button>
-            <button className="flex gap-4 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => setAccountDeleting(true)} className="flex gap-4 px-6 py-2.5 pointer-fine:hover:bg-(--second-lvl-bg)">
               <span>
                 <UserRoundX size="20" />
               </span>
@@ -344,6 +348,8 @@ function Account() {
       <AnimatePresence>{requestingLogout && <LogoutModal state={{ setRequestingLogout }} />}</AnimatePresence>
 
       <AnimatePresence>{changingPassword && <PasswordChangeModal state={{ setChangingPassword }} />}</AnimatePresence>
+
+      <AnimatePresence>{accountDeleting && <AccountDelete state={{ setAccountDeleting }} />}</AnimatePresence>
     </div>
   );
 }
