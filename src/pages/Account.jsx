@@ -18,7 +18,7 @@ import PasswordChangeModal from '../components/account/PasswordChangeModal';
 function Account() {
   const navigate = useNavigate();
 
-  const { user, userData, userDataLoading, setUserData, setAllMonthData, setCurrentSession, setClickDisabled } = useUniContexts();
+  const { user, userData, userDataLoading, setUserData, setClickDisabled } = useUniContexts();
 
   // profile image updation
   const [selectedImg, setSelectedImg] = useState('');
@@ -192,9 +192,6 @@ function Account() {
 
   // change password
   const [changingPassword, setChangingPassword] = useState(false);
-  async function sendPasswordChangeRequest(newPass) {
-    console.log(newPass);
-  }
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
@@ -347,7 +344,7 @@ function Account() {
 
       <AnimatePresence>{requestingLogout && <LogoutModal state={{ setRequestingLogout }} />}</AnimatePresence>
 
-      <AnimatePresence>{changingPassword && <PasswordChangeModal state={{ setChangingPassword }} func={{ sendPasswordChangeRequest }} />}</AnimatePresence>
+      <AnimatePresence>{changingPassword && <PasswordChangeModal state={{ setChangingPassword }} />}</AnimatePresence>
     </div>
   );
 }

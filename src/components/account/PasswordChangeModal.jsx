@@ -6,11 +6,10 @@ import { auth } from '../../configs/firebase';
 import { Loader, LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-function PasswordChangeModal({ state, func }) {
+function PasswordChangeModal({ state }) {
   const { setChangingPassword } = state;
-  const { sendPasswordChangeRequest } = func;
 
-  const { user, setClickDisabled } = useUniContexts();
+  const { user } = useUniContexts();
 
   const [passObj, setPassObj] = useState({
     currentPass: '',
