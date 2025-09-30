@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { ArrowUpSvg } from '../../assets/Svg';
 import { useUniContexts } from '../../contexts/UniContexts';
 import toast from 'react-hot-toast';
+import { BrushCleaning, Plus } from 'lucide-react';
 
 function Calc({ props }) {
   const { isCalcExpanded, setIsCalcExpanded, item, setItem } = props;
@@ -71,7 +72,7 @@ function Calc({ props }) {
   const focusedInput = useRef();
 
   return (
-    <div className={`max-w-[700px] absolute bottom-[70px] left-1/2 z-5 w-[calc(100%_-_1rem)] -translate-x-1/2 rounded-xl border border-(--slick-border) bg-(--primary) p-3 shadow transition-[translate] duration-450 ${isCalcExpanded ? 'translate-0' : 'translate-y-[105%]'}`}>
+    <div className={`absolute bottom-[70px] left-1/2 z-5 w-[calc(100%_-_1rem)] max-w-[700px] -translate-x-1/2 rounded-xl border border-(--slick-border) bg-(--primary) p-3 shadow transition-[translate] duration-450 ${isCalcExpanded ? 'translate-0' : 'translate-y-[105%]'}`}>
       <button onClick={() => setIsCalcExpanded((prev) => !prev)} className={`absolute right-2 grid size-[35px] translate-y-[calc(-100%_+_1px)] place-items-center border-(--slick-border) bg-(--primary) transition-[top,box-shadow] duration-350 ${isCalcExpanded ? 'top-0 rounded-t-md border-t border-r border-l' : 'top-[-15px] rounded-md border shadow'}`}>
         <ArrowUpSvg className={`transition-[rotate] duration-450 ${isCalcExpanded ? 'rotate-[180deg]' : 'rotate-0'}`} size="22" />
       </button>
@@ -192,12 +193,15 @@ function Calc({ props }) {
                   });
                   focusedInput.current = null;
                 }}
-                className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm"
+                className="flex items-center gap-1 rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm"
               >
-                Clear fields
+                <span>
+                  <BrushCleaning size="16" />
+                </span>
+                <span>Clear</span>
               </button>
               <button onClick={addToBazarItems} type="submit" className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm">
-                Add
+                <Plus size="20" />
               </button>
             </div>
           </div>

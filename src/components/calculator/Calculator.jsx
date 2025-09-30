@@ -6,9 +6,10 @@ import { useUniContexts } from '../../contexts/UniContexts';
 import { format } from 'date-fns';
 import { useFunctionContext } from '../../contexts/FunctionContexts';
 import toast from 'react-hot-toast';
+import { CloudUpload, HardDriveUpload, ListX, Trash2 } from 'lucide-react';
 
 function Calculator() {
-  const { isCalcExpanded, setIsCalcExpanded, currentSession, setCurrentSession } = useUniContexts();
+  const { user, isCalcExpanded, setIsCalcExpanded, currentSession, setCurrentSession } = useUniContexts();
   const { handleStoringNewSession } = useFunctionContext();
 
   const [item, setItem] = useState({
@@ -70,7 +71,9 @@ function Calculator() {
                       <span className="flex-2 text-center text-sm font-medium">Price</span>
                       <span className="flex-2 text-center text-sm font-medium">Qty+Unit</span>
                       <span className="flex-2 text-center text-sm font-medium">Total</span>
-                      <span className="flex-1 text-center text-sm font-medium">Del</span>
+                      <span className="flex-1 grid place-items-center text-center text-sm font-medium">
+                        <Trash2 size="18" />
+                      </span>
                     </div>
 
                     <div className="">
@@ -92,12 +95,16 @@ function Calculator() {
                   onDoubleClick={() => {
                     setCurrentSession((prev) => ({ ...prev, bazarList: [] }));
                   }}
-                  className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm"
+                  className="flex items-center gap-2 rounded-md border border-(--slick-border) bg-(--second-lvl-bg) py-0.5 pr-3 pl-2 text-sm"
                 >
-                  Delete
+                  <span>
+                    <ListX size="16" />
+                  </span>
+                  <span>Delete</span>
                 </button>
-                <button onClick={addBazarSession} className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg) px-3 py-0.5 text-sm">
-                  Save
+                <button onClick={addBazarSession} className="flex items-center gap-2 rounded-md border border-(--slick-border) bg-(--second-lvl-bg) py-0.5 pr-3 pl-2 text-sm">
+                  <span>{user ? <CloudUpload size="16" /> : <HardDriveUpload size="16" />}</span>
+                  <span>Save</span>
                 </button>
               </div>
             )}
