@@ -44,16 +44,16 @@ function Calculator() {
 
   return (
     <div className="min-h-full py-2">
-      <div className="mb-3 space-y-4">
-        <h1 className="text-2xl">Bazar List</h1>
+      <div className="mb-3 space-y-2">
+        <h1 className="text-xl">Bazar List</h1>
         <input onChange={(e) => setCurrentSession((prev) => ({ ...prev, sessionTitle: e.target.value }))} value={currentSession.sessionTitle} type="text" placeholder="Bazar title" className="w-full min-w-0 rounded-lg border-1 border-(--slick-border) bg-(--primary) py-1 text-center text-lg font-light transition-colors duration-150 outline-none focus:border-(--input-focus-border)" />
       </div>
 
       <div className={`space-y-2 transition-[padding] duration-450 ${isCalcExpanded ? 'pb-80' : 'pb-20'}`}>
-        <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2 shadow">
+        <div className="rounded-lg border border-(--slick-border) bg-(--primary) p-2 shadow-xs">
           <div className="space-y-2">
             <p>
-              Total items: <span className="font-medium">{currentSession.bazarList.length}</span>, Total price: <span className="font-medium">{currentSession.bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
+              Items: <span className="font-medium">{currentSession.bazarList.length}</span>, Total: <span className="font-medium">{currentSession.bazarList.reduce((acc, eachItem) => eachItem.total + acc, 0)}</span> ৳
             </p>
 
             <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg)">
@@ -69,9 +69,9 @@ function Calculator() {
                     <div className="flex border-b-1 border-(--each-list-item-divider-clr) py-2 pl-6">
                       <span className="flex-3 text-center text-sm font-medium">Item</span>
                       <span className="flex-2 text-center text-sm font-medium">Price</span>
-                      <span className="flex-2 text-center text-sm font-medium">Qty+Unit</span>
+                      <span className="flex-2 text-center text-sm font-medium">Amount</span>
                       <span className="flex-2 text-center text-sm font-medium">Total</span>
-                      <span className="flex-1 grid place-items-center text-center text-sm font-medium">
+                      <span className="grid flex-1 place-items-center text-center text-sm font-medium">
                         <Trash2 size="18" />
                       </span>
                     </div>
