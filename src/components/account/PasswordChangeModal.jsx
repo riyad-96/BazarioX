@@ -82,7 +82,7 @@ function PasswordChangeModal({ state }) {
     } catch (err) {
       if (err.code === 'auth/invalid-credential') setCurrentPassInputErr('Wrong password, please try again');
       if (err.code === 'auth/too-many-requests') setUniError('Too many requests, try again later');
-      console.log(err);
+      console.error(err);
     } finally {
       setTryingPasswordChange(false);
     }

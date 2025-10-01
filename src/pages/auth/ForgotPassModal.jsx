@@ -39,7 +39,6 @@ function ForgotPassModal({ state }) {
 
     try {
       setIsSending(true);
-      console.log(email);
       await sendPasswordResetEmail(auth, email);
       toast.success('Reset link sent');
       setResetLinkSent(true);
