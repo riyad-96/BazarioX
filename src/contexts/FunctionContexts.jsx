@@ -27,9 +27,12 @@ function FunctionContexts({ children }) {
     saveToLocalStorage(newSession);
     const localSessions = JSON.parse(localStorage.getItem('localSessions'));
     setAllMonthData(localSessions);
-    toast.success('Session saved locally', {
-      duration: 3500,
-    });
+
+    if (!user || !navigator.onLine) {
+      toast.success('Session saved locally', {
+        duration: 2500,
+      });
+    }
 
     if (user && navigator.onLine) {
       const savingPromise = checkForUnsyncedSessionsAndSyncWithCloud();
@@ -40,7 +43,7 @@ function FunctionContexts({ children }) {
           success: 'Session synced to cloud',
           error: 'Cloud sync failed',
         },
-        { duration: 3500 },
+        { duration: 2500 },
       );
     }
   }

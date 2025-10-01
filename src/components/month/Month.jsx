@@ -3,6 +3,7 @@ import { useUniContexts } from '../../contexts/UniContexts';
 import { format, formatDistanceToNow, isThisWeek, isThisYear, isToday } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
 import UniModal from '../helpers/UniModal';
+import { Calendar } from 'lucide-react';
 
 function Month() {
   const { allMonthData } = useUniContexts();
@@ -69,8 +70,11 @@ function Month() {
 
       <div className="my-2">
         {months.length > 1 && (
-          <button onClick={() => setMonthSelectionModalOpen(true)} className="flex rounded-md border border-(--slick-border) bg-(--primary) px-3 py-1 text-sm shadow">
-            Select date ({selectedMonth})
+          <button onClick={() => setMonthSelectionModalOpen(true)} className="mb-4 flex rounded-md border border-(--slick-border) bg-(--primary) items-center gap-2 px-3 py-1 text-sm shadow-xs">
+            <span>
+              <Calendar size="16" />
+            </span>
+            <span>Select date ({selectedMonth})</span>
           </button>
         )}
 
@@ -205,8 +209,8 @@ function Month() {
                       const timeStr = format(d, 'h:mm a');
 
                       if (isToday(d)) return timeStr;
-                      if (isThisWeek(d)) return `${timeStr}, ${format(d, 'EEE')}`;
-                      if (isThisYear(d)) return `${timeStr}, ${format(d, 'MMM d')}`;
+                      if (isThisWeek(d)) return `${timeStr}, ${format(d, 'EEEE')}`;
+                      if (isThisYear(d)) return `${timeStr}, ${format(d, 'd MMM')}`;
                       return `${timeStr}, ${format(d, 'MMM d yyyy')}`;
                     })()}
                   </span>

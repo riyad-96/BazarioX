@@ -8,7 +8,7 @@ import { LoaderCircle } from 'lucide-react';
 
 function AccountDelete({ state }) {
   const { setAccountDeleting } = state;
-  const { user } = useUniContexts();
+  const { user, setCurrentSession, setAllMonthData } = useUniContexts();
 
   // set time out logout
   const [reverseCount, setReverseCount] = useState(10);
@@ -72,6 +72,8 @@ function AccountDelete({ state }) {
 
   // trigger the delete
   function triggerDeleteAcount() {
+    if (reverseCount > 0) return;
+
     if (!verified) {
       toast.error('Please verify password first to continue');
       return;
@@ -83,11 +85,23 @@ function AccountDelete({ state }) {
     }
 
     const deleteAccountPromise = deleteAccount();
-    toast.promise(deleteAccountPromise, {
-      loading: 'Deleting your account…',
-      success: 'Your account and all related data have been permanently deleted.',
-      error: 'Failed to delete account. Please try again.',
-    });
+    toast.promise(
+      deleteAccountPromise,
+      {
+        loading: 'Deleting your account…',
+        success: () => {
+          setAllMonthData([]);
+          setCurrentSession({ sessionTitle: '', bazarList: [] });
+          localStorage.clear();
+
+          return 'Your account and all related data have been permanently deleted.';
+        },
+        error: 'Failed to delete account. Please try again.',
+      },
+      {
+        duration: 3500,
+      },
+    );
   }
 
   return (

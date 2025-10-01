@@ -36,10 +36,10 @@ function LogoutModal({ state }) {
               try {
                 await signOut(auth);
                 toast.success('Logged out successfully!', { duration: 2500 });
-                localStorage.clear();
                 setAllMonthData([]);
                 setCurrentSession({ sessionTitle: '', bazarList: [] });
-                navigate(-2);
+                localStorage.clear();
+                // navigate(-2);
               } catch (err) {
                 toast.error('Logout failed, please try again.', { duration: 2500 });
                 console.error(err);

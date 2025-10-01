@@ -28,6 +28,7 @@ function PhoneEditingModal({ state, func }) {
             type="number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter you phone number"
           />
         </div>
 

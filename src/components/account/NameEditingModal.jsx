@@ -29,6 +29,7 @@ function NameEditingModal({ state, func }) {
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
+            placeholder='Enter you name'
           />
         </div>
 
