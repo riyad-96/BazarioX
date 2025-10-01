@@ -91,21 +91,21 @@ function FeatureRequests() {
                       className="relative px-4 py-2 active:bg-zinc-100 pointer-fine:hover:bg-zinc-100"
                     >
                       <button onClick={() => setReacting(req)} className="absolute inset-0 z-1"></button>
-                      <span className={`absolute top-0.5 right-0.5 overflow-hidden rounded-md shadow select-none`}>
+                      <span className={`absolute top-0.5 right-0.5 z-2 overflow-hidden rounded-md shadow select-none`}>
                         <GetStatus status={status} text={status} />
                       </span>
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-start gap-3">
                         <div className="size-[35px] shrink-0 overflow-hidden rounded-full sm:size-[40px]">
                           <div className="size-full">{picture ? <img className="size-full object-cover object-center" src={picture} alt={`${username} profile picture`} /> : <ProfilePlaceholderSvg className="size-full fill-zinc-800" />}</div>
                         </div>
 
-                        <div className="">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-medium max-sm:text-sm">{username}</h4>
-                            <span className="text-sm font-light opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
+                        <div>
+                          <div>
+                            <h4 className="font-medium underline max-sm:text-sm">{username}</h4>
+                            <p className="line-clamp-1 max-sm:text-sm">{request.title}</p>
                           </div>
-                          <p className="line-clamp-1 max-sm:text-sm">{request.title}</p>
+                          <span className="block text-sm font-light opacity-70 max-sm:text-xs">Request on: {format(createdAt, 'd MMM y')}</span>
                         </div>
                       </div>
                     </motion.div>

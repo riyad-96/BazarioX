@@ -44,6 +44,9 @@ function UniContexts({ children }) {
   const [allUsers, setAllUsers] = useState([]);
 
   //app
+  const [isPointerCoarse, _] = useState(() => {
+    return window.matchMedia('(pointer: coarse)').matches;
+  });
   const [clickDisabled, setClickDisabled] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -70,7 +73,7 @@ function UniContexts({ children }) {
   const [allMonthData, setAllMonthData] = useState([]);
   const [allMonthDataLoading, setAllMonthDataLoading] = useState(true);
 
-  return <uniContexts.Provider value={{ user, setUser, clickDisabled, setClickDisabled, isUserLoading, setIsUserLoading, isAdmin, allUsers, setAllUsers, userData, setUserData, userDataLoading, setUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
+  return <uniContexts.Provider value={{ user, setUser, clickDisabled, setClickDisabled, isUserLoading, setIsUserLoading, isAdmin, allUsers, setAllUsers, isPointerCoarse, userData, setUserData, userDataLoading, setUserDataLoading, unsavedSessionModal, setUnsavedSessionModal, currentSession, setCurrentSession, isCalcExpanded, setIsCalcExpanded, allMonthData, setAllMonthData, allMonthDataLoading, setAllMonthDataLoading, progress, setProgress }}>{children}</uniContexts.Provider>;
 }
 
 export default UniContexts;

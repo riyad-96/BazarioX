@@ -58,7 +58,7 @@ function Calculator() {
             <div className="rounded-md border border-(--slick-border) bg-(--second-lvl-bg)">
               {currentSession.bazarList.length < 1 && (
                 <p className="grid h-[40px] place-items-center overflow-hidden rounded-md bg-(--second-lvl-bg) text-center">
-                  <span>Your items will appear here</span>
+                  <span className="font-light">Your items will appear here</span>
                 </p>
               )}
 

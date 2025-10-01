@@ -4,6 +4,8 @@ import { format, formatDistanceToNow, isThisWeek, isThisYear, isToday } from 'da
 import { motion, AnimatePresence } from 'motion/react';
 import UniModal from '../helpers/UniModal';
 import { Calendar } from 'lucide-react';
+import SessionDetails from '../helpers/SessionDetails';
+import EachSession from '../helpers/EachSession';
 
 function Month() {
   const { allMonthData } = useUniContexts();
@@ -52,7 +54,7 @@ function Month() {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    const timeout = setInterval(() => setTick((prev) => prev + 1), 30000);
+    const timeout = setInterval(() => setTick((prev) => prev + 1), 60000);
     return () => clearInterval(timeout);
   }, []);
 
@@ -64,13 +66,19 @@ function Month() {
 
   const [sessionDetails, setSessionDetails] = useState(null);
 
+  // marked sessions
+  const [markedSessionsIds, setMarkedSessionsIds] = useState([]);
+  function filterMarkedSessions(id) {
+    setMarkedSessionsIds((prev) => (prev.includes(id) ? prev.filter((prevId) => prevId !== id) : [...prev, id]));
+  }
+
   return (
     <div className="min-h-full py-2">
       <h1 className="text-2xl">Monthly history</h1>
 
       <div className="my-2">
         {months.length > 1 && (
-          <button onClick={() => setMonthSelectionModalOpen(true)} className="mb-4 flex rounded-md border border-(--slick-border) bg-(--primary) items-center gap-2 px-3 py-1 text-sm shadow-xs">
+          <button onClick={() => setMonthSelectionModalOpen(true)} className="mb-4 flex items-center gap-2 rounded-md border border-(--slick-border) bg-(--primary) px-3 py-1 text-sm shadow-xs">
             <span>
               <Calendar size="16" />
             </span>
@@ -122,135 +130,19 @@ function Month() {
       <div className="grid gap-2">
         <AnimatePresence>
           {selectedMonthData.map((eachSession, i) => {
-            const { id, sessionTitle, sessionAt, bazarList } = eachSession;
+            const { id } = eachSession;
 
-            return (
-              <motion.div
-                initial={{
-                  opacity: 0.2,
-                  scale: 0.99,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{
-                  opacity: {
-                    duration: 0.3,
-                    delay: 0.05 * i,
-                  },
-                  scale: {
-                    duration: 0.2,
-                    delay: 0.05 * i,
-                  },
-                }}
-                key={id}
-                className="relative rounded-md bg-(--primary) p-3 shadow"
-              >
-                <div className="grid">
-                  <div className="flex justify-between">
-                    <span>{sessionTitle || 'Untitled'}</span>
-                    <span>
-                      Total: <span className="font-medium">{bazarList.reduce((acc, eachBazar) => acc + eachBazar.total, 0)}</span> ৳
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between text-sm">
-                    <div className="flex gap-2 text-sm opacity-80">
-                      <span key={tick}>{formatDistanceToNow(sessionAt, new Date())}</span>
-                      <span>
-                        {(() => {
-                          if (isToday(sessionAt)) {
-                            return format(sessionAt, 'h:mm a');
-                          }
-                          if (isThisWeek(sessionAt)) {
-                            return format(sessionAt, 'EEE');
-                          }
-                          if (isThisYear(sessionAt)) {
-                            return format(sessionAt, 'MMM d');
-                          }
-                          return format(sessionAt, 'MMM d, yyyy');
-                        })()}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setSessionDetails(eachSession);
-                      }}
-                      className="opacity-70"
-                    >
-                      <span>Click to see details</span>
-                      <span className="absolute inset-0"></span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            );
+            return <EachSession key={`session${id}`} eachSession={eachSession} i={i} state={{ tick, setSessionDetails, markedSessionsIds, setMarkedSessionsIds }} func={{ filterMarkedSessions }} />;
           })}
         </AnimatePresence>
       </div>
 
-      <AnimatePresence>
-        {sessionDetails && (
-          <UniModal
-            onMouseDown={() => setSessionDetails(null)}
-            jsx={
-              <div
-                onMouseDown={(e) => {
-                  e.stopPropagation();
-                }}
-                className="rounded-md bg-(--primary) p-3"
-              >
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg">{sessionDetails.sessionTitle?.trim?.() || 'Untitled'}</h2>
-                  <span>
-                    {(() => {
-                      const d = sessionDetails.sessionAt;
-                      const timeStr = format(d, 'h:mm a');
-
-                      if (isToday(d)) return timeStr;
-                      if (isThisWeek(d)) return `${timeStr}, ${format(d, 'EEEE')}`;
-                      if (isThisYear(d)) return `${timeStr}, ${format(d, 'd MMM')}`;
-                      return `${timeStr}, ${format(d, 'MMM d yyyy')}`;
-                    })()}
-                  </span>
-                </div>
-                <p>
-                  Session total: <span className="font-medium">{sessionDetails.bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0)} ৳</span>
-                </p>
-                <div className="mt-2 rounded-md bg-(--second-lvl-bg) p-2">
-                  {sessionDetails.bazarList.map((eachItem, i) => {
-                    const { id, itemName, price, quantity, unit, total, addedAt } = eachItem;
-                    return (
-                      <div key={id} className="flex justify-between rounded-md px-2 py-1 text-sm nth-[even]:bg-white">
-                        <span className="grid flex-3">
-                          <span>
-                            {i + 1}. {itemName || '...'} {`(${price} ৳)`}
-                          </span>
-                          <span className="text-xs opacity-80">{format(addedAt, 'h:mm a')}</span>
-                        </span>
-                        <span className="grid flex-2 place-items-center text-sm">
-                          <span>
-                            {quantity} {unit}
-                          </span>
-                        </span>
-                        <span className="grid flex-2 place-items-center text-sm">
-                          <span>{total} ৳</span>
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            }
-          />
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{sessionDetails && <SessionDetails state={{ sessionDetails, setSessionDetails }} />}</AnimatePresence>
 
       <AnimatePresence>
         {monthSelectionModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setMonthSelectionModalOpen(false)} className="fixed inset-0 z-15 grid place-items-center bg-black/30">
-            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scale: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
+            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scalze: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
               <p>Select months:</p>
               <div className="scrollbar-thin grid max-h-[300px] divide-y-1 divide-(--slick-border) overflow-y-auto rounded-lg bg-(--second-lvl-bg)">
                 {months.map((m) => {
