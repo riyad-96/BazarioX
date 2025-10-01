@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useUniContexts } from '../../contexts/UniContexts';
-import { format, formatDistanceToNow, isThisWeek, isThisYear, isToday } from 'date-fns';
+import { format, isThisWeek } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
-import UniModal from '../helpers/UniModal';
 import { Calendar, CheckCheck, Trash2, X } from 'lucide-react';
 import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
