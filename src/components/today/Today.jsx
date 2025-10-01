@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { isToday } from 'date-fns';
 import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
-import { Trash2, X } from 'lucide-react';
+import { CheckCheck, Trash2, X } from 'lucide-react';
+import SessionDeleteModal from '../helpers/SessionDeleteModal';
+import { requestSessionDelete } from '../helpers/functions';
 
 function Today() {
-  const { allMonthData } = useUniContexts();
+  const { user, allMonthData } = useUniContexts();
   const [todaysSessions, setTodaysSessions] = useState([]);
 
   useEffect(() => {
@@ -29,6 +31,13 @@ function Today() {
 
   function filterMarkedSessions(id) {
     setMarkedSessionsIds((prev) => (prev.includes(id) ? prev.filter((prevId) => prevId !== id) : [...prev, id]));
+  }
+
+  // delete sessions
+  const [sessionsDeleting, setSessionDeleting] = useState(false);
+
+  async function deleteSelectedSessions() {
+    await requestSessionDelete(user, markedSessionsIds);
   }
 
   return (
@@ -62,15 +71,21 @@ function Today() {
                   }}
                   className="flex gap-2"
                 >
-                  <button className="flex items-center gap-1 rounded-md bg-red-200 px-2 py-0.5 text-sm shadow-xs">
+                  <button onClick={() => setSessionDeleting(true)} className="flex items-center gap-1 rounded-md bg-red-200 px-2 py-0.5 text-sm shadow-xs">
                     <span>
                       <Trash2 size="14" />
                     </span>
-                    <span>Delete</span>
+                    <span>
+                      Delete (<span className="px-0.5">{markedSessionsIds.length}</span>)
+                    </span>
                   </button>
 
                   <button onClick={() => setMarkedSessionsIds([])} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
                     <X size="20" />
+                  </button>
+
+                  <button onClick={() => setMarkedSessionsIds(todaysSessions.map((eachSession) => eachSession.id))} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                    <CheckCheck size="20" />
                   </button>
                 </motion.div>
               )}
@@ -88,6 +103,8 @@ function Today() {
           </div>
         </div>
       )}
+
+      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
 
       <AnimatePresence>{sessionDetails && <SessionDetails state={{ sessionDetails, setSessionDetails }} />}</AnimatePresence>
     </div>

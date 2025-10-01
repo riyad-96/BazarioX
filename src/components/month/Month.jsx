@@ -3,12 +3,14 @@ import { useUniContexts } from '../../contexts/UniContexts';
 import { format, formatDistanceToNow, isThisWeek, isThisYear, isToday } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
 import UniModal from '../helpers/UniModal';
-import { Calendar } from 'lucide-react';
+import { Calendar, CheckCheck, Trash2, X } from 'lucide-react';
 import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
+import SessionDeleteModal from '../helpers/SessionDeleteModal';
+import { requestSessionDelete } from '../helpers/functions';
 
 function Month() {
-  const { allMonthData } = useUniContexts();
+  const { user, allMonthData } = useUniContexts();
 
   const [months, setMonths] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('This month');
@@ -72,6 +74,13 @@ function Month() {
     setMarkedSessionsIds((prev) => (prev.includes(id) ? prev.filter((prevId) => prevId !== id) : [...prev, id]));
   }
 
+  // delete sessions
+  const [sessionsDeleting, setSessionDeleting] = useState(false);
+
+  async function deleteSelectedSessions() {
+    await requestSessionDelete(user, markedSessionsIds);
+  }
+
   return (
     <div className="min-h-full py-2">
       <h1 className="text-2xl">Monthly history</h1>
@@ -122,9 +131,47 @@ function Month() {
       )}
 
       {selectedMonthData.length > 0 && (
-        <p className="mt-4 mb-2">
-          Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
-        </p>
+        <div className="mt-4 mb-2">
+          <div className="flex items-center justify-between">
+            <span>
+              Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
+            </span>
+
+            <AnimatePresence>
+              {markedSessionsIds.length > 0 && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                  }}
+                  animate={{
+                    opacity: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                  }}
+                  className="flex gap-2"
+                >
+                  <button onClick={() => setSessionDeleting(true)} className="flex items-center gap-1 rounded-md bg-red-200 px-2 py-0.5 text-sm shadow-xs">
+                    <span>
+                      <Trash2 size="14" />
+                    </span>
+                    <span>
+                      Delete (<span className="px-0.5">{markedSessionsIds.length}</span>)
+                    </span>
+                  </button>
+
+                  <button onClick={() => setMarkedSessionsIds([])} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                    <X size="20" />
+                  </button>
+
+                  <button onClick={() => setMarkedSessionsIds(selectedMonthData.map((eachSession) => eachSession.id))} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                    <CheckCheck size="20" />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       )}
 
       <div className="grid gap-2">
@@ -164,6 +211,7 @@ function Month() {
                       onClick={() => {
                         filterMonthBasedData(month, year);
                         setSelectedMonth(btnText);
+                        setMarkedSessionsIds([]);
                         setMonthSelectionModalOpen(false);
                       }}
                       key={m}
@@ -178,6 +226,8 @@ function Month() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
     </div>
   );
 }

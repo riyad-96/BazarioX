@@ -42,3 +42,37 @@ export async function deleteAccountAndAllData(user) {
     console.error(err);
   }
 }
+
+function filterFromLocalSessions(ids) {
+  let sessions = JSON.parse(localStorage.getItem('localSessions'));
+  if (sessions) {
+    ids.forEach((id) => {
+      sessions = sessions.filter((eachSession) => eachSession.id !== id);
+    });
+  }
+  console.log(sessions);
+}
+
+export async function requestSessionDelete(user, ids) {
+  // if (!user) {
+  //   filterFromLocalSessions(ids);
+  //   return 'local delete';
+  // }
+  filterFromLocalSessions(ids);
+
+  // if (user && !navigator.onLine) {
+  //   throw new Error('offline');
+  // }
+
+  // try {
+  //   const promises = [];
+  //   for (const id of ids) {
+  //     const doc = await getDoc(doc(db, 'users', user.uid, 'bazarSessions', id));
+  //     promises.push(deleteDoc(doc.ref));
+  //   }
+  //   await Promise.all(promises);
+  // } catch (err) {
+  //   console.error(err);
+  //   throw new Error(err);
+  // }
+}

@@ -84,7 +84,7 @@ function FunctionContexts({ children }) {
         const allSavedSession = await getDocs(query(bazarSessionCollection, orderBy('sessionAt', 'desc')));
         const array = [];
         allSavedSession.forEach((doc) => {
-          array.push(doc.data());
+          array.push({ ...doc.data(), id: doc.id });
         });
         setAllMonthData(array);
         localStorage.localSessions = JSON.stringify(array);
@@ -110,7 +110,7 @@ function FunctionContexts({ children }) {
       const queries = query(collection(db, 'users', user.uid, 'bazarSessions'), orderBy('sessionAt', 'desc'));
       const snapshots = await getDocs(queries);
       snapshots.forEach((snap) => {
-        array.push(snap.data());
+        array.push({ ...snap.data(), id: snap.id });
       });
       setAllMonthData(array);
       localStorage.localSessions = JSON.stringify(array);
@@ -136,7 +136,7 @@ function FunctionContexts({ children }) {
         const allSavedSession = await getDocs(query(bazarSessionCollection, orderBy('sessionAt', 'desc')));
         const array = [];
         allSavedSession.forEach((doc) => {
-          array.push(doc.data());
+          array.push({ ...doc.data(), id: doc.id });
         });
         localStorage.localSessions = JSON.stringify(array);
       }
@@ -183,7 +183,7 @@ function FunctionContexts({ children }) {
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const array = [];
-        snapshot.forEach((doc) => array.push(doc.data()));
+        snapshot.forEach((doc) => array.push({ ...doc.data(), id: doc.id }));
         setAllMonthData(array);
 
         localStorage.localSessions = JSON.stringify(array);

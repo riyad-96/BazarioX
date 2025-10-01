@@ -4,7 +4,7 @@ import { useUniContexts } from '../../contexts/UniContexts';
 import { Check } from 'lucide-react';
 
 function EachSession({ eachSession, i, state, func }) {
-  const { tick, setSessionDetails, markedSessionsIds, setMarkedSessionsIds } = state;
+  const { tick, setSessionDetails, markedSessionsIds } = state;
   const { filterMarkedSessions } = func;
   const { isPointerCoarse } = useUniContexts();
   const { id, sessionTitle, sessionAt, bazarList } = eachSession;
@@ -31,7 +31,7 @@ function EachSession({ eachSession, i, state, func }) {
           delay: 0.05 * i,
         },
       }}
-      className={`group relative rounded-md bg-(--primary) p-3 outline-2 transition-[margin,outline-color] duration-150 ${isSelected ? 'my-0.5 outline-zinc-700' : 'shadow outline-transparent'}`}
+      className={`group relative rounded-md p-3 outline-2 transition-[margin,outline-color,background-color] duration-150 ${isSelected ? 'my-0.5 bg-(--main-bg) outline-zinc-600 pointer-coarse:outline-zinc-800' : 'bg-(--primary) shadow outline-transparent'}`}
     >
       <div className="grid">
         <div className="flex justify-between">
@@ -77,7 +77,7 @@ function EachSession({ eachSession, i, state, func }) {
             className="opacity-70"
           >
             <span>Click to see details</span>
-            <span className="absolute inset-0"></span>
+            <span className="absolute inset-0 z-1"></span>
           </button>
 
           <button
