@@ -142,7 +142,7 @@ function FeatureField() {
           </div>
         ) : (
           <p className="rounded-lg bg-(--primary) py-2 text-center shadow">
-            <span className="opacity-70">Add a feature request.</span>
+            <span className="opacity-70 max-sm:text-sm font-light">Add a feature request.</span>
           </p>
         )}
       </div>

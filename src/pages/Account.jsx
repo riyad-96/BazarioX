@@ -262,7 +262,7 @@ function Account() {
 
                 {userData.pictures.length !== 5 && (
                   <>
-                    <label className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px] pointer-fine:cursor-pointer" htmlFor="img-input">
+                    <motion.label whileTap={{ scale: 0.9 }} className="grid size-[50px] place-items-center rounded-lg bg-zinc-200 sm:size-[60px] pointer-fine:cursor-pointer" htmlFor="img-input">
                       {userDataLoading ? (
                         <span className="animate-spin">
                           <LoaderCircle />
@@ -272,7 +272,7 @@ function Account() {
                           <ImagePlus color="currentColor" />
                         </motion.span>
                       )}
-                    </label>
+                    </motion.label>
                     <input ref={imgFileInput} onChange={handleImgSelection} className="hidden" id="img-input" type="file" accept="image/*" />
                   </>
                 )}

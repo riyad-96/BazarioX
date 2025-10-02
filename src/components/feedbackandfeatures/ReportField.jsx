@@ -140,7 +140,7 @@ function ReportField() {
           </div>
         ) : (
           <p className="rounded-lg bg-(--primary) py-2 text-center shadow">
-            <span className="opacity-70">Your report list will appear here</span>
+            <span className="font-light opacity-70 max-sm:text-sm">Your report list will appear here</span>
           </p>
         )}
       </div>
