@@ -7,9 +7,10 @@ import EachSession from '../helpers/EachSession';
 import { CheckCheck, Trash2, X } from 'lucide-react';
 import SessionDeleteModal from '../helpers/SessionDeleteModal';
 import { requestSessionDelete } from '../helpers/functions';
+import toast from 'react-hot-toast';
 
 function Today() {
-  const { user, allMonthData } = useUniContexts();
+  const { user, allMonthData, setAllMonthData } = useUniContexts();
   const [todaysSessions, setTodaysSessions] = useState([]);
 
   useEffect(() => {
@@ -35,9 +36,27 @@ function Today() {
 
   // delete sessions
   const [sessionsDeleting, setSessionDeleting] = useState(false);
+  const [sessionsDeletingLoading, setSessionsDeletingLoading] = useState(false);
 
-  async function deleteSelectedSessions() {
-    await requestSessionDelete(user, markedSessionsIds);
+  function deleteSelectedSessions() {
+    setSessionsDeletingLoading(true);
+
+    const deleteDocsPromise = requestSessionDelete(user, markedSessionsIds);
+
+    toast.promise(deleteDocsPromise, {
+      loading: 'Deleting sessions...',
+      success: () => {
+        setSessionDeleting(false);
+        setSessionsDeletingLoading(false);
+        setAllMonthData((prev) => prev.filter((session) => !markedSessionsIds.includes(session.id)));
+        setMarkedSessionsIds([]);
+        return `${markedSessionsIds.length} session${markedSessionsIds.length > 1 ? 's' : ''} deleted`;
+      },
+      error: (err) => {
+        setSessionsDeletingLoading(false);
+        return err;
+      },
+    });
   }
 
   return (
@@ -104,7 +123,7 @@ function Today() {
         </div>
       )}
 
-      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
+      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting, sessionsDeletingLoading }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
 
       <AnimatePresence>{sessionDetails && <SessionDetails state={{ sessionDetails, setSessionDetails }} />}</AnimatePresence>
     </div>

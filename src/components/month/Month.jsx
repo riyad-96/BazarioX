@@ -7,12 +7,14 @@ import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
 import SessionDeleteModal from '../helpers/SessionDeleteModal';
 import { requestSessionDelete } from '../helpers/functions';
+import toast from 'react-hot-toast';
 
 function Month() {
-  const { user, allMonthData } = useUniContexts();
+  const { user, allMonthData, setAllMonthData } = useUniContexts();
 
   const [months, setMonths] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState('This month');
+  const [selectedMonthYear, setSelectedMonthYear] = useState('This month');
+  const [monthInNumber, setMonthInNumber] = useState(`${format(new Date(), 'M')}-${format(new Date(), 'y')}`);
   const [selectedMonthData, setSelectedMonthData] = useState([]);
 
   const [monthSelectionModalOpen, setMonthSelectionModalOpen] = useState(false);
@@ -28,13 +30,33 @@ function Month() {
     if (allMonths) {
       setMonths(allMonths);
     }
-
-    const currentMonthData = allMonthData.filter((eachSession) => eachSession.month == format(new Date(), 'M') && eachSession.year == format(new Date(), 'y'));
-    if (currentMonthData) {
-      setSelectedMonthData(currentMonthData);
-    }
   }, [allMonthData]);
 
+  // filter selected month data
+
+  function getMonthInText(monthYearInNumber) {
+    const [month, year] = monthYearInNumber.split('-');
+
+    let monthYear = new Date(year, month - 1).toLocaleString('default', {
+      month: 'long',
+      year: 'numeric',
+    });
+
+    if (month == format(new Date(), 'M') && year == format(new Date(), 'y')) {
+      monthYear = 'This month';
+    }
+
+    return monthYear;
+  }
+
+  useEffect(() => {
+    const [month, year] = monthInNumber.split('-');
+    const filteredMonthData = allMonthData.filter((eachSession) => eachSession.month == month && eachSession.year == year);
+    setSelectedMonthData(filteredMonthData);
+    setSelectedMonthYear(getMonthInText(monthInNumber));
+  }, [monthInNumber, allMonthData]);
+
+  // stats
   const stat = useRef({
     totalSpent: 0,
     totalItems: 0,
@@ -59,12 +81,6 @@ function Month() {
     return () => clearInterval(timeout);
   }, []);
 
-  // filter selected month data
-  function filterMonthBasedData(month, year) {
-    const filteredMonthData = allMonthData.filter((eachSession) => eachSession.month == month && eachSession.year == year);
-    setSelectedMonthData(filteredMonthData);
-  }
-
   const [sessionDetails, setSessionDetails] = useState(null);
 
   // marked sessions
@@ -75,14 +91,32 @@ function Month() {
 
   // delete sessions
   const [sessionsDeleting, setSessionDeleting] = useState(false);
+  const [sessionsDeletingLoading, setSessionsDeletingLoading] = useState(false);
 
-  async function deleteSelectedSessions() {
-    await requestSessionDelete(user, markedSessionsIds);
+  function deleteSelectedSessions() {
+    setSessionsDeletingLoading(true);
+
+    const deleteDocsPromise = requestSessionDelete(user, markedSessionsIds);
+
+    toast.promise(deleteDocsPromise, {
+      loading: 'Deleting sessions...',
+      success: () => {
+        setAllMonthData((prev) => prev.filter((session) => !markedSessionsIds.includes(session.id)));
+        setMarkedSessionsIds([]);
+        setSessionDeleting(false);
+        setSessionsDeletingLoading(false);
+        return `${markedSessionsIds.length} session${markedSessionsIds.length > 1 ? 's' : ''} deleted`;
+      },
+      error: (err) => {
+        setSessionsDeletingLoading(false);
+        return err;
+      },
+    });
   }
 
   return (
     <div className="min-h-full py-2">
-      <h1 className="text-2xl">Monthly history</h1>
+      <h1 className="text-xl">Monthly history</h1>
 
       <div className="my-2">
         {months.length > 1 && (
@@ -90,7 +124,7 @@ function Month() {
             <span>
               <Calendar size="16" />
             </span>
-            <span>Select date ({selectedMonth})</span>
+            <span>Select date ({selectedMonthYear})</span>
           </button>
         )}
 
@@ -133,7 +167,7 @@ function Month() {
         <div className="mt-4 mb-2">
           <div className="flex items-center justify-between">
             <span>
-              Spent on {selectedMonth}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
+              Spent on {selectedMonthYear}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
             </span>
 
             <AnimatePresence>
@@ -191,42 +225,26 @@ function Month() {
             <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scalze: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
               <p>Select months:</p>
               <div className="scrollbar-thin grid max-h-[300px] divide-y-1 divide-(--slick-border) overflow-y-auto rounded-lg bg-(--second-lvl-bg)">
-                {months.map((m) => {
-                  const [month, year] = m.split('-');
-
-                  let monthYear = new Date(year, month - 1).toLocaleString('default', {
-                    month: 'long',
-                    year: 'numeric',
-                  });
-
-                  let btnText = monthYear;
-
-                  if (month == format(new Date(), 'M') && year == format(new Date(), 'y')) {
-                    btnText = 'This month';
-                  }
-
-                  return (
-                    <button
-                      onClick={() => {
-                        filterMonthBasedData(month, year);
-                        setSelectedMonth(btnText);
-                        setMarkedSessionsIds([]);
-                        setMonthSelectionModalOpen(false);
-                      }}
-                      key={m}
-                      className="flex px-3.5 py-1.5"
-                    >
-                      {btnText}
-                    </button>
-                  );
-                })}
+                {months.map((m) => (
+                  <button
+                    onClick={() => {
+                      setMonthInNumber(m);
+                      setMarkedSessionsIds([]);
+                      setMonthSelectionModalOpen(false);
+                    }}
+                    key={m}
+                    className="flex px-3.5 py-1.5"
+                  >
+                    {getMonthInText(m)}
+                  </button>
+                ))}
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
+      <AnimatePresence>{sessionsDeleting && <SessionDeleteModal state={{ markedSessionsIds, setSessionDeleting, sessionsDeletingLoading }} func={{ deleteSelectedSessions }} />}</AnimatePresence>
     </div>
   );
 }

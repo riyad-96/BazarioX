@@ -1,6 +1,7 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../configs/firebase';
 import { deleteUser } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 export async function deleteAccountAndAllData(user) {
   try {
@@ -50,29 +51,27 @@ function filterFromLocalSessions(ids) {
       sessions = sessions.filter((eachSession) => eachSession.id !== id);
     });
   }
-  console.log(sessions);
+  localStorage.localSessions = JSON.stringify(sessions);
 }
 
 export async function requestSessionDelete(user, ids) {
-  // if (!user) {
-  //   filterFromLocalSessions(ids);
-  //   return 'local delete';
-  // }
-  filterFromLocalSessions(ids);
+  if (!user) {
+    filterFromLocalSessions(ids);
+    toast.success('Sessions deleted');
+    return;
+  }
 
-  // if (user && !navigator.onLine) {
-  //   throw new Error('offline');
-  // }
+  if (user && !navigator.onLine) {
+    throw new Error('Network error. process failed');
+  }
 
-  // try {
-  //   const promises = [];
-  //   for (const id of ids) {
-  //     const doc = await getDoc(doc(db, 'users', user.uid, 'bazarSessions', id));
-  //     promises.push(deleteDoc(doc.ref));
-  //   }
-  //   await Promise.all(promises);
-  // } catch (err) {
-  //   console.error(err);
-  //   throw new Error(err);
-  // }
+  try {
+    const promises = ids.map((id) => deleteDoc(doc(db, 'users', user.uid, 'bazarSessions', id)));
+    await Promise.all(promises);
+    filterFromLocalSessions(ids);
+    return;
+  } catch (err) {
+    console.error(err);
+    throw new Error('Session delete failed, please try again');
+  }
 }
