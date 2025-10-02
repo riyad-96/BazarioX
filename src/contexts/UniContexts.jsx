@@ -1,7 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { adminEmail, auth } from '../configs/firebase';
-import { useLocation } from 'react-router-dom';
 
 const uniContexts = createContext();
 
