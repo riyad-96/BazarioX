@@ -31,8 +31,7 @@ function Calculator() {
       bazarList: currentSession.bazarList,
       sessionTotal: currentSession.bazarList.reduce((acc, eachItem) => acc + eachItem.total, 0),
       sessionAt: newDate,
-      // month: format(newDate, 'M'),
-      month: '9',
+      month: format(newDate, 'M'),
       year: format(newDate, 'y'),
     };
     handleStoringNewSession(newSession);
