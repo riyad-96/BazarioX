@@ -27,7 +27,7 @@ function SessionDeleteModal({ state, func }) {
               const session = allMonthData.find((eachSession) => eachSession.id == id);
               if (!session) return '';
               return (
-                <span key={id} className="rounded-full border border-(--slick-border) bg-white px-3 py-0.5 text-sm shadow-xs">
+                <span key={id} className="rounded-full bg-white px-3 py-0.5 text-sm shadow-xs">
                   {session.sessionTitle.trim() || 'Untitled'}
                 </span>
               );

@@ -165,7 +165,7 @@ function Month() {
 
       {selectedMonthData.length > 0 && (
         <div className="mt-4 mb-2">
-          <div className="flex items-center justify-between">
+          <div className="grid">
             <span>
               Spent on {selectedMonthYear}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
             </span>
@@ -175,14 +175,20 @@ function Month() {
                 <motion.div
                   initial={{
                     opacity: 0,
+                    marginBlock: 0,
+                    height: 0,
                   }}
                   animate={{
                     opacity: 1,
+                    marginBlock: '0.425rem',
+                    height: 24,
                   }}
                   exit={{
                     opacity: 0,
+                    marginBlock: 0,
+                    height: 0,
                   }}
-                  className="flex gap-2"
+                  className="flex justify-end gap-2 overflow-hidden"
                 >
                   <button onClick={() => setSessionDeleting(true)} className="flex items-center gap-1 rounded-md bg-red-200 px-2 py-0.5 text-sm shadow-xs">
                     <span>
@@ -193,11 +199,11 @@ function Month() {
                     </span>
                   </button>
 
-                  <button onClick={() => setMarkedSessionsIds([])} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                  <button onClick={() => setMarkedSessionsIds([])} className="flex rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
                     <X size="20" />
                   </button>
 
-                  <button onClick={() => setMarkedSessionsIds(selectedMonthData.map((eachSession) => eachSession.id))} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                  <button onClick={() => setMarkedSessionsIds(selectedMonthData.map((eachSession) => eachSession.id))} className="flex rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
                     <CheckCheck size="20" />
                   </button>
                 </motion.div>
@@ -222,7 +228,7 @@ function Month() {
       <AnimatePresence>
         {monthSelectionModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={() => setMonthSelectionModalOpen(false)} className="fixed inset-0 z-15 grid place-items-center bg-black/30">
-            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scalze: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[250px] space-y-2 rounded-xl bg-white p-3">
+            <motion.div initial={{ y: 25, scale: 0.9 }} animate={{ y: 0, scalze: 1 }} exit={{ y: 25, scale: 0.9 }} onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[300px] space-y-2 rounded-xl bg-white p-3">
               <p>Select months:</p>
               <div className="scrollbar-thin grid max-h-[300px] divide-y-1 divide-(--slick-border) overflow-y-auto rounded-lg bg-(--second-lvl-bg)">
                 {months.map((m) => (
@@ -233,7 +239,7 @@ function Month() {
                       setMonthSelectionModalOpen(false);
                     }}
                     key={m}
-                    className="flex px-3.5 py-1.5"
+                    className="flex px-3.5 py-2"
                   >
                     {getMonthInText(m)}
                   </button>

@@ -71,7 +71,7 @@ function Today() {
 
       {todaysSessions.length > 0 && (
         <div className="mt-4 space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="grid">
             <span>
               Spent today: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
             </span>
@@ -81,14 +81,20 @@ function Today() {
                 <motion.div
                   initial={{
                     opacity: 0,
+                    marginBlock: 0,
+                    height: 0,
                   }}
                   animate={{
                     opacity: 1,
+                    marginBlock: '0.425rem',
+                    height: 24,
                   }}
                   exit={{
                     opacity: 0,
+                    marginBlock: 0,
+                    height: 0,
                   }}
-                  className="flex gap-2"
+                  className="flex justify-end gap-2 overflow-hidden"
                 >
                   <button onClick={() => setSessionDeleting(true)} className="flex items-center gap-1 rounded-md bg-red-200 px-2 py-0.5 text-sm shadow-xs">
                     <span>
@@ -99,11 +105,11 @@ function Today() {
                     </span>
                   </button>
 
-                  <button onClick={() => setMarkedSessionsIds([])} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                  <button onClick={() => setMarkedSessionsIds([])} className="flex rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
                     <X size="20" />
                   </button>
 
-                  <button onClick={() => setMarkedSessionsIds(todaysSessions.map((eachSession) => eachSession.id))} className="rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
+                  <button onClick={() => setMarkedSessionsIds(todaysSessions.map((eachSession) => eachSession.id))} className="flex rounded-md bg-(--primary) px-2 py-0.5 text-sm shadow-xs">
                     <CheckCheck size="20" />
                   </button>
                 </motion.div>
