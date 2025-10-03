@@ -45,18 +45,9 @@ const router = createBrowserRouter([
         path: '',
         element: <Home />,
         children: [
-          {
-            index: true,
-            element: <Calculator />,
-          },
-          {
-            path: 'today',
-            element: <Today />,
-          },
-          {
-            path: 'monthly',
-            element: <Month />,
-          },
+          { index: true, element: <Calculator /> },
+          { path: 'today', element: <Today /> },
+          { path: 'monthly', element: <Month /> },
         ],
       },
       {
@@ -67,18 +58,9 @@ const router = createBrowserRouter([
           </AuthProtectedRoute>
         ),
         children: [
-          {
-            path: 'log-in',
-            element: <Login />,
-          },
-          {
-            path: 'create-account',
-            element: <Signup />,
-          },
-          {
-            path: 'reset-password',
-            element: <ResetPassword />,
-          },
+          { path: 'log-in', element: <Login /> },
+          { path: 'create-account', element: <Signup /> },
+          { path: 'reset-password', element: <ResetPassword /> },
         ],
       },
       {
@@ -89,14 +71,8 @@ const router = createBrowserRouter([
           </ProfileProtectedRoute>
         ),
         children: [
-          {
-            index: true,
-            element: <ProfileIndex />,
-          },
-          {
-            path: 'account',
-            element: <Account />,
-          },
+          { index: true, element: <ProfileIndex /> },
+          { path: 'account', element: <Account /> },
           {
             path: 'feedback-reports',
             element: <FeedbackAndFeature />,
@@ -116,22 +92,10 @@ const router = createBrowserRouter([
           </AdminProtectedRoute>
         ),
         children: [
-          {
-            index: true,
-            element: <Dashboard />,
-          },
-          {
-            path: 'feedbacks',
-            element: <Feedbacks />,
-          },
-          {
-            path: 'feature-requests',
-            element: <FeatureRequests />,
-          },
-          {
-            path: 'reports',
-            element: <Reports />,
-          },
+          { index: true, element: <Dashboard /> },
+          { path: 'feedbacks', element: <Feedbacks /> },
+          { path: 'feature-requests', element: <FeatureRequests /> },
+          { path: 'reports', element: <Reports /> },
         ],
       },
     ],
