@@ -86,7 +86,7 @@ function ProfileIndex() {
               </span>
               <span>Account</span>
             </button>
-            <button onClick={() => navigate('/profile/feedback')} className="flex items-center gap-4 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
+            <button onClick={() => navigate('/profile/feedback-reports')} className="flex items-center gap-4 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
               <span>
                 <MessageCircleMore size="20" />
               </span>

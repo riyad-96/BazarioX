@@ -93,7 +93,7 @@ function Today() {
                   className="flex items-center gap-2 rounded-md bg-(--primary) py-0.5 pr-2 pl-2.5 text-sm shadow-xs"
                 >
                   <span>{order === 'desc' ? 'New first' : 'Old first'}</span>
-                  <ArrowUpDown size="14" />
+                  <ArrowUpDown size="14" className={`inline-block transition duration-250 ease-in-out ${order === 'desc' ? 'rotate-0' : 'rotate-180'}`} />
                 </button>
               )}
             </div>

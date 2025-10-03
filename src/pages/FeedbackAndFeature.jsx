@@ -1,17 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { ArrowLeftSvg } from '../assets/Svg';
 import { useState } from 'react';
-import RatingsField from '../components/feedbackandfeatures/RatingsField';
-import FeatureField from '../components/feedbackandfeatures/FeatureField';
-import ReportField from '../components/feedbackandfeatures/ReportField';
 import { Home } from 'lucide-react';
 import GetSvg from '../components/helpers/GetSvg';
 
 function FeedbackAndFeature() {
   const navigate = useNavigate();
-
-  // tabs
-  const [tab, setTab] = useState('feedback');
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] bg-(--main-bg)">
@@ -34,14 +28,26 @@ function FeedbackAndFeature() {
         <div className="px-3 pt-8 pb-4">
           <div className="mx-auto max-w-[700px]">
             <div className="grid divide-(--slick-border) overflow-hidden rounded-lg bg-(--primary) shadow max-sm:divide-y sm:flex sm:divide-x">
-              {['feedback', 'feature', 'report'].map((t) => (
-                <button key={t} onClick={() => setTab(t)} className={`flex items-center gap-4 px-6 py-2 sm:flex-1 sm:justify-center ${tab === t && 'bg-zinc-200'}`}>
-                  <span>
-                    <GetSvg name={t} size="20" />
-                  </span>
-                  <span className="capitalize">{t}</span>
-                </button>
-              ))}
+              <NavLink to={`/profile/feedback-reports`} end replace className={({ isActive }) => `flex items-center gap-4 px-6 py-2 sm:flex-1 sm:justify-center ${isActive && 'bg-zinc-200'}`}>
+                <span>
+                  <GetSvg name="feedback" size="20" />
+                </span>
+                <span className="capitalize">Feedback</span>
+              </NavLink>
+
+              <NavLink to={`/profile/feedback-reports/feature`} replace className={({ isActive }) => `flex items-center gap-4 px-6 py-2 sm:flex-1 sm:justify-center ${isActive && 'bg-zinc-200'}`}>
+                <span>
+                  <GetSvg name="feature" size="20" />
+                </span>
+                <span className="capitalize">Feature</span>
+              </NavLink>
+
+              <NavLink to={`/profile/feedback-reports/report`} replace className={({ isActive }) => `flex items-center gap-4 px-6 py-2 sm:flex-1 sm:justify-center ${isActive && 'bg-zinc-200'}`}>
+                <span>
+                  <GetSvg name="report" size="20" />
+                </span>
+                <span className="capitalize">Report</span>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -49,9 +55,7 @@ function FeedbackAndFeature() {
 
       <div className="scrollbar-thin overflow-y-auto px-3 pt-2 pb-16">
         <div className="mx-auto max-w-[700px]">
-          {tab === 'feedback' && <RatingsField />}
-          {tab === 'feature' && <FeatureField />}
-          {tab === 'report' && <ReportField />}
+          <Outlet />
         </div>
       </div>
     </div>

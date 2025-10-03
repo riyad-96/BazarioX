@@ -28,6 +28,9 @@ import Dashboard from './admin/pages/Dashboard.jsx';
 import Feedbacks from './admin/pages/Feedbacks.jsx';
 import FeatureRequests from './admin/pages/FeatureRequests.jsx';
 import Reports from './admin/pages/Reports.jsx';
+import RatingsField from './components/feedbackandfeatures/RatingsField.jsx';
+import FeatureField from './components/feedbackandfeatures/FeatureField.jsx';
+import ReportField from './components/feedbackandfeatures/ReportField.jsx';
 
 const router = createBrowserRouter([
   {
@@ -95,8 +98,13 @@ const router = createBrowserRouter([
             element: <Account />,
           },
           {
-            path: 'feedback',
+            path: 'feedback-reports',
             element: <FeedbackAndFeature />,
+            children: [
+              { index: true, element: <RatingsField /> },
+              { path: 'feature', element: <FeatureField /> },
+              { path: 'report', element: <ReportField /> },
+            ],
           },
         ],
       },
@@ -131,4 +139,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')).render(<RouterProvider router={router} />);
+createRoot(document.getElementById('root')).render(
+  <>
+    <RouterProvider router={router} />
+  </>,
+);
