@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useUniContexts } from '../../contexts/UniContexts';
 import { format, isThisWeek } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, CheckCheck, Trash2, X } from 'lucide-react';
+import { ArrowUpDown, Calendar, CheckCheck, Trash2, X } from 'lucide-react';
 import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
 import SessionDeleteModal from '../helpers/SessionDeleteModal';
@@ -114,6 +114,9 @@ function Month() {
     });
   }
 
+  // list ordering
+  const [order, setOrder] = useState('desc');
+
   return (
     <div className="min-h-full py-2">
       <h1 className="text-xl">Monthly history</h1>
@@ -166,9 +169,28 @@ function Month() {
       {selectedMonthData.length > 0 && (
         <div className="mt-4 mb-2">
           <div className="grid">
-            <span>
-              Spent on {selectedMonthYear}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
-            </span>
+            <div className="flex items-center justify-between">
+              <span>
+                Spent on {selectedMonthYear}: <span className="font-medium">{selectedMonthData.reduce((acc, s) => acc + s.sessionTotal, 0).toFixed(2)} ৳</span>
+              </span>
+
+              {selectedMonthData.length > 1 && (
+                <button
+                  onClick={() => {
+                    if (order === 'desc') {
+                      setOrder('asc');
+                    } else {
+                      setOrder('desc');
+                    }
+                    setSelectedMonthData((prev) => prev.reverse());
+                  }}
+                  className="flex items-center gap-2 rounded-md bg-(--primary) py-0.5 pr-2 pl-2.5 text-sm shadow-xs"
+                >
+                  <span>{order === 'desc' ? 'New first' : 'Old first'}</span>
+                  <ArrowUpDown size="14" />
+                </button>
+              )}
+            </div>
 
             <AnimatePresence>
               {markedSessionsIds.length > 0 && (

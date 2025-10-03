@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { isToday } from 'date-fns';
 import SessionDetails from '../helpers/SessionDetails';
 import EachSession from '../helpers/EachSession';
-import { CheckCheck, Trash2, X } from 'lucide-react';
+import { ArrowUpDown, CheckCheck, Trash2, X } from 'lucide-react';
 import SessionDeleteModal from '../helpers/SessionDeleteModal';
 import { requestSessionDelete } from '../helpers/functions';
 import toast from 'react-hot-toast';
@@ -59,6 +59,9 @@ function Today() {
     });
   }
 
+  // list ordering
+  const [order, setOrder] = useState('desc');
+
   return (
     <div className="min-h-full space-y-2 py-2">
       <h1 className="text-xl">Today's sessions</h1>
@@ -72,9 +75,28 @@ function Today() {
       {todaysSessions.length > 0 && (
         <div className="mt-4 space-y-2">
           <div className="grid">
-            <span>
-              Spent today: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
-            </span>
+            <div className="flex items-center justify-between">
+              <span>
+                Spent today: <span className="font-medium">{todaysSessions.reduce((acc, eachSession) => acc + eachSession.sessionTotal, 0).toFixed(2)}</span> ৳
+              </span>
+
+              {todaysSessions.length > 1 && (
+                <button
+                  onClick={() => {
+                    if (order === 'desc') {
+                      setOrder('asc');
+                    } else {
+                      setOrder('desc');
+                    }
+                    setTodaysSessions((prev) => prev.reverse());
+                  }}
+                  className="flex items-center gap-2 rounded-md bg-(--primary) py-0.5 pr-2 pl-2.5 text-sm shadow-xs"
+                >
+                  <span>{order === 'desc' ? 'New first' : 'Old first'}</span>
+                  <ArrowUpDown size="14" />
+                </button>
+              )}
+            </div>
 
             <AnimatePresence>
               {markedSessionsIds.length > 0 && (
