@@ -11,9 +11,6 @@ function App() {
 
   return (
     <div className="h-dvh bg-(--main-bg)">
-      <LoadingTopBar />
-      <Toaster position="top-center" />
-
       {clickDisabled && <div className="fixed inset-0 z-[100000] cursor-not-allowed"></div>}
       <AnimatePresence>
         {isUserLoading && (
@@ -55,6 +52,9 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LoadingTopBar />
+      <Toaster position="top-center" />
     </div>
   );
 }

@@ -311,12 +311,14 @@ function Account() {
               </span>
               <span className="font-light opacity-70">{userDataLoading ? '...' : <>{userData.phone || 'set number'} </>}</span>
             </button>
-            <button onClick={() => setChangingPassword(true)} className="flex items-center gap-4 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
-              <span>
-                <KeyRound size="20" />
-              </span>
-              <span>Change password</span>
-            </button>
+            {user.providerData[0].providerId !== 'google.com' && (
+              <button onClick={() => setChangingPassword(true)} className="flex items-center gap-4 px-6 py-2.5 active:bg-(--second-lvl-bg) pointer-fine:hover:bg-(--second-lvl-bg)">
+                <span>
+                  <KeyRound size="20" />
+                </span>
+                <span>Change password</span>
+              </button>
+            )}
           </div>
 
           <div className="grid divide-y divide-zinc-100 rounded-lg bg-(--primary) shadow">

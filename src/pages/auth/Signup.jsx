@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../configs/firebase';
+import { ErrorSvg, EyeClosedSvg, EyeOpenSvg, GoogleIcon } from '../../assets/Svg';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, db, googleAuth } from '../../configs/firebase';
 import toast from 'react-hot-toast';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useUniContexts } from '../../contexts/UniContexts';
 
 function Signup() {
   const navigate = useNavigate();
@@ -92,6 +93,21 @@ function Signup() {
         setSignupError('Something went wrong. please try again');
       }
       setIsTrying(false);
+    }
+  }
+
+  //! Handle google auth
+  const { user } = useUniContexts();
+  const { setClickDisabled } = useUniContexts();
+
+  async function handleGoogleAuth() {
+    setClickDisabled(true);
+    try {
+      await signInWithPopup(auth, googleAuth);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setClickDisabled(false);
     }
   }
 
@@ -200,6 +216,13 @@ function Signup() {
           Log in
         </button>
       </p>
+
+      <div className="mt-4">
+        <button onClick={handleGoogleAuth} className="flex h-[45px] w-full items-center justify-center gap-2 rounded-lg border bg-zinc-800 text-white">
+          <GoogleIcon size="20" />
+          <span>Continue with google</span>
+        </button>
+      </div>
     </div>
   );
 }

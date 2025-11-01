@@ -196,36 +196,7 @@ function FunctionContexts({ children }) {
   // load user data
   useEffect(() => {
     setUserDataLoading(false);
-    if (user) {
-      (async () => {
-        setUserDataLoading(true);
-        try {
-          // get profile pictures
-          const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
-          const images = await getDocs(imgCollectionQuery);
-
-          // get userData
-          const userDataObject = await getDoc(doc(db, 'users', user.uid));
-          const feedbackSnap = await getDoc(doc(db, 'feedbacks', user.uid));
-          const featureRequests = await getDocs(query(collection(db, 'features'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
-          const reports = await getDocs(query(collection(db, 'reports'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
-
-          setUserData({
-            username: userDataObject?.data()?.username || '',
-            phone: userDataObject?.data()?.phone || '',
-            pictures: images?.docs?.map((doc) => ({ ...doc.data(), id: doc.id })) || [],
-            feedback: feedbackSnap.data() || {},
-            featureRequests: featureRequests?.docs?.map((f) => ({ ...f.data(), createdAt: f.data().createdAt?.toDate() })) || [],
-            reports: reports?.docs?.map((r) => ({ ...r.data(), createdAt: r.data().createdAt?.toDate() })) || [],
-          });
-        } catch (err) {
-          toast.error('Error loading user data, please reload the page.', { duration: 3000 });
-          console.error(err);
-        } finally {
-          setUserDataLoading(false);
-        }
-      })();
-    } else {
+    if (!user) {
       setUserData({
         username: '',
         phone: '',
@@ -234,7 +205,36 @@ function FunctionContexts({ children }) {
         featureRequests: [],
         reports: [],
       });
+      return;
     }
+    (async () => {
+      setUserDataLoading(true);
+      try {
+        // get profile pictures
+        const imgCollectionQuery = query(collection(db, 'users', user.uid, 'pictures'), orderBy('addedAt', 'desc'));
+        const images = await getDocs(imgCollectionQuery);
+
+        // get userData
+        const userDataObject = await getDoc(doc(db, 'users', user.uid));
+        const feedbackSnap = await getDoc(doc(db, 'feedbacks', user.uid));
+        const featureRequests = await getDocs(query(collection(db, 'features'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
+        const reports = await getDocs(query(collection(db, 'reports'), where('uid', '==', user.uid), orderBy('createdAt', 'desc')));
+
+        setUserData({
+          username: userDataObject?.data()?.username || '',
+          phone: userDataObject?.data()?.phone || '',
+          pictures: images?.docs?.map((doc) => ({ ...doc.data(), id: doc.id })) || [],
+          feedback: feedbackSnap.data() || {},
+          featureRequests: featureRequests?.docs?.map((f) => ({ ...f.data(), createdAt: f.data().createdAt?.toDate() })) || [],
+          reports: reports?.docs?.map((r) => ({ ...r.data(), createdAt: r.data().createdAt?.toDate() })) || [],
+        });
+      } catch (err) {
+        toast.error('Error loading user data, please reload the page.', { duration: 3000 });
+        console.error(err);
+      } finally {
+        setUserDataLoading(false);
+      }
+    })();
   }, [user]);
 
   return <functionContext.Provider value={{ handleStoringNewSession, discardLocalAndLoadCloudData, saveToCloudAndLoadCloudData }}>{children}</functionContext.Provider>;

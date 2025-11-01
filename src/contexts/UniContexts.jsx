@@ -1,6 +1,7 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { adminEmail, auth } from '../configs/firebase';
+import { adminEmail, auth, db } from '../configs/firebase';
+import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 const uniContexts = createContext();
 
@@ -11,10 +12,47 @@ function UniContexts({ children }) {
   const [user, setUser] = useState(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
 
+  //app
+  const [isPointerCoarse, _] = useState(() => {
+    return window.matchMedia('(pointer: coarse)').matches;
+  });
+  const [clickDisabled, setClickDisabled] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   // user watcher function
+  async function registerNewUserInfos(user) {
+    if (!user) return;
+    if (user.providerData[0].providerId !== 'google.com') return;
+
+    const userInfo = await getDoc(doc(db, 'users', user.uid));
+    if (userInfo.exists()) return;
+
+    try {
+      await addDoc(collection(db, 'users', user.uid, 'pictures'), {
+        isSelected: true,
+        addedAt: serverTimestamp(),
+        url: user.photoURL,
+      });
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        username: user.displayName || '',
+        phone: '',
+        joinDate: serverTimestamp(),
+        admin: false,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      await registerNewUserInfos(user);
+
       setUser(user);
+      setClickDisabled(false);
       setIsUserLoading(false);
     });
 
@@ -41,13 +79,6 @@ function UniContexts({ children }) {
     return user && user?.email === adminEmail;
   }
   const [allUsers, setAllUsers] = useState([]);
-
-  //app
-  const [isPointerCoarse, _] = useState(() => {
-    return window.matchMedia('(pointer: coarse)').matches;
-  });
-  const [clickDisabled, setClickDisabled] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   // Home page
   const [unsavedSessionModal, setUnsavedSessionModal] = useState(false);

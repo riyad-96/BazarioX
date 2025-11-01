@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ErrorSvg, EyeClosedSvg, EyeOpenSvg } from '../../assets/Svg';
-import { auth } from '../../configs/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ErrorSvg, EyeClosedSvg, EyeOpenSvg, GoogleIcon } from '../../assets/Svg';
+import { auth, googleAuth } from '../../configs/firebase';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import toast from 'react-hot-toast';
 import ForgotPassModal from './ForgotPassModal';
+import { useUniContexts } from '../../contexts/UniContexts';
 
 function Login() {
   const navigate = useNavigate();
@@ -90,6 +91,20 @@ function Login() {
         setLoginError('Something went wrong. please try again');
       }
       setIsTrying(false);
+    }
+  }
+
+  //! Handle google auth
+  const { setClickDisabled } = useUniContexts();
+
+  async function handleGoogleAuth() {
+    setClickDisabled(true);
+    try {
+      await signInWithPopup(auth, googleAuth);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setClickDisabled(false);
     }
   }
 
@@ -210,6 +225,13 @@ function Login() {
           Sign up
         </button>
       </p>
+
+      <div className="mt-4">
+        <button onClick={handleGoogleAuth} className="flex h-[45px] w-full items-center justify-center gap-2 rounded-lg border bg-zinc-800 text-white">
+          <GoogleIcon size="20" />
+          <span>Continue with google</span>
+        </button>
+      </div>
 
       <AnimatePresence>{forgotPassModalShowing && <ForgotPassModal state={{ loginEmail, setForgotPassModalShowing }} />}</AnimatePresence>
     </div>
