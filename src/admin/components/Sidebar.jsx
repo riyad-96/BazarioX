@@ -9,7 +9,7 @@ function Sidebar({ state }) {
       <div onClick={(e) => e.stopPropagation()} className="admin-sidebar-content grid h-full w-[230px] grid-rows-[auto_1fr] gap-4 rounded-xl bg-white p-3 shadow sm:w-[250px]">
         <div className="py-4">
           <h2 onClick={() => window.location.reload()} className="mx-auto w-fit text-center text-2xl select-none">
-            Bazario
+            BazarioX
           </h2>
         </div>
 

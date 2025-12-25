@@ -1,8 +1,8 @@
-# Bazario
+# BazarioX
 
-🔗 Live Preview: **[Bazario](https://bazario.vercel.app)**
+🔗 Live Preview: **[BazarioX](https://bazariox.vercel.app)**
 
-> Bazario solves a real problem
+> BazarioX solves a real problem
 
 #### ✨ Features
 
