@@ -1,8 +1,8 @@
-# KitzoBazar
+# Bazario
 
-🔗 Live Preview: **[KitzoBazar](https://kitzobazar.vercel.app)**
+🔗 Live Preview: **[Bazario](https://Bazario.vercel.app)**
 
-> KitzoBazar solves a real problem
+> Bazario solves a real problem
 
 #### ✨ Features
 
@@ -36,15 +36,4 @@
   "react-hot-toast": "^2.6.0",
   "kitzo": "^1.1.7"
 }
-```
-
-#### ⚙️ Run this project
-
-- Open terminal and run the commands
-
-```bash
-git clone https://github.com/riyad-96/KitzoBazar.git
-cd KitzoBazar
-npm i
-npm run dev
 ```
