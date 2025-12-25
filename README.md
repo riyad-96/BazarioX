@@ -1,6 +1,6 @@
 # Bazario
 
-🔗 Live Preview: **[Bazario](https://Bazario.vercel.app)**
+🔗 Live Preview: **[Bazario](https://bazario.vercel.app)**
 
 > Bazario solves a real problem
 
